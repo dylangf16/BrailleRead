@@ -18,7 +18,6 @@ t_ignore = ' \t\n'
 
 def t_error(t):
     print("Error léxico: Carácter ilegal '%s'" % t.value[0])
-    t.lexer.skip(1)
-
+    t.value = "Error léxico: Carácter ilegal '%s'" % t.value[0]
 
 lexer = lex.lex()
