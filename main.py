@@ -1,6 +1,6 @@
 import tkinter as tk
-from Lex import lexer
-from Yacc import parser
+from Lex import lexer, errores_lexicos
+from Yacc import parser, errores_sintacticos
 
 # Configuración de la ventana principal
 root = tk.Tk()
@@ -21,14 +21,22 @@ def compilar():
         tokens.append(tok)
 
     # Ejecuta el análisis léxico y sintáctico del código
+    parser.errok()
+    resultado_parser = parser.parse(codigo, lexer=lexer)
 
-    output = parser.parse(codigo, lexer=lexer)
-
-    # Guarda el output en una variable llamada output
-
-    # Muestra el output en la pantalla de resultados
+    # Muestra los errores léxicos y sintácticos en la pantalla de resultados
     resultado.delete("1.0", "end")
-    resultado.insert("1.0", output)
+    if errores_lexicos:
+        resultado.insert("1.0", "Errores léxicos:\n")
+        for error in errores_lexicos:
+            resultado.insert("end", error + "\n")
+    elif errores_sintacticos:
+        resultado.insert("1.0", "Errores sintácticos:\n")
+        for error in errores_sintacticos:
+            resultado.insert("end", error + "\n")
+    else:
+        resultado.delete("1.0", "end")
+        resultado.insert("1.0", resultado_parser)
 
 # Configuración del área de código base
 codigo_base = tk.Text(root, height=20, width=80)

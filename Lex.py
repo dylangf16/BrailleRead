@@ -1,5 +1,5 @@
 import ply.lex as lex
-
+errores_lexicos = []
 tokens = (
     'NUMBER',
     'PLUS',
@@ -17,7 +17,10 @@ def t_NUMBER(t):
 t_ignore = ' \t\n'
 
 def t_error(t):
-    print("Error léxico: Carácter ilegal '%s'" % t.value[0])
-    t.value = "Error léxico: Carácter ilegal '%s'" % t.value[0]
+    errores_lexicos.append("Error léxico en la línea %d: Carácter ilegal '%s'" % (t.lineno, t.value[0]))
+    t.lexer.skip(1)
+
+def get_line_number(t):
+    return t.lexer.lexdata[:t.lexpos].count('\n') + 1
 
 lexer = lex.lex()
