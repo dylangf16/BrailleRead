@@ -2,34 +2,225 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    DIVISION
-    MULTIPLICACION
-    NUMERO
-    RESTA
-    SUMA
+    BOOL
+    COMMA
+    NEW
+    NUM
 
 Grammar
 
-Rule 0     S' -> expression
-Rule 1     expression -> expression PLUS term
-Rule 2     expression -> expression MINUS term
-Rule 3     expression -> term
-Rule 4     term -> NUMBER
+Rule 0     S' -> program
+Rule 1     program -> procedure_definitions
+Rule 2     procedure_definitions -> procedure_definitions procedure_definition
+Rule 3     procedure_definitions -> procedure_definition
+Rule 4     procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON
+Rule 5     statements -> statements statement
+Rule 6     statements -> statement
+Rule 7     statement -> ID
+Rule 8     statement -> call_statement
+Rule 9     call_statement -> CALL LPAREN ID RPAREN SEMICOLON
 
 Terminals, with rules where they appear
 
-DIVISION             : 
-MULTIPLICACION       : 
-NUMERO               : 
-RESTA                : 
-SUMA                 : 
+BOOL                 : 
+CALL                 : 9
+COMMA                : 
+ID                   : 4 7 9
+LPAREN               : 4 9
+NEW                  : 
+NUM                  : 
+PROC                 : 4
+RPAREN               : 4 9
+SEMICOLON            : 4 9
 error                : 
 
 Nonterminals, with rules where they appear
 
-MINUS                : 2
-NUMBER               : 4
-PLUS                 : 1
-expression           : 1 2 0
-term                 : 1 2 3
+call_statement       : 8
+procedure_definition : 2 3
+procedure_definitions : 1 2
+program              : 0
+statement            : 5 6
+statements           : 4 5
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . procedure_definitions
+    (2) procedure_definitions -> . procedure_definitions procedure_definition
+    (3) procedure_definitions -> . procedure_definition
+    (4) procedure_definition -> . PROC ID LPAREN statements RPAREN SEMICOLON
+
+    PROC            shift and go to state 4
+
+    program                        shift and go to state 1
+    procedure_definitions          shift and go to state 2
+    procedure_definition           shift and go to state 3
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> procedure_definitions .
+    (2) procedure_definitions -> procedure_definitions . procedure_definition
+    (4) procedure_definition -> . PROC ID LPAREN statements RPAREN SEMICOLON
+
+    $end            reduce using rule 1 (program -> procedure_definitions .)
+    PROC            shift and go to state 4
+
+    procedure_definition           shift and go to state 5
+
+state 3
+
+    (3) procedure_definitions -> procedure_definition .
+
+    PROC            reduce using rule 3 (procedure_definitions -> procedure_definition .)
+    $end            reduce using rule 3 (procedure_definitions -> procedure_definition .)
+
+
+state 4
+
+    (4) procedure_definition -> PROC . ID LPAREN statements RPAREN SEMICOLON
+
+    ID              shift and go to state 6
+
+
+state 5
+
+    (2) procedure_definitions -> procedure_definitions procedure_definition .
+
+    PROC            reduce using rule 2 (procedure_definitions -> procedure_definitions procedure_definition .)
+    $end            reduce using rule 2 (procedure_definitions -> procedure_definitions procedure_definition .)
+
+
+state 6
+
+    (4) procedure_definition -> PROC ID . LPAREN statements RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 7
+
+
+state 7
+
+    (4) procedure_definition -> PROC ID LPAREN . statements RPAREN SEMICOLON
+    (5) statements -> . statements statement
+    (6) statements -> . statement
+    (7) statement -> . ID
+    (8) statement -> . call_statement
+    (9) call_statement -> . CALL LPAREN ID RPAREN SEMICOLON
+
+    ID              shift and go to state 8
+    CALL            shift and go to state 12
+
+    statements                     shift and go to state 9
+    statement                      shift and go to state 10
+    call_statement                 shift and go to state 11
+
+state 8
+
+    (7) statement -> ID .
+
+    RPAREN          reduce using rule 7 (statement -> ID .)
+    ID              reduce using rule 7 (statement -> ID .)
+    CALL            reduce using rule 7 (statement -> ID .)
+
+
+state 9
+
+    (4) procedure_definition -> PROC ID LPAREN statements . RPAREN SEMICOLON
+    (5) statements -> statements . statement
+    (7) statement -> . ID
+    (8) statement -> . call_statement
+    (9) call_statement -> . CALL LPAREN ID RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 13
+    ID              shift and go to state 8
+    CALL            shift and go to state 12
+
+    statement                      shift and go to state 14
+    call_statement                 shift and go to state 11
+
+state 10
+
+    (6) statements -> statement .
+
+    RPAREN          reduce using rule 6 (statements -> statement .)
+    ID              reduce using rule 6 (statements -> statement .)
+    CALL            reduce using rule 6 (statements -> statement .)
+
+
+state 11
+
+    (8) statement -> call_statement .
+
+    RPAREN          reduce using rule 8 (statement -> call_statement .)
+    ID              reduce using rule 8 (statement -> call_statement .)
+    CALL            reduce using rule 8 (statement -> call_statement .)
+
+
+state 12
+
+    (9) call_statement -> CALL . LPAREN ID RPAREN SEMICOLON
+
+    LPAREN          shift and go to state 15
+
+
+state 13
+
+    (4) procedure_definition -> PROC ID LPAREN statements RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 16
+
+
+state 14
+
+    (5) statements -> statements statement .
+
+    RPAREN          reduce using rule 5 (statements -> statements statement .)
+    ID              reduce using rule 5 (statements -> statements statement .)
+    CALL            reduce using rule 5 (statements -> statements statement .)
+
+
+state 15
+
+    (9) call_statement -> CALL LPAREN . ID RPAREN SEMICOLON
+
+    ID              shift and go to state 17
+
+
+state 16
+
+    (4) procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON .
+
+    PROC            reduce using rule 4 (procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON .)
+    $end            reduce using rule 4 (procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON .)
+
+
+state 17
+
+    (9) call_statement -> CALL LPAREN ID . RPAREN SEMICOLON
+
+    RPAREN          shift and go to state 18
+
+
+state 18
+
+    (9) call_statement -> CALL LPAREN ID RPAREN . SEMICOLON
+
+    SEMICOLON       shift and go to state 19
+
+
+state 19
+
+    (9) call_statement -> CALL LPAREN ID RPAREN SEMICOLON .
+
+    RPAREN          reduce using rule 9 (call_statement -> CALL LPAREN ID RPAREN SEMICOLON .)
+    ID              reduce using rule 9 (call_statement -> CALL LPAREN ID RPAREN SEMICOLON .)
+    CALL            reduce using rule 9 (call_statement -> CALL LPAREN ID RPAREN SEMICOLON .)
 

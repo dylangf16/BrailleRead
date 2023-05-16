@@ -1,0 +1,8 @@
+// This program calculates the area of a rectangle
+
+@length = 5
+@width = 10
+@area = @length * @width
+
+// Display the result
+print("The area of the rectangle is: ", @area)
