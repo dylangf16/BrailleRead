@@ -14,27 +14,38 @@ tokens = [
     'COMMA',
     'NUM',
     'BOOL',
+    'OPERATOR',
 ]
 
 # Regular expression rules for tokens
 t_PROC = r'PROC'
 t_NEW = r'NEW'
 t_CALL = r'CALL'
-t_ID = r'[a-zA-Z_][a-zA-Z0-9_]*'
+t_ID = r'[a-zA-Z0-9_@-]+'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_SEMICOLON = r';'
 t_COMMA = r','
 t_NUM = r'Num'
 t_BOOL = r'Bool'
+t_OPERATOR = r'[+\-*/=]'
 
 # Ignored characters
 t_ignore = ' \t'
 
+# Regular expression rule for comments
+def t_COMMENT(t):
+    r'//.*'
+    pass  # Ignore comments
+
 # Error handling rule
 def t_error(t):
-    lexical_errors.append(f"Invalid token: {t.value[0]}")
-    t.lexer.skip(1)
+    if t.value[0] == ' ' or t.value[0] == '\n':
+        t.lexer.skip(1)
+    else:
+        lexical_errors.append(f"Invalid token: {t.value[0]}")
+        t.lexer.skip(1)
+
 
 # Build the lexer
 lexer = lex.lex()
@@ -97,10 +108,10 @@ Proc @Procedure4
 
 // Invalid token
 Proc @Procedure5
-{
+(
     @variable5,
     (Num, 35);
-};
+);
 
 '''
 
