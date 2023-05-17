@@ -14,6 +14,7 @@ tokens = [
     'COMMA',
     'NUM',
     'BOOL',
+    'COMPARISON_OP',
     'OPERATOR',
 ]
 
@@ -28,23 +29,31 @@ t_SEMICOLON = r';'
 t_COMMA = r','
 t_NUM = r'Num'
 t_BOOL = r'Bool'
-t_OPERATOR = r'[+\-*/=]'
+#t_COMPARISON_OP = r'(==|!=)'
+#t_OPERATOR = r'[+\-*/=]'
 
 # Ignored characters
-t_ignore = ' \t'
+t_ignore = '(\t | \n)'
 
 # Regular expression rule for comments
 def t_COMMENT(t):
     r'//.*'
     pass  # Ignore comments
 
+# Rule for operators
+def t_OPERATOR(t):
+    r'[+\-*/=](?!=)'
+    return t
+
+# Rule for comparison operators
+def t_COMPARISON_OP(t):
+    r'==|!='
+    return t
+
 # Error handling rule
 def t_error(t):
-    if t.value[0] == ' ' or t.value[0] == '\n':
-        t.lexer.skip(1)
-    else:
-        lexical_errors.append(f"Invalid token: {t.value[0]}")
-        t.lexer.skip(1)
+    lexical_errors.append(f"Invalid token: {t.value[0]}")
+    t.lexer.skip(1)
 
 
 # Build the lexer
@@ -56,10 +65,12 @@ input_code = '''
 
 // Procedure definitions
 Proc @Procedure1
+=
+==
 (
     @variable1,
     (Num, 5);
-    @variable2,
+    @,
     (Bool, True);
 );
 
@@ -97,7 +108,7 @@ Proc Procedure3
 );
 
 // Invalid token
-@var5 = 25;
+@var5  25;
 
 // Missing semicolon
 Proc @Procedure4
@@ -108,10 +119,10 @@ Proc @Procedure4
 
 // Invalid token
 Proc @Procedure5
-(
+{
     @variable5,
     (Num, 35);
-);
+};
 
 '''
 

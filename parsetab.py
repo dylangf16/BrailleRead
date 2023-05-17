@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'programBOOL CALL COMMA ID LPAREN NEW NUM PROC RPAREN SEMICOLONprogram : procedure_definitionsprocedure_definitions : procedure_definitions procedure_definition\n                            | procedure_definitionprocedure_definition : PROC ID LPAREN statements RPAREN SEMICOLONstatements : statements statement\n                  | statementstatement : ID\n                 | call_statementcall_statement : CALL LPAREN ID RPAREN SEMICOLON'
+_lr_signature = 'programBOOL CALL COMMA COMPARISON_OP ID LPAREN NEW NUM OPERATOR PROC RPAREN SEMICOLONprogram : procedure_definitionsprocedure_definitions : procedure_definitions procedure_definition\n                            | procedure_definitionprocedure_definition : PROC ID LPAREN statements RPAREN SEMICOLONstatements : statements statement\n                  | statementstatement : ID\n                 | call_statementcall_statement : CALL LPAREN ID RPAREN SEMICOLON'
     
 _lr_action_items = {'PROC':([0,2,3,5,16,],[4,4,-3,-2,-4,]),'$end':([1,2,3,5,16,],[0,-1,-3,-2,-4,]),'ID':([4,7,8,9,10,11,14,15,19,],[6,8,-7,8,-6,-8,-5,17,-9,]),'LPAREN':([6,12,],[7,15,]),'CALL':([7,8,9,10,11,14,19,],[12,-7,12,-6,-8,-5,-9,]),'RPAREN':([8,9,10,11,14,17,19,],[-7,13,-6,-8,-5,18,-9,]),'SEMICOLON':([13,18,],[16,19,]),}
 
@@ -27,13 +27,13 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> procedure_definitions','program',1,'p_program','Yacc.py',11),
-  ('procedure_definitions -> procedure_definitions procedure_definition','procedure_definitions',2,'p_procedure_definitions','Yacc.py',15),
-  ('procedure_definitions -> procedure_definition','procedure_definitions',1,'p_procedure_definitions','Yacc.py',16),
-  ('procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON','procedure_definition',6,'p_procedure_definition','Yacc.py',20),
-  ('statements -> statements statement','statements',2,'p_statements','Yacc.py',24),
-  ('statements -> statement','statements',1,'p_statements','Yacc.py',25),
-  ('statement -> ID','statement',1,'p_statement','Yacc.py',29),
-  ('statement -> call_statement','statement',1,'p_statement','Yacc.py',30),
-  ('call_statement -> CALL LPAREN ID RPAREN SEMICOLON','call_statement',5,'p_call_statement','Yacc.py',34),
+  ('program -> procedure_definitions','program',1,'p_program','Yacc.py',20),
+  ('procedure_definitions -> procedure_definitions procedure_definition','procedure_definitions',2,'p_procedure_definitions','Yacc.py',25),
+  ('procedure_definitions -> procedure_definition','procedure_definitions',1,'p_procedure_definitions','Yacc.py',26),
+  ('procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON','procedure_definition',6,'p_procedure_definition','Yacc.py',31),
+  ('statements -> statements statement','statements',2,'p_statements','Yacc.py',36),
+  ('statements -> statement','statements',1,'p_statements','Yacc.py',37),
+  ('statement -> ID','statement',1,'p_statement','Yacc.py',42),
+  ('statement -> call_statement','statement',1,'p_statement','Yacc.py',43),
+  ('call_statement -> CALL LPAREN ID RPAREN SEMICOLON','call_statement',5,'p_call_statement','Yacc.py',48),
 ]

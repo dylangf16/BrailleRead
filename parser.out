@@ -4,8 +4,10 @@ Unused terminals:
 
     BOOL
     COMMA
+    COMPARISON_OP
     NEW
     NUM
+    OPERATOR
 
 Grammar
 
@@ -25,10 +27,12 @@ Terminals, with rules where they appear
 BOOL                 : 
 CALL                 : 9
 COMMA                : 
+COMPARISON_OP        : 
 ID                   : 4 7 9
 LPAREN               : 4 9
 NEW                  : 
 NUM                  : 
+OPERATOR             : 
 PROC                 : 4
 RPAREN               : 4 9
 SEMICOLON            : 4 9

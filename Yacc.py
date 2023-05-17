@@ -6,8 +6,15 @@ syntax_errors = []
 # Start symbol
 start = 'program'
 
-
 # Grammar rules
+def p_statement(p):
+    '''statement : ID'''
+    if len(p[1]) < 2 or len(p[1]) > 12:
+        syntax_errors.append(f"Syntax error: Invalid ID length for '{p[1]}'")
+    else:
+        # Valid ID, do something with it...
+        pass
+
 def p_program(p):
     '''program : procedure_definitions'''
     pass
@@ -46,21 +53,23 @@ def p_error(p):
         syntax_errors.append(f'Syntax error at line {p.lineno}: Unexpected token {p.value}')
     else:
         syntax_errors.append('Syntax error: Unexpected end of input')
+        # Additional check for unmatched opening parenthesis
+        if '(' in p.lexer.lexdata:
+            syntax_errors.append('Syntax error: Unmatched opening parenthesis')
 
 
 # Build the parser
 parser = yacc.yacc()
 
 # Test input code
+
 input_code = '''
 // Sample code to test lexical analysis and parsing
 
 // Procedure definitions
-Proc @Procedure1
 (
-    @variable1,
     (Num, 5);
-    @variable2,
+    ,
     (Bool, True);
 );
 
