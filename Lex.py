@@ -7,7 +7,6 @@ tokens = [
     'PROC',
     'NEW',
     'CALL',
-    'ID',
     'LPAREN',
     'RPAREN',
     'SEMICOLON',
@@ -16,24 +15,42 @@ tokens = [
     'BOOL',
     'COMPARISON_OP',
     'OPERATOR',
+    'ID'
 ]
 
 # Regular expression rules for tokens
-t_PROC = r'PROC'
-t_NEW = r'NEW'
-t_CALL = r'CALL'
 t_ID = r'[a-zA-Z0-9_@-]+'
 t_LPAREN = r'\('
 t_RPAREN = r'\)'
 t_SEMICOLON = r';'
 t_COMMA = r','
-t_NUM = r'Num'
-t_BOOL = r'Bool'
-#t_COMPARISON_OP = r'(==|!=)'
-#t_OPERATOR = r'[+\-*/=]'
 
 # Ignored characters
 t_ignore = '(\t | \n)'
+
+def t_PROC(t):
+    r'Proc'
+    return t
+
+
+def t_NEW(t):
+    r'New'
+    return t
+
+
+def t_CALL(t):
+    r'CALL'
+    return t
+
+
+def t_NUM(t):
+    r'Num'
+    return t
+
+
+def t_BOOL(t):
+    r'Bool'
+    return t
 
 # Regular expression rule for comments
 def t_COMMENT(t):
@@ -64,13 +81,12 @@ input_code = '''
 // Sample code to test lexical analysis and parsing
 
 // Procedure definitions
+New @ale
 Proc @Procedure1
-=
-==
 (
     @variable1,
     (Num, 5);
-    @,
+    @variable2,
     (Bool, True);
 );
 
