@@ -2,11 +2,38 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
+    ADD
+    ALTER
+    ALTERB
+    ARROBA
     BOOL
-    COMPARISON_OP
-    MASTER
-    NUM
-    OPERATOR
+    CASE
+    COMA
+    COMMENT
+    DIFFERENT
+    DIV
+    ELSE
+    EQUAL
+    INTEGER
+    ISTRUE
+    LPARENT
+    MAQ
+    MAQEQUAL
+    MEQ
+    MEQEQUAL
+    MUL
+    PRINTVALUES
+    REPEAT
+    RPARENT
+    SIGNAL
+    SUB
+    THEN
+    TYPE
+    UNTIL
+    VALUES
+    VIEWSIGNAL
+    WHEN
+    WHILE
 
 Grammar
 
@@ -29,23 +56,50 @@ Rule 15    call_statement -> CALL LPAREN ID RPAREN SEMICOLON
 
 Terminals, with rules where they appear
 
+ADD                  : 
+ALTER                : 
+ALTERB               : 
+ARROBA               : 
 BOOL                 : 
-CALL                 : 15
-COMMA                : 5 5
-COMPARISON_OP        : 
+CASE                 : 
+COMA                 : 
+COMMENT              : 
+DIFFERENT            : 
+DIV                  : 
+ELSE                 : 
+EQUAL                : 
 ID                   : 4 5 6 7 10 13 15
-LPAREN               : 5 10 15
-MASTER               : 
+INTEGER              : 
+ISTRUE               : 
+LPARENT              : 
+MAQ                  : 
+MAQEQUAL             : 
+MEQ                  : 
+MEQEQUAL             : 
+MUL                  : 
 NEW                  : 4 5
-NUM                  : 
-OPERATOR             : 
+PRINTVALUES          : 
 PROC                 : 10
-RPAREN               : 5 10 15
+REPEAT               : 
+RPARENT              : 
 SEMICOLON            : 4 5 10 15
+SIGNAL               : 
+SUB                  : 
+THEN                 : 
+TYPE                 : 
+UNTIL                : 
+VALUES               : 
+VIEWSIGNAL           : 
+WHEN                 : 
+WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
+CALL                 : 15
+COMMA                : 5 5
+LPAREN               : 5 10 15
+RPAREN               : 5 10 15
 call_statement       : 14
 procedure_definition : 8 9
 procedure_definitions : 1 8
@@ -56,312 +110,4 @@ type                 : 5
 value                : 5
 variable_definition  : 2 3
 variable_definitions : 1 2
-
-Parsing method: LALR
-
-state 0
-
-    (0) S' -> . program
-    (1) program -> . variable_definitions procedure_definitions
-    (2) variable_definitions -> . variable_definitions variable_definition
-    (3) variable_definitions -> . variable_definition
-    (4) variable_definition -> . NEW ID SEMICOLON
-    (5) variable_definition -> . NEW ID COMMA LPAREN type COMMA value RPAREN SEMICOLON
-
-    NEW             shift and go to state 4
-
-    program                        shift and go to state 1
-    variable_definitions           shift and go to state 2
-    variable_definition            shift and go to state 3
-
-state 1
-
-    (0) S' -> program .
-
-
-
-state 2
-
-    (1) program -> variable_definitions . procedure_definitions
-    (2) variable_definitions -> variable_definitions . variable_definition
-    (8) procedure_definitions -> . procedure_definitions procedure_definition
-    (9) procedure_definitions -> . procedure_definition
-    (4) variable_definition -> . NEW ID SEMICOLON
-    (5) variable_definition -> . NEW ID COMMA LPAREN type COMMA value RPAREN SEMICOLON
-    (10) procedure_definition -> . PROC ID LPAREN statements RPAREN SEMICOLON
-
-    NEW             shift and go to state 4
-    PROC            shift and go to state 8
-
-    procedure_definitions          shift and go to state 5
-    variable_definition            shift and go to state 6
-    procedure_definition           shift and go to state 7
-
-state 3
-
-    (3) variable_definitions -> variable_definition .
-
-    NEW             reduce using rule 3 (variable_definitions -> variable_definition .)
-    PROC            reduce using rule 3 (variable_definitions -> variable_definition .)
-
-
-state 4
-
-    (4) variable_definition -> NEW . ID SEMICOLON
-    (5) variable_definition -> NEW . ID COMMA LPAREN type COMMA value RPAREN SEMICOLON
-
-    ID              shift and go to state 9
-
-
-state 5
-
-    (1) program -> variable_definitions procedure_definitions .
-    (8) procedure_definitions -> procedure_definitions . procedure_definition
-    (10) procedure_definition -> . PROC ID LPAREN statements RPAREN SEMICOLON
-
-    $end            reduce using rule 1 (program -> variable_definitions procedure_definitions .)
-    PROC            shift and go to state 8
-
-    procedure_definition           shift and go to state 10
-
-state 6
-
-    (2) variable_definitions -> variable_definitions variable_definition .
-
-    NEW             reduce using rule 2 (variable_definitions -> variable_definitions variable_definition .)
-    PROC            reduce using rule 2 (variable_definitions -> variable_definitions variable_definition .)
-
-
-state 7
-
-    (9) procedure_definitions -> procedure_definition .
-
-    PROC            reduce using rule 9 (procedure_definitions -> procedure_definition .)
-    $end            reduce using rule 9 (procedure_definitions -> procedure_definition .)
-
-
-state 8
-
-    (10) procedure_definition -> PROC . ID LPAREN statements RPAREN SEMICOLON
-
-    ID              shift and go to state 11
-
-
-state 9
-
-    (4) variable_definition -> NEW ID . SEMICOLON
-    (5) variable_definition -> NEW ID . COMMA LPAREN type COMMA value RPAREN SEMICOLON
-
-    SEMICOLON       shift and go to state 12
-    COMMA           shift and go to state 13
-
-
-state 10
-
-    (8) procedure_definitions -> procedure_definitions procedure_definition .
-
-    PROC            reduce using rule 8 (procedure_definitions -> procedure_definitions procedure_definition .)
-    $end            reduce using rule 8 (procedure_definitions -> procedure_definitions procedure_definition .)
-
-
-state 11
-
-    (10) procedure_definition -> PROC ID . LPAREN statements RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 14
-
-
-state 12
-
-    (4) variable_definition -> NEW ID SEMICOLON .
-
-    NEW             reduce using rule 4 (variable_definition -> NEW ID SEMICOLON .)
-    PROC            reduce using rule 4 (variable_definition -> NEW ID SEMICOLON .)
-
-
-state 13
-
-    (5) variable_definition -> NEW ID COMMA . LPAREN type COMMA value RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 15
-
-
-state 14
-
-    (10) procedure_definition -> PROC ID LPAREN . statements RPAREN SEMICOLON
-    (11) statements -> . statements statement
-    (12) statements -> . statement
-    (13) statement -> . ID
-    (14) statement -> . call_statement
-    (15) call_statement -> . CALL LPAREN ID RPAREN SEMICOLON
-
-    ID              shift and go to state 16
-    CALL            shift and go to state 20
-
-    statements                     shift and go to state 17
-    statement                      shift and go to state 18
-    call_statement                 shift and go to state 19
-
-state 15
-
-    (5) variable_definition -> NEW ID COMMA LPAREN . type COMMA value RPAREN SEMICOLON
-    (6) type -> . ID
-
-    ID              shift and go to state 21
-
-    type                           shift and go to state 22
-
-state 16
-
-    (13) statement -> ID .
-
-    RPAREN          reduce using rule 13 (statement -> ID .)
-    ID              reduce using rule 13 (statement -> ID .)
-    CALL            reduce using rule 13 (statement -> ID .)
-
-
-state 17
-
-    (10) procedure_definition -> PROC ID LPAREN statements . RPAREN SEMICOLON
-    (11) statements -> statements . statement
-    (13) statement -> . ID
-    (14) statement -> . call_statement
-    (15) call_statement -> . CALL LPAREN ID RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 23
-    ID              shift and go to state 16
-    CALL            shift and go to state 20
-
-    statement                      shift and go to state 24
-    call_statement                 shift and go to state 19
-
-state 18
-
-    (12) statements -> statement .
-
-    RPAREN          reduce using rule 12 (statements -> statement .)
-    ID              reduce using rule 12 (statements -> statement .)
-    CALL            reduce using rule 12 (statements -> statement .)
-
-
-state 19
-
-    (14) statement -> call_statement .
-
-    RPAREN          reduce using rule 14 (statement -> call_statement .)
-    ID              reduce using rule 14 (statement -> call_statement .)
-    CALL            reduce using rule 14 (statement -> call_statement .)
-
-
-state 20
-
-    (15) call_statement -> CALL . LPAREN ID RPAREN SEMICOLON
-
-    LPAREN          shift and go to state 25
-
-
-state 21
-
-    (6) type -> ID .
-
-    COMMA           reduce using rule 6 (type -> ID .)
-
-
-state 22
-
-    (5) variable_definition -> NEW ID COMMA LPAREN type . COMMA value RPAREN SEMICOLON
-
-    COMMA           shift and go to state 26
-
-
-state 23
-
-    (10) procedure_definition -> PROC ID LPAREN statements RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 27
-
-
-state 24
-
-    (11) statements -> statements statement .
-
-    RPAREN          reduce using rule 11 (statements -> statements statement .)
-    ID              reduce using rule 11 (statements -> statements statement .)
-    CALL            reduce using rule 11 (statements -> statements statement .)
-
-
-state 25
-
-    (15) call_statement -> CALL LPAREN . ID RPAREN SEMICOLON
-
-    ID              shift and go to state 28
-
-
-state 26
-
-    (5) variable_definition -> NEW ID COMMA LPAREN type COMMA . value RPAREN SEMICOLON
-    (7) value -> . ID
-
-    ID              shift and go to state 29
-
-    value                          shift and go to state 30
-
-state 27
-
-    (10) procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON .
-
-    PROC            reduce using rule 10 (procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON .)
-    $end            reduce using rule 10 (procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON .)
-
-
-state 28
-
-    (15) call_statement -> CALL LPAREN ID . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 31
-
-
-state 29
-
-    (7) value -> ID .
-
-    RPAREN          reduce using rule 7 (value -> ID .)
-
-
-state 30
-
-    (5) variable_definition -> NEW ID COMMA LPAREN type COMMA value . RPAREN SEMICOLON
-
-    RPAREN          shift and go to state 32
-
-
-state 31
-
-    (15) call_statement -> CALL LPAREN ID RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 33
-
-
-state 32
-
-    (5) variable_definition -> NEW ID COMMA LPAREN type COMMA value RPAREN . SEMICOLON
-
-    SEMICOLON       shift and go to state 34
-
-
-state 33
-
-    (15) call_statement -> CALL LPAREN ID RPAREN SEMICOLON .
-
-    RPAREN          reduce using rule 15 (call_statement -> CALL LPAREN ID RPAREN SEMICOLON .)
-    ID              reduce using rule 15 (call_statement -> CALL LPAREN ID RPAREN SEMICOLON .)
-    CALL            reduce using rule 15 (call_statement -> CALL LPAREN ID RPAREN SEMICOLON .)
-
-
-state 34
-
-    (5) variable_definition -> NEW ID COMMA LPAREN type COMMA value RPAREN SEMICOLON .
-
-    NEW             reduce using rule 5 (variable_definition -> NEW ID COMMA LPAREN type COMMA value RPAREN SEMICOLON .)
-    PROC            reduce using rule 5 (variable_definition -> NEW ID COMMA LPAREN type COMMA value RPAREN SEMICOLON .)
 
