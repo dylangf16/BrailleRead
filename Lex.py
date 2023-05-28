@@ -67,7 +67,7 @@ t_CALL = r'CALL'
 
 
 def t_MASTER(t):
-    r'[@][Master]+'
+    r'@Master'
     return t
 
 
@@ -124,8 +124,7 @@ def t_error(t):
 lexer = lex.lex()
 
 # Test input code
-input_code = '''
-// Procedure definitions
+input_code = ''' // Procedure definitions
 @Master(
 
 New @variable1,(Num, 15);

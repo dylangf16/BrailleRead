@@ -13,6 +13,7 @@ precedence = (
     ('left', 'MUL', 'DIV'),
 )
 
+
 def p_master(p):
     global master
     '''p_master : MASTER LPARENT sentence RPARENT SEMICOLON'''
@@ -43,37 +44,44 @@ def p_procedure(p):
 
     p[0] = ('procedure', p[2], p[4])
 
+def p_sentence(p):
+    '''sentence : sentence1
+                | sentence2
+                | sentence3
+                | sentence4'''
+    p[0] = p[1]
 
 # Estructura en el diccionario de variables = ID [tipo, valor]
 def p_sentence1(p):
-    '''sentence : NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-                | NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
+    '''sentence1 : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+                | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
     if len(p[2]) > 2 and len(p[2]) < 12:
-        if p[4] == 'Num' and isinstance(p[6], int):
-            variables_locales[p[2]] = [p[4], p[6]]
-        elif p[4] == 'Bool' and isinstance(p[6], bool):
-            variables_locales[p[2]] = [p[4], p[6]]
+        if p[5] == 'Num' and isinstance(p[7], int):
+            variables_locales[p[2]] = [p[5], p[7]]
+        elif p[5] == 'Bool' and isinstance(p[7], bool):
+            variables_locales[p[2]] = [p[5], p[7]]
         else:
             syntax_errors.append(f'Error en línea: {p.lineno}, valor dado no corresponde al tipado seleccionado')
     else:
         syntax_errors.append(f'Error en línea: {p.lineno}, tamaño de nombre de variable no cumple con el estándar')
 
-
 def p_sentence2(p):
-    '''sentence : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
-                | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON'''
-
+    '''sentence2 : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+                 | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON'''
     if p[3] in variables_locales or p[3] in variables_globales:
-        if type(p[5]) == type(variables_locales[p[3]][1]):
+        if isinstance(p[5], int) and variables_locales[p[3]][0] == 'Num':
+            variables_locales[p[3]][1] = p[5]
+        elif isinstance(p[5], bool) and variables_locales[p[3]][0] == 'Bool':
             variables_locales[p[3]][1] = p[5]
         else:
-            syntax_errors.append(f'Error en línea: {p.lineno}, tipo de valor a cambiar no coincide con tipo de valor ya en variable')
+            syntax_errors.append(f'Error in line {p.lineno}: Type mismatch for variable {p[3]}')
     else:
-        syntax_errors.append(f'Error en línea: {p.lineno}, variable no existente')
+        syntax_errors.append(f'Error in line {p.lineno}: Variable {p[3]} does not exist')
+
 
 
 def p_sentence3(p):
-    '''sentence : CALL LPARENT ID RPARENT SEMICOLON'''
+    '''sentence3 : CALL LPARENT ID RPARENT SEMICOLON'''
 
     if p[3] in procs:
         # Aquí puedes llamar a la función correspondiente
@@ -82,7 +90,7 @@ def p_sentence3(p):
 
 
 def p_sentence4(p):
-    '''sentence : PRINTVALUES RPARENT STRING RPARENT'''
+    '''sentence4 : PRINTVALUES RPARENT STRING RPARENT'''
     print(p[3])
 
 
@@ -101,14 +109,14 @@ código_prueba = '''
 // Procedure definitions
 
 Proc @Procedure1 (
-
+    New @variable1,(Num, 15);
     Values(@variable1, 456789);
     PrintValues(@variable1);
 
 );
 
 @Master(
-    New @variable1,(Num, 15);
+    New @variable1(Num, 15);
     PrintValues(@variable1);
     CALL (@Procedure1);
 );
@@ -125,6 +133,7 @@ if lexical_errors:
         print(error)
 
 result = parser.parse(código_prueba, lexer=lexer)
+
 # Print the syntax errors
 if syntax_errors:
     print("Syntax errors:")
