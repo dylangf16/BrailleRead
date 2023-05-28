@@ -32,6 +32,7 @@ def compilar():
 
     update_line_numbers()
 
+
     # Ejecuta el análisis sintáctico del código
     parser.errok()
     resultado_parser = parser.parse(codigo, lexer=lexer)

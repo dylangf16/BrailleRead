@@ -6,53 +6,40 @@ Unused terminals:
     ALTER
     ALTERB
     ARROBA
-    BOOL
+    CALL
     CASE
-    COMA
     COMMENT
     DIFFERENT
     DIV
     ELSE
     EQUAL
-    INTEGER
     ISTRUE
-    LPARENT
     MAQ
     MAQEQUAL
+    MASTER
     MEQ
     MEQEQUAL
     MUL
     PRINTVALUES
     REPEAT
-    RPARENT
     SIGNAL
     SUB
     THEN
-    TYPE
     UNTIL
-    VALUES
     VIEWSIGNAL
     WHEN
     WHILE
 
 Grammar
 
-Rule 0     S' -> program
-Rule 1     program -> variable_definitions procedure_definitions
-Rule 2     variable_definitions -> variable_definitions variable_definition
-Rule 3     variable_definitions -> variable_definition
-Rule 4     variable_definition -> NEW ID SEMICOLON
-Rule 5     variable_definition -> NEW ID COMMA LPAREN type COMMA value RPAREN SEMICOLON
-Rule 6     type -> ID
-Rule 7     value -> ID
-Rule 8     procedure_definitions -> procedure_definitions procedure_definition
-Rule 9     procedure_definitions -> procedure_definition
-Rule 10    procedure_definition -> PROC ID LPAREN statements RPAREN SEMICOLON
-Rule 11    statements -> statements statement
-Rule 12    statements -> statement
-Rule 13    statement -> ID
-Rule 14    statement -> call_statement
-Rule 15    call_statement -> CALL LPAREN ID RPAREN SEMICOLON
+Rule 0     S' -> proc_list
+Rule 1     proc_list -> proc
+Rule 2     proc_list -> proc_list proc
+Rule 3     proc -> PROC ID LPARENT sentence RPARENT SEMICOLON
+Rule 4     sentence -> NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+Rule 5     sentence -> NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+Rule 6     sentence -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+Rule 7     sentence -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
 
 Terminals, with rules where they appear
 
@@ -60,35 +47,37 @@ ADD                  :
 ALTER                : 
 ALTERB               : 
 ARROBA               : 
-BOOL                 : 
+BOOL                 : 5 7
+CALL                 : 
 CASE                 : 
-COMA                 : 
+COMA                 : 4 5 6 7
 COMMENT              : 
 DIFFERENT            : 
 DIV                  : 
 ELSE                 : 
 EQUAL                : 
-ID                   : 4 5 6 7 10 13 15
-INTEGER              : 
+ID                   : 3 4 5 6 7
+INTEGER              : 4 6
 ISTRUE               : 
-LPARENT              : 
+LPARENT              : 3 4 5 6 7
 MAQ                  : 
 MAQEQUAL             : 
+MASTER               : 
 MEQ                  : 
 MEQEQUAL             : 
 MUL                  : 
 NEW                  : 4 5
 PRINTVALUES          : 
-PROC                 : 10
+PROC                 : 3
 REPEAT               : 
-RPARENT              : 
-SEMICOLON            : 4 5 10 15
+RPARENT              : 3 4 5 6 7
+SEMICOLON            : 3 4 5 6 7
 SIGNAL               : 
 SUB                  : 
 THEN                 : 
-TYPE                 : 
+TYPE                 : 4 5
 UNTIL                : 
-VALUES               : 
+VALUES               : 6 7
 VIEWSIGNAL           : 
 WHEN                 : 
 WHILE                : 
@@ -96,18 +85,253 @@ error                :
 
 Nonterminals, with rules where they appear
 
-CALL                 : 15
-COMMA                : 5 5
-LPAREN               : 5 10 15
-RPAREN               : 5 10 15
-call_statement       : 14
-procedure_definition : 8 9
-procedure_definitions : 1 8
-program              : 0
-statement            : 11 12
-statements           : 10 11
-type                 : 5
-value                : 5
-variable_definition  : 2 3
-variable_definitions : 1 2
+proc                 : 1 2
+proc_list            : 2 0
+sentence             : 3
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . proc_list
+    (1) proc_list -> . proc
+    (2) proc_list -> . proc_list proc
+    (3) proc -> . PROC ID LPARENT sentence RPARENT SEMICOLON
+
+    PROC            shift and go to state 3
+
+    proc_list                      shift and go to state 1
+    proc                           shift and go to state 2
+
+state 1
+
+    (0) S' -> proc_list .
+    (2) proc_list -> proc_list . proc
+    (3) proc -> . PROC ID LPARENT sentence RPARENT SEMICOLON
+
+    PROC            shift and go to state 3
+
+    proc                           shift and go to state 4
+
+state 2
+
+    (1) proc_list -> proc .
+
+    PROC            reduce using rule 1 (proc_list -> proc .)
+    $end            reduce using rule 1 (proc_list -> proc .)
+
+
+state 3
+
+    (3) proc -> PROC . ID LPARENT sentence RPARENT SEMICOLON
+
+    ID              shift and go to state 5
+
+
+state 4
+
+    (2) proc_list -> proc_list proc .
+
+    PROC            reduce using rule 2 (proc_list -> proc_list proc .)
+    $end            reduce using rule 2 (proc_list -> proc_list proc .)
+
+
+state 5
+
+    (3) proc -> PROC ID . LPARENT sentence RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 6
+
+
+state 6
+
+    (3) proc -> PROC ID LPARENT . sentence RPARENT SEMICOLON
+    (4) sentence -> . NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (5) sentence -> . NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (6) sentence -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (7) sentence -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+
+    NEW             shift and go to state 8
+    VALUES          shift and go to state 9
+
+    sentence                       shift and go to state 7
+
+state 7
+
+    (3) proc -> PROC ID LPARENT sentence . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 10
+
+
+state 8
+
+    (4) sentence -> NEW . ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (5) sentence -> NEW . ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    ID              shift and go to state 11
+
+
+state 9
+
+    (6) sentence -> VALUES . LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (7) sentence -> VALUES . LPARENT ID COMA BOOL RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 12
+
+
+state 10
+
+    (3) proc -> PROC ID LPARENT sentence RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 13
+
+
+state 11
+
+    (4) sentence -> NEW ID . LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (5) sentence -> NEW ID . LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 14
+
+
+state 12
+
+    (6) sentence -> VALUES LPARENT . ID COMA INTEGER RPARENT SEMICOLON
+    (7) sentence -> VALUES LPARENT . ID COMA BOOL RPARENT SEMICOLON
+
+    ID              shift and go to state 15
+
+
+state 13
+
+    (3) proc -> PROC ID LPARENT sentence RPARENT SEMICOLON .
+
+    PROC            reduce using rule 3 (proc -> PROC ID LPARENT sentence RPARENT SEMICOLON .)
+    $end            reduce using rule 3 (proc -> PROC ID LPARENT sentence RPARENT SEMICOLON .)
+
+
+state 14
+
+    (4) sentence -> NEW ID LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
+    (5) sentence -> NEW ID LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
+
+    TYPE            shift and go to state 16
+
+
+state 15
+
+    (6) sentence -> VALUES LPARENT ID . COMA INTEGER RPARENT SEMICOLON
+    (7) sentence -> VALUES LPARENT ID . COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 17
+
+
+state 16
+
+    (4) sentence -> NEW ID LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
+    (5) sentence -> NEW ID LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 18
+
+
+state 17
+
+    (6) sentence -> VALUES LPARENT ID COMA . INTEGER RPARENT SEMICOLON
+    (7) sentence -> VALUES LPARENT ID COMA . BOOL RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 19
+    BOOL            shift and go to state 20
+
+
+state 18
+
+    (4) sentence -> NEW ID LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
+    (5) sentence -> NEW ID LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 21
+    BOOL            shift and go to state 22
+
+
+state 19
+
+    (6) sentence -> VALUES LPARENT ID COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 23
+
+
+state 20
+
+    (7) sentence -> VALUES LPARENT ID COMA BOOL . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 24
+
+
+state 21
+
+    (4) sentence -> NEW ID LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 25
+
+
+state 22
+
+    (5) sentence -> NEW ID LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 26
+
+
+state 23
+
+    (6) sentence -> VALUES LPARENT ID COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 27
+
+
+state 24
+
+    (7) sentence -> VALUES LPARENT ID COMA BOOL RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 28
+
+
+state 25
+
+    (4) sentence -> NEW ID LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 29
+
+
+state 26
+
+    (5) sentence -> NEW ID LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 30
+
+
+state 27
+
+    (6) sentence -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 6 (sentence -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 28
+
+    (7) sentence -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 7 (sentence -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+
+
+state 29
+
+    (4) sentence -> NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 4 (sentence -> NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 30
+
+    (5) sentence -> NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 5 (sentence -> NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
 

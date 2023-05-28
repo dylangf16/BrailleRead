@@ -1,7 +1,7 @@
 import ply.lex as lex
 
 lexical_errors = []
-syntax_errors = []
+
 
 # List of token names
 tokens = ['ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
