@@ -2,10 +2,9 @@ import ply.lex as lex
 
 lexical_errors = []
 
-
 # List of token names
 tokens = ['ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
-          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE'
+          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING'
           ]
 
 reserved = [
@@ -66,9 +65,11 @@ t_ELSE = r'Else'
 t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
 
+
 def t_MASTER(t):
     r'[@][Master]+'
     return t
+
 
 def t_ID(t):
     r'[@][a-zA-Z0-9_#]+'
@@ -78,22 +79,32 @@ def t_ID(t):
     return t
 
 
+def t_STRING(t):
+    r'"[^"]*"'
+    t.value = t.value[1:-1]
+    return t
+
+
 def t_TYPE(t):
     r'(Num|Bool)'
     return t
+
 
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
+
 def t_COMMENT(t):
     r'//.*'
-    return t
+    pass
+
 
 def t_INTEGER(t):
     r'\d+'
     t.value = int(t.value)
     return t
+
 
 def t_BOOL(t):
     r'(True|False)'
@@ -114,54 +125,24 @@ lexer = lex.lex()
 
 # Test input code
 input_code = '''
-// Sample code to test lexical analysis and parsing
 // Procedure definitions
-@Master
-(
-    @variable1,
-    (Num, 5);
-);
-Proc @Procedure1
-(
-    @variable1,
-    (Num, 5);
-    @variable2,
-    (Bool, True);
+@Master(
+
+New @variable1,(Num, 15);
+PrintValues(@variable1)
+CALL (@Procedure1);
+
 );
 
-// Variable definition outside of any procedure
-New @variable3,
-(Num, 10);
+Proc @Procedur1 (
 
-// Invalid procedure definition
-Proc @Procedure1
-(
-    @variable3,
-    (Num, 15);
-);
-// Invalid variable definition
-New @variable4,
-(Num, 20);
+Values(@variable1, 456789);
+PrintValues(@variable1);
 
-// Invalid syntax
-Proc Procedure3
-(
-    CALL(@Procedure1);
-    CALL(@Procedure2);
-    
-    Else
-);
-
-// Invalid token
-@var5 = 25;
-
-Proc @Procedure4
-(
-    @variable4,
-    (Num, 30)
 );
 '''
 
+'''
 # Run the lexer
 lexer.input(input_code)
 # Print the tokens
@@ -172,3 +153,4 @@ if lexical_errors:
     print("\nLexical errors:")
     for error in lexical_errors:
         print(error)
+'''

@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftADDSUBleftMULDIVADD ALTER ALTERB ARROBA BOOL CALL CASE COMA COMMENT DIFFERENT DIV ELSE EQUAL ID INTEGER ISTRUE LPARENT MAQ MAQEQUAL MASTER MEQ MEQEQUAL MUL NEW PRINTVALUES PROC REPEAT RPARENT SEMICOLON SIGNAL SUB THEN TYPE UNTIL VALUES VIEWSIGNAL WHEN WHILEproc_list : proc\n                 | proc_list procproc : PROC ID LPARENT sentence RPARENT SEMICOLONsentence : NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON\n                | NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLONsentence : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON\n                | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON'
+_lr_signature = 'leftADDSUBleftMULDIVADD ALTER ALTERB ARROBA BOOL CALL CASE COMA COMMENT DIFFERENT DIV ELSE EQUAL ID INTEGER ISTRUE LPARENT MAQ MAQEQUAL MASTER MEQ MEQEQUAL MUL NEW PRINTVALUES PROC REPEAT RPARENT SEMICOLON SIGNAL STRING SUB THEN TYPE UNTIL VALUES VIEWSIGNAL WHEN WHILEprocedure_list : procedure\n                      | procedure_list procedureprocedure : PROC ID LPARENT sentence RPARENT SEMICOLONsentence : NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON\n                | NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLONsentence : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON\n                | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLONsentence : CALL LPARENT ID RPARENT SEMICOLONsentence : PRINTVALUES RPARENT STRING RPARENT'
     
-_lr_action_items = {'PROC':([0,1,2,4,13,],[3,3,-1,-2,-3,]),'$end':([1,2,4,13,],[0,-1,-2,-3,]),'ID':([3,8,12,],[5,11,15,]),'LPARENT':([5,9,11,],[6,12,14,]),'NEW':([6,],[8,]),'VALUES':([6,],[9,]),'RPARENT':([7,19,20,21,22,27,28,29,30,],[10,23,24,25,26,-6,-7,-4,-5,]),'SEMICOLON':([10,23,24,25,26,],[13,27,28,29,30,]),'TYPE':([14,],[16,]),'COMA':([15,16,],[17,18,]),'INTEGER':([17,18,],[19,21,]),'BOOL':([17,18,],[20,22,]),}
+_lr_action_items = {'PROC':([0,1,2,4,17,],[3,3,-1,-2,-3,]),'$end':([1,2,4,17,],[0,-1,-2,-3,]),'ID':([3,8,14,15,],[5,13,19,20,]),'LPARENT':([5,9,10,13,],[6,14,15,18,]),'NEW':([6,],[8,]),'VALUES':([6,],[9,]),'CALL':([6,],[10,]),'PRINTVALUES':([6,],[11,]),'RPARENT':([7,11,20,21,25,27,28,29,30,31,36,37,38,39,],[12,16,24,25,-9,32,33,-8,34,35,-6,-7,-4,-5,]),'SEMICOLON':([12,24,32,33,34,35,],[17,29,36,37,38,39,]),'STRING':([16,],[21,]),'TYPE':([18,],[22,]),'COMA':([19,22,],[23,26,]),'INTEGER':([23,26,],[27,30,]),'BOOL':([23,26,],[28,31,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'proc_list':([0,],[1,]),'proc':([0,1,],[2,4,]),'sentence':([6,],[7,]),}
+_lr_goto_items = {'procedure_list':([0,],[1,]),'procedure':([0,1,],[2,4,]),'sentence':([6,],[7,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,12 +26,14 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> proc_list","S'",1,None,None,None),
-  ('proc_list -> proc','proc_list',1,'p_proc_list','Yacc.py',35),
-  ('proc_list -> proc_list proc','proc_list',2,'p_proc_list','Yacc.py',36),
-  ('proc -> PROC ID LPARENT sentence RPARENT SEMICOLON','proc',6,'p_proc','Yacc.py',41),
-  ('sentence -> NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON','sentence',8,'p_sentence1','Yacc.py',48),
-  ('sentence -> NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON','sentence',8,'p_sentence1','Yacc.py',49),
-  ('sentence -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON','sentence',7,'p_sentence2','Yacc.py',62),
-  ('sentence -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON','sentence',7,'p_sentence2','Yacc.py',63),
+  ("S' -> procedure_list","S'",1,None,None,None),
+  ('procedure_list -> procedure','procedure_list',1,'p_procedure_list','Yacc.py',28),
+  ('procedure_list -> procedure_list procedure','procedure_list',2,'p_procedure_list','Yacc.py',29),
+  ('procedure -> PROC ID LPARENT sentence RPARENT SEMICOLON','procedure',6,'p_procedure','Yacc.py',37),
+  ('sentence -> NEW ID LPARENT TYPE COMA INTEGER RPARENT SEMICOLON','sentence',8,'p_sentence1','Yacc.py',49),
+  ('sentence -> NEW ID LPARENT TYPE COMA BOOL RPARENT SEMICOLON','sentence',8,'p_sentence1','Yacc.py',50),
+  ('sentence -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON','sentence',7,'p_sentence2','Yacc.py',63),
+  ('sentence -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON','sentence',7,'p_sentence2','Yacc.py',64),
+  ('sentence -> CALL LPARENT ID RPARENT SEMICOLON','sentence',5,'p_sentence3','Yacc.py',76),
+  ('sentence -> PRINTVALUES RPARENT STRING RPARENT','sentence',4,'p_sentence4','Yacc.py',85),
 ]
