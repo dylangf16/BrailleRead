@@ -1,4 +1,5 @@
 import ply.lex as lex
+import ply.yacc as yacc
 
 lexical_errors = []
 
@@ -66,6 +67,7 @@ t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
 
 
+
 def t_MASTER(t):
     r'@Master'
     return t
@@ -123,24 +125,6 @@ def t_error(t):
 
 lexer = lex.lex()
 
-# Test input code
-input_code = ''' // Procedure definitions
-@Master(
-
-New @variable1,(Num, 15);
-PrintValues(@variable1)
-CALL (@Procedure1);
-
-);
-
-Proc @Procedur1 (
-
-Values(@variable1, 456789);
-PrintValues(@variable1);
-
-);
-'''
-
 '''
 # Run the lexer
 lexer.input(input_code)
@@ -153,3 +137,5 @@ if lexical_errors:
     for error in lexical_errors:
         print(error)
 '''
+
+

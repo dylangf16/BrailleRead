@@ -1,6 +1,6 @@
 import tkinter as tk
-from Lex import lexer, errores_lexicos
-from Yacc import parser, errores_sintacticos
+from Lex import lexer, lexical_errors
+from Yacc import parser, syntax_errors
 
 # Configuración de la ventana principal
 root = tk.Tk()
@@ -33,13 +33,13 @@ def compilar():
 
     # Muestra los errores léxicos y sintácticos en la pantalla de resultados
     resultado.delete("1.0", "end")
-    if errores_lexicos:
+    if lexical_errors:
         resultado.insert("1.0", "Errores léxicos:\n")
-        for error in errores_lexicos:
+        for error in lexical_errors:
             resultado.insert("end", error + "\n")
-    elif errores_sintacticos:
+    elif syntax_errors:
         resultado.insert("1.0", "Errores sintácticos:\n")
-        for error in errores_sintacticos:
+        for error in syntax_errors:
             resultado.insert("end", error + "\n")
     else:
         resultado.delete("1.0", "end")

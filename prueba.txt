@@ -1,8 +1,12 @@
-// This program calculates the area of a rectangle
+@Master (
+    New @variable1(Num, 15);
+    PrintValues(@variable1);
+    CALL (@Procedure1);
+);
 
-@length = 5
-@width = 10
-@area = @length * @width
+Proc @Procedure1 (
+    New @variable1,(Num, 15);
+    Values(@variable1, 456789);
+    PrintValues(@variable1);
 
-// Display the result
-print("The area of the rectangle is: ", @area)
+);
