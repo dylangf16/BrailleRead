@@ -26,7 +26,8 @@ reserved = [
     'ELSE',
     'PRINTVALUES',
     'CALL',
-    'MASTER'
+    'MASTER',
+    'BREAK'
 ]
 
 tokens = tokens + reserved
@@ -65,6 +66,7 @@ t_THEN = r'Then'
 t_ELSE = r'Else'
 t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
+t_BREAK = r'break'
 
 
 

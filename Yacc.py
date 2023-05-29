@@ -431,6 +431,23 @@ def p_sentence13(p):
     else:
         syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
+
+def p_sentence14(p):
+    '''sentence14 : REPEAT LPARENT sentences BREAK RPARENT SEMICOLON'''
+
+def p_sentence15(p):
+    '''sentence15 : UNTIL LPARENT instructions RPARENT sentences SEMICOLON'''
+    if p[5] == True:
+        return 0
+
+def p_instructions(p):
+    '''instructions : sentence'''
+    p[0] = [p[1]]
+
+def p_instructions_recursive(p):
+    '''instructions : sentence sentences'''
+    p[0] = [p[1]] + p[3]
+
 def p_empty(p):
     '''empty :'''
 
