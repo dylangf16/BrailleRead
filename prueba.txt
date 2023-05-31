@@ -5,8 +5,7 @@
 );
 
 Proc @Procedure1 (
-    New @variable1,(Num, 15);
-    Values(@variable1, 456789);
-    PrintValues(@variable1);
-
+    New @variable2,(Num, 15);
+    Values(@variable2, 456789);
+    PrintValues(@variable2);
 );

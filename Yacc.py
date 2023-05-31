@@ -33,7 +33,7 @@ def p_master_sentences(p):
 
 
 def p_master_sentence(p):
-    '''master_sentence: master_var
+    '''master_sentence : master_var
                 | sentence2
                 | sentence3
                 | sentence4'''
@@ -82,7 +82,18 @@ def p_sentence(p):
     '''sentence : sentence1
                 | sentence2
                 | sentence3
-                | sentence4'''
+                | sentence4
+                | sentence5
+                | sentence6
+                | sentence7
+                | sentence8
+                | sentence9
+                | sentence10
+                | sentence11
+                | sentence12
+                | sentence13
+                | sentence14
+                | sentence15 '''
     p[0] = p[1]
 
 
@@ -102,15 +113,22 @@ def p_sentence1(p):
         syntax_errors.append(
             f'Error en línea {p.lineno}, posición {p.lexpos}, tamaño de nombre de variable no cumple con el estándar')
 
-
 def p_sentence2(p):
     '''sentence2 : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
                  | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON'''
-    if p[3] in variables_locales or p[3] in variables_globales:
+    if p[3] in variables_locales:
         if isinstance(p[5], int) and variables_locales[p[3]][0] == 'Num':
             variables_locales[p[3]][1] = p[5]
         elif isinstance(p[5], bool) and variables_locales[p[3]][0] == 'Bool':
             variables_locales[p[3]][1] = p[5]
+        else:
+            syntax_errors.append(
+                f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+    elif p[3] in variables_globales:
+        if isinstance(p[5], int) and variables_globales[p[3]][0] == 'Num':
+            variables_globales[p[3]][1] = p[5]
+        elif isinstance(p[5], bool) and variables_globales[p[3]][0] == 'Bool':
+            variables_globales[p[3]][1] = p[5]
         else:
             syntax_errors.append(
                 f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
@@ -405,7 +423,7 @@ def p_sentence12(p):
         syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
 def p_sentence13(p):
-    '''sentence7 : ISTRUE LPARENT ID RPARENT SEMICOLON'''
+    '''sentence13 : ISTRUE LPARENT ID RPARENT SEMICOLON'''
 
     for clave, (dato1, dato2) in variables_globales.items():
         if clave == p[1]:
@@ -465,8 +483,10 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
 
+
 with open('prueba.txt', 'r') as file:
     input_text = file.read()
+    
 
 print("Ejecutando análisis")
 lexer.input(input_text)
@@ -487,3 +507,4 @@ if syntax_errors:
         print(error)
 else:
     print(result)
+    
