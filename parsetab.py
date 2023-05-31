@@ -6,7 +6,7 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftADDSUBleftMULDIVADD ALTER ALTERB ARROBA BOOL BREAK CALL CASE COMA COMMENT DIFFERENT DIV ELSE EQUAL ID INTEGER ISTRUE LPARENT MAQ MAQEQUAL MASTER MEQ MEQEQUAL MUL NEW PRINTVALUES PROC REPEAT RPARENT SEMICOLON SIGNAL STRING SUB THEN TYPE UNTIL VALUES VIEWSIGNAL WHEN WHILEmaster_sentences : master_sentence\n                     | master_sentences master_sentencemaster_sentence : master_var\n                | sentence2\n                | sentence3\n                | sentence4master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON\n                    | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLONprocedure : PROC ID LPARENT sentences RPARENT SEMICOLONsentences : sentence\n                 | sentences sentencesentence : sentence1\n                | sentence2\n                | sentence3\n                | sentence4\n                | sentence5\n                | sentence6\n                | sentence7\n                | sentence8\n                | sentence9\n                | sentence10\n                | sentence11\n                | sentence12\n                | sentence13\n                | sentence14\n                | sentence15 sentence1 : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON\n                | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLONsentence2 : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON\n                 | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLONsentence3 : CALL LPARENT ID RPARENT SEMICOLONsentence4 : PRINTVALUES RPARENT STRING RPARENTsentence5 : ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON\n                | ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON\n                | ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON\n                | ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLONsentence6 : ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLONsentence7 : ID MAQ INTEGERsentence8 : ID MEQ INTEGERsentence9 : ID EQUAL INTEGERsentence10 : ID DIFFERENT INTEGERsentence11 : ID MEQEQUAL INTEGERsentence12 : ID MAQEQUAL INTEGERsentence13 : ISTRUE LPARENT ID RPARENT SEMICOLONsentence14 : REPEAT LPARENT sentences BREAK RPARENT SEMICOLONsentence15 : UNTIL LPARENT instructions RPARENT sentences SEMICOLONinstructions : sentenceinstructions : sentence sentencesempty :'
+_lr_signature = 'leftADDSUBleftMULDIVADD ALTER ALTERB ARROBA BOOL BREAK CALL CASE COMA COMMENT DIFFERENT DIV ELSE EQUAL ID INTEGER ISTRUE LPARENT MAQ MAQEQUAL MASTER MEQ MEQEQUAL MUL NEW PRINTVALUES PROC REPEAT RPARENT SEMICOLON SIGNAL STRING SUB THEN TYPE UNTIL VALUES VIEWSIGNAL WHEN WHILEmaster_sentences : master_sentence\n                        | master_sentences master_sentencemaster_sentence : master_var\n                | sentence2\n                | sentence3\n                | sentence4master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON\n                    | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLONprocedure : PROC ID LPARENT sentences RPARENT SEMICOLONsentences : sentence\n                 | sentences sentencesentence : sentence1\n                | sentence2\n                | sentence3\n                | sentence4\n                | sentence5\n                | sentence6\n                | sentence7\n                | sentence8\n                | sentence9\n                | sentence10\n                | sentence11\n                | sentence12\n                | sentence13\n                | sentence14\n                | sentence15 sentence1 : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON\n                | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLONsentence2 : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON\n                 | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLONsentence3 : CALL LPARENT ID RPARENT SEMICOLONsentence4 : PRINTVALUES RPARENT STRING RPARENTsentence5 : ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON\n                | ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON\n                | ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON\n                | ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLONsentence6 : ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLONsentence7 : ID MAQ INTEGERsentence8 : ID MEQ INTEGERsentence9 : ID EQUAL INTEGERsentence10 : ID DIFFERENT INTEGERsentence11 : ID MEQEQUAL INTEGERsentence12 : ID MAQEQUAL INTEGERsentence13 : ISTRUE LPARENT ID RPARENT SEMICOLONsentence14 : REPEAT LPARENT sentences BREAK RPARENT SEMICOLONsentence15 : UNTIL LPARENT instructions RPARENT sentences SEMICOLONinstructions : sentenceinstructions : sentence sentencesempty :'
     
 _lr_action_items = {'NEW':([0,1,2,3,4,5,6,11,23,27,33,34,37,38,],[7,7,-1,-3,-4,-5,-6,-2,-32,-31,-29,-30,-7,-8,]),'VALUES':([0,1,2,3,4,5,6,11,23,27,33,34,37,38,],[8,8,-1,-3,-4,-5,-6,-2,-32,-31,-29,-30,-7,-8,]),'CALL':([0,1,2,3,4,5,6,11,23,27,33,34,37,38,],[9,9,-1,-3,-4,-5,-6,-2,-32,-31,-29,-30,-7,-8,]),'PRINTVALUES':([0,1,2,3,4,5,6,11,23,27,33,34,37,38,],[10,10,-1,-3,-4,-5,-6,-2,-32,-31,-29,-30,-7,-8,]),'$end':([1,2,3,4,5,6,11,23,27,33,34,37,38,],[0,-1,-3,-4,-5,-6,-2,-32,-31,-29,-30,-7,-8,]),'ID':([7,13,14,],[12,17,18,]),'LPARENT':([8,9,16,],[13,14,20,]),'RPARENT':([10,18,19,25,26,31,32,],[15,22,23,29,30,35,36,]),'COMA':([12,17,24,],[16,21,28,]),'STRING':([15,],[19,]),'TYPE':([20,],[24,]),'INTEGER':([21,28,],[25,31,]),'BOOL':([21,28,],[26,32,]),'SEMICOLON':([22,29,30,35,36,],[27,33,34,37,38,]),}
 
@@ -57,23 +57,23 @@ _lr_productions = [
   ('sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON','sentence1',9,'p_sentence1','Yacc.py',103),
   ('sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON','sentence2',7,'p_sentence2','Yacc.py',118),
   ('sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON','sentence2',7,'p_sentence2','Yacc.py',119),
-  ('sentence3 -> CALL LPARENT ID RPARENT SEMICOLON','sentence3',5,'p_sentence3','Yacc.py',133),
-  ('sentence4 -> PRINTVALUES RPARENT STRING RPARENT','sentence4',4,'p_sentence4','Yacc.py',142),
-  ('sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',148),
-  ('sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',149),
-  ('sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',150),
-  ('sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',151),
-  ('sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON','sentence6',9,'p_sentence6','Yacc.py',226),
-  ('sentence7 -> ID MAQ INTEGER','sentence7',3,'p_sentence7','Yacc.py',256),
-  ('sentence8 -> ID MEQ INTEGER','sentence8',3,'p_sentence8','Yacc.py',283),
-  ('sentence9 -> ID EQUAL INTEGER','sentence9',3,'p_sentence9','Yacc.py',310),
-  ('sentence10 -> ID DIFFERENT INTEGER','sentence10',3,'p_sentence10','Yacc.py',338),
-  ('sentence11 -> ID MEQEQUAL INTEGER','sentence11',3,'p_sentence11','Yacc.py',365),
-  ('sentence12 -> ID MAQEQUAL INTEGER','sentence12',3,'p_sentence12','Yacc.py',392),
-  ('sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON','sentence13',5,'p_sentence13','Yacc.py',419),
-  ('sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON','sentence14',6,'p_sentence14','Yacc.py',447),
-  ('sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON','sentence15',6,'p_sentence15','Yacc.py',450),
-  ('instructions -> sentence','instructions',1,'p_instructions','Yacc.py',455),
-  ('instructions -> sentence sentences','instructions',2,'p_instructions_recursive','Yacc.py',459),
-  ('empty -> <empty>','empty',0,'p_empty','Yacc.py',463),
+  ('sentence3 -> CALL LPARENT ID RPARENT SEMICOLON','sentence3',5,'p_sentence3','Yacc.py',141),
+  ('sentence4 -> PRINTVALUES RPARENT STRING RPARENT','sentence4',4,'p_sentence4','Yacc.py',150),
+  ('sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',156),
+  ('sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',157),
+  ('sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',158),
+  ('sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON','sentence5',9,'p_sentence5','Yacc.py',159),
+  ('sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON','sentence6',9,'p_sentence6','Yacc.py',234),
+  ('sentence7 -> ID MAQ INTEGER','sentence7',3,'p_sentence7','Yacc.py',262),
+  ('sentence8 -> ID MEQ INTEGER','sentence8',3,'p_sentence8','Yacc.py',286),
+  ('sentence9 -> ID EQUAL INTEGER','sentence9',3,'p_sentence9','Yacc.py',311),
+  ('sentence10 -> ID DIFFERENT INTEGER','sentence10',3,'p_sentence10','Yacc.py',337),
+  ('sentence11 -> ID MEQEQUAL INTEGER','sentence11',3,'p_sentence11','Yacc.py',362),
+  ('sentence12 -> ID MAQEQUAL INTEGER','sentence12',3,'p_sentence12','Yacc.py',387),
+  ('sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON','sentence13',5,'p_sentence13','Yacc.py',412),
+  ('sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON','sentence14',6,'p_sentence14','Yacc.py',438),
+  ('sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON','sentence15',6,'p_sentence15','Yacc.py',441),
+  ('instructions -> sentence','instructions',1,'p_instructions','Yacc.py',446),
+  ('instructions -> sentence sentences','instructions',2,'p_instructions_recursive','Yacc.py',450),
+  ('empty -> <empty>','empty',0,'p_empty','Yacc.py',454),
 ]

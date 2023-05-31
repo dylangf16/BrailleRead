@@ -4,7 +4,7 @@ import ply.yacc as yacc
 lexical_errors = []
 
 # List of token names
-tokens = ['ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
+tokens = ['MASTER','ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
           'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING'
           ]
 
@@ -26,7 +26,7 @@ reserved = [
     'ELSE',
     'PRINTVALUES',
     'CALL',
-    'MASTER',
+    #'MASTER',
     'BREAK'
 ]
 
@@ -68,12 +68,9 @@ t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
 t_BREAK = r'break'
 
-
-
 def t_MASTER(t):
     r'@Master'
     return t
-
 
 def t_ID(t):
     r'[@][a-zA-Z0-9_#]+'
@@ -81,7 +78,6 @@ def t_ID(t):
         t.value = t.value.upper()
         t.type = t.value
     return t
-
 
 def t_STRING(t):
     r'"[^"]*"'
