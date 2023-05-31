@@ -26,7 +26,6 @@ reserved = [
     'ELSE',
     'PRINTVALUES',
     'CALL',
-    #'MASTER',
     'BREAK'
 ]
 

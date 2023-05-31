@@ -1,5 +1,125 @@
 import ply.yacc as yacc
-from Lex import tokens, lexical_errors, lexer
+import ply.lex as lex
+import sys
+
+#Lex ---------------------
+lexical_errors = []
+
+# List of token names
+tokens = ['MASTER','ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
+          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING'
+          ]
+
+reserved = [
+    'PROC',
+    'NEW',
+    'VALUES',
+    'ALTER',
+    'ALTERB',
+    'SIGNAL',
+    'VIEWSIGNAL',
+    'ISTRUE',
+    'REPEAT',
+    'UNTIL',
+    'WHILE',
+    'CASE',
+    'WHEN',
+    'THEN',
+    'ELSE',
+    'PRINTVALUES',
+    'CALL',
+    'BREAK'
+]
+
+tokens = tokens + reserved
+
+t_ignore = r'[ \t]|\n'
+t_MAQ = r'>'
+t_MEQ = r'<'
+t_EQUAL = r'=='
+t_DIFFERENT = r'<>'
+t_MEQEQUAL = r'<='
+t_MAQEQUAL = r'>='
+t_ARROBA = r'@'
+t_COMA = r','
+t_SEMICOLON = r';'
+t_LPARENT = r'\('
+t_RPARENT = r'\)'
+t_ADD = r'ADD'
+t_SUB = r'SUB'
+t_MUL = r'MUL'
+t_DIV = r'DIV'
+
+t_PROC = r'Proc'
+t_NEW = r'New'
+t_VALUES = r'Values'
+t_ALTER = r'Alter'
+t_ALTERB = r'AlterB'
+t_SIGNAL = r'Signal'
+t_VIEWSIGNAL = r'ViewSignal'
+t_ISTRUE = r'IsTrue'
+t_REPEAT = r'Repeat'
+t_UNTIL = r'Until'
+t_WHILE = r'While'
+t_CASE = r'Case'
+t_WHEN = r'When'
+t_THEN = r'Then'
+t_ELSE = r'Else'
+t_PRINTVALUES = r'PrintValues'
+t_CALL = r'CALL'
+t_BREAK = r'break'
+
+def t_MASTER(t):
+    r'@Master'
+    return t
+
+def t_ID(t):
+    r'[@][a-zA-Z0-9_#]+'
+    if t.value.upper() in reserved:
+        t.value = t.value.upper()
+        t.type = t.value
+    return t
+
+def t_STRING(t):
+    r'"[^"]*"'
+    t.value = t.value[1:-1]
+    return t
+
+
+def t_TYPE(t):
+    r'(Num|Bool)'
+    return t
+
+
+def t_newline(t):
+    r'\n+'
+    t.lexer.lineno += len(t.value)
+
+
+def t_COMMENT(t):
+    r'//.*'
+    pass
+
+
+def t_INTEGER(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
+
+
+def t_BOOL(t):
+    r'(True|False)'
+    if t.value == "True":
+        t.value = True
+    elif t.value == "False":
+        t.value = False
+    return t
+
+
+# Error handling rule
+def t_error(t):
+    lexical_errors.append(f"Invalid token at line {t.lexer.lineno}: {t.value[0]}")
+    t.lexer.skip(1)
 
 # Dictionary of names
 procs = []
@@ -9,20 +129,17 @@ syntax_errors = []
 master = 0
 proc_en_analisis = ''
 
-tokens = ['MASTER', 'ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
-          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING']
-
 precedence = (
     ('left', 'ADD', 'SUB'),
     ('left', 'MUL', 'DIV'),
 )
 
 def p_master(p):
-    global master
     '''master : MASTER LPARENT master_sentences RPARENT SEMICOLON
                 | empty'''
     # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico de @Master
     print("pasó proc_master")
+    global master
     master += 1
     if master != 1:
         syntax_errors.append(f'Debe existir solamente un @Master, hay otra declaración en la línea: {p.lineno}')
@@ -34,13 +151,8 @@ def p_master_sentences(p):
     '''master_sentences : master_sentence
                         | master_sentences master_sentence'''
 
-
 def p_master_sentence(p):
-    '''master_sentence : master_var
-                | sentence2
-                | sentence3
-                | sentence4'''
-
+    '''master_sentence : master_var'''
 
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
@@ -56,7 +168,6 @@ def p_master_var(p):
     else:
         syntax_errors.append(
             f'Error en línea {p.lineno}, posición {p.lexpos}, tamaño de nombre de variable no cumple con el estándar')
-
 
 def p_procedure(p):
     '''procedure : PROC ID LPARENT sentences RPARENT SEMICOLON'''
@@ -458,7 +569,6 @@ def p_empty(p):
 
     p[0] = None
 
-
 # Error handling rule
 def p_error(p):
     if p:
@@ -472,6 +582,7 @@ with open('prueba.txt', 'r') as file:
 
 
 print("Ejecutando análisis")
+lexer = lex.lex()
 lexer.input(input_text)
 for token in lexer:
     print(token)
@@ -484,6 +595,7 @@ if lexical_errors:
 # Build the parser
 parser = yacc.yacc()
 
+
 result = parser.parse(input_text)
 
 # Print the syntax errors
@@ -492,5 +604,5 @@ if syntax_errors:
     for error in syntax_errors:
         print(error)
 else:
-    print("result")
+    print(result)
     

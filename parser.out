@@ -3,122 +3,329 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Unused terminals:
 
     ARROBA
+    CASE
     COMMENT
-    MASTER
+    ELSE
+    SIGNAL
+    THEN
+    VIEWSIGNAL
+    WHEN
+    WHILE
 
 Grammar
 
-Rule 0     S' -> master_sentences
-Rule 1     master_sentences -> master_sentence
-Rule 2     master_sentences -> master_sentences master_sentence
-Rule 3     master_sentence -> master_var
-Rule 4     master_sentence -> sentence2
-Rule 5     master_sentence -> sentence3
-Rule 6     master_sentence -> sentence4
-Rule 7     master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-Rule 8     master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
-Rule 9     procedure -> PROC ID LPARENT sentences RPARENT SEMICOLON
-Rule 10    sentences -> sentence
-Rule 11    sentences -> sentences sentence
-Rule 12    sentence -> sentence1
-Rule 13    sentence -> sentence2
-Rule 14    sentence -> sentence3
-Rule 15    sentence -> sentence4
-Rule 16    sentence -> sentence5
-Rule 17    sentence -> sentence6
-Rule 18    sentence -> sentence7
-Rule 19    sentence -> sentence8
-Rule 20    sentence -> sentence9
-Rule 21    sentence -> sentence10
-Rule 22    sentence -> sentence11
-Rule 23    sentence -> sentence12
-Rule 24    sentence -> sentence13
-Rule 25    sentence -> sentence14
-Rule 26    sentence -> sentence15
-Rule 27    sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-Rule 28    sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
-Rule 29    sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
-Rule 30    sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-Rule 31    sentence3 -> CALL LPARENT ID RPARENT SEMICOLON
-Rule 32    sentence4 -> PRINTVALUES RPARENT STRING RPARENT
-Rule 33    sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
-Rule 34    sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
-Rule 35    sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
-Rule 36    sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
-Rule 37    sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
-Rule 38    sentence7 -> ID MAQ INTEGER
-Rule 39    sentence8 -> ID MEQ INTEGER
-Rule 40    sentence9 -> ID EQUAL INTEGER
-Rule 41    sentence10 -> ID DIFFERENT INTEGER
-Rule 42    sentence11 -> ID MEQEQUAL INTEGER
-Rule 43    sentence12 -> ID MAQEQUAL INTEGER
-Rule 44    sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON
-Rule 45    sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
-Rule 46    sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON
-Rule 47    instructions -> sentence
-Rule 48    instructions -> sentence sentences
-Rule 49    empty -> <empty>
+Rule 0     S' -> master
+Rule 1     master -> MASTER LPARENT master_sentences RPARENT SEMICOLON
+Rule 2     master -> empty
+Rule 3     master_sentences -> master_sentence
+Rule 4     master_sentences -> master_sentences master_sentence
+Rule 5     master_sentence -> master_var
+Rule 6     master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+Rule 7     master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+Rule 8     procedure -> PROC ID LPARENT sentences RPARENT SEMICOLON
+Rule 9     sentences -> sentence
+Rule 10    sentences -> sentences sentence
+Rule 11    sentence -> sentence1
+Rule 12    sentence -> sentence2
+Rule 13    sentence -> sentence3
+Rule 14    sentence -> sentence4
+Rule 15    sentence -> sentence5
+Rule 16    sentence -> sentence6
+Rule 17    sentence -> sentence7
+Rule 18    sentence -> sentence8
+Rule 19    sentence -> sentence9
+Rule 20    sentence -> sentence10
+Rule 21    sentence -> sentence11
+Rule 22    sentence -> sentence12
+Rule 23    sentence -> sentence13
+Rule 24    sentence -> sentence14
+Rule 25    sentence -> sentence15
+Rule 26    sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+Rule 27    sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+Rule 28    sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+Rule 29    sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+Rule 30    sentence3 -> CALL LPARENT ID RPARENT SEMICOLON
+Rule 31    sentence4 -> PRINTVALUES RPARENT STRING RPARENT
+Rule 32    sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+Rule 33    sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+Rule 34    sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+Rule 35    sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+Rule 36    sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+Rule 37    sentence7 -> ID MAQ INTEGER
+Rule 38    sentence8 -> ID MEQ INTEGER
+Rule 39    sentence9 -> ID EQUAL INTEGER
+Rule 40    sentence10 -> ID DIFFERENT INTEGER
+Rule 41    sentence11 -> ID MEQEQUAL INTEGER
+Rule 42    sentence12 -> ID MAQEQUAL INTEGER
+Rule 43    sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON
+Rule 44    sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+Rule 45    sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+Rule 46    instructions -> sentence
+Rule 47    instructions -> sentence sentences
+Rule 48    empty -> <empty>
 
 Terminals, with rules where they appear
 
-ADD                  : 33 37
+ADD                  : 32 36
+ALTER                : 32 33 34 35
+ALTERB               : 36
 ARROBA               : 
-BOOL                 : 8 28 30
-COMA                 : 7 7 8 8 27 27 28 28 29 30 33 33 34 34 35 35 36 36 37 37
+BOOL                 : 7 27 29
+BREAK                : 44
+CALL                 : 30
+CASE                 : 
+COMA                 : 6 6 7 7 26 26 27 27 28 29 32 32 33 33 34 34 35 35 36 36
 COMMENT              : 
-DIFFERENT            : 41
-DIV                  : 36
-EQUAL                : 40
-ID                   : 7 8 9 27 28 29 30 31 33 34 35 36 37 38 39 40 41 42 43 44
-INTEGER              : 7 27 29 33 34 35 36 37 38 39 40 41 42 43
-LPARENT              : 7 8 9 27 28 29 30 31 33 34 35 36 37 44 45 46
-MAQ                  : 38
-MAQEQUAL             : 43
-MASTER               : 
-MEQ                  : 39
-MEQEQUAL             : 42
-MUL                  : 35
-RPARENT              : 7 8 9 27 28 29 30 31 32 32 33 34 35 36 37 44 45 46
-SEMICOLON            : 7 8 9 27 28 29 30 31 33 34 35 36 37 44 45 46
-STRING               : 32
-SUB                  : 34
-TYPE                 : 7 8 27 28
+DIFFERENT            : 40
+DIV                  : 35
+ELSE                 : 
+EQUAL                : 39
+ID                   : 6 7 8 26 27 28 29 30 32 33 34 35 36 37 38 39 40 41 42 43
+INTEGER              : 6 26 28 32 33 34 35 36 37 38 39 40 41 42
+ISTRUE               : 43
+LPARENT              : 1 6 7 8 26 27 28 29 30 32 33 34 35 36 43 44 45
+MAQ                  : 37
+MAQEQUAL             : 42
+MASTER               : 1
+MEQ                  : 38
+MEQEQUAL             : 41
+MUL                  : 34
+NEW                  : 6 7 26 27
+PRINTVALUES          : 31
+PROC                 : 8
+REPEAT               : 44
+RPARENT              : 1 6 7 8 26 27 28 29 30 31 31 32 33 34 35 36 43 44 45
+SEMICOLON            : 1 6 7 8 26 27 28 29 30 32 33 34 35 36 43 44 45
+SIGNAL               : 
+STRING               : 31
+SUB                  : 33
+THEN                 : 
+TYPE                 : 6 7 26 27
+UNTIL                : 45
+VALUES               : 28 29
+VIEWSIGNAL           : 
+WHEN                 : 
+WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-ALTER                : 33 34 35 36
-ALTERB               : 37
-BREAK                : 45
-CALL                 : 31
-ISTRUE               : 44
-NEW                  : 7 8 27 28
-PRINTVALUES          : 32
-PROC                 : 9
-REPEAT               : 45
-UNTIL                : 46
-VALUES               : 29 30
-empty                : 
-instructions         : 46
-master_sentence      : 1 2
-master_sentences     : 2 0
-master_var           : 3
+empty                : 2
+instructions         : 45
+master               : 0
+master_sentence      : 3 4
+master_sentences     : 1 4
+master_var           : 5
 procedure            : 
-sentence             : 10 11 47 48
-sentence1            : 12
-sentence10           : 21
-sentence11           : 22
-sentence12           : 23
-sentence13           : 24
-sentence14           : 25
-sentence15           : 26
-sentence2            : 4 13
-sentence3            : 5 14
-sentence4            : 6 15
-sentence5            : 16
-sentence6            : 17
-sentence7            : 18
-sentence8            : 19
-sentence9            : 20
-sentences            : 9 11 45 46 48
+sentence             : 9 10 46 47
+sentence1            : 11
+sentence10           : 20
+sentence11           : 21
+sentence12           : 22
+sentence13           : 23
+sentence14           : 24
+sentence15           : 25
+sentence2            : 12
+sentence3            : 13
+sentence4            : 14
+sentence5            : 15
+sentence6            : 16
+sentence7            : 17
+sentence8            : 18
+sentence9            : 19
+sentences            : 8 10 44 45 47
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . master
+    (1) master -> . MASTER LPARENT master_sentences RPARENT SEMICOLON
+    (2) master -> . empty
+    (48) empty -> .
+
+    MASTER          shift and go to state 2
+    $end            reduce using rule 48 (empty -> .)
+
+    master                         shift and go to state 1
+    empty                          shift and go to state 3
+
+state 1
+
+    (0) S' -> master .
+
+
+
+state 2
+
+    (1) master -> MASTER . LPARENT master_sentences RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 4
+
+
+state 3
+
+    (2) master -> empty .
+
+    $end            reduce using rule 2 (master -> empty .)
+
+
+state 4
+
+    (1) master -> MASTER LPARENT . master_sentences RPARENT SEMICOLON
+    (3) master_sentences -> . master_sentence
+    (4) master_sentences -> . master_sentences master_sentence
+    (5) master_sentence -> . master_var
+    (6) master_var -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (7) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    NEW             shift and go to state 8
+
+    master_sentences               shift and go to state 5
+    master_sentence                shift and go to state 6
+    master_var                     shift and go to state 7
+
+state 5
+
+    (1) master -> MASTER LPARENT master_sentences . RPARENT SEMICOLON
+    (4) master_sentences -> master_sentences . master_sentence
+    (5) master_sentence -> . master_var
+    (6) master_var -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (7) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 9
+    NEW             shift and go to state 8
+
+    master_sentence                shift and go to state 10
+    master_var                     shift and go to state 7
+
+state 6
+
+    (3) master_sentences -> master_sentence .
+
+    RPARENT         reduce using rule 3 (master_sentences -> master_sentence .)
+    NEW             reduce using rule 3 (master_sentences -> master_sentence .)
+
+
+state 7
+
+    (5) master_sentence -> master_var .
+
+    RPARENT         reduce using rule 5 (master_sentence -> master_var .)
+    NEW             reduce using rule 5 (master_sentence -> master_var .)
+
+
+state 8
+
+    (6) master_var -> NEW . ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (7) master_var -> NEW . ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    ID              shift and go to state 11
+
+
+state 9
+
+    (1) master -> MASTER LPARENT master_sentences RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 12
+
+
+state 10
+
+    (4) master_sentences -> master_sentences master_sentence .
+
+    RPARENT         reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    NEW             reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+
+
+state 11
+
+    (6) master_var -> NEW ID . COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (7) master_var -> NEW ID . COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 13
+
+
+state 12
+
+    (1) master -> MASTER LPARENT master_sentences RPARENT SEMICOLON .
+
+    $end            reduce using rule 1 (master -> MASTER LPARENT master_sentences RPARENT SEMICOLON .)
+
+
+state 13
+
+    (6) master_var -> NEW ID COMA . LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (7) master_var -> NEW ID COMA . LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 14
+
+
+state 14
+
+    (6) master_var -> NEW ID COMA LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
+    (7) master_var -> NEW ID COMA LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
+
+    TYPE            shift and go to state 15
+
+
+state 15
+
+    (6) master_var -> NEW ID COMA LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
+    (7) master_var -> NEW ID COMA LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 16
+
+
+state 16
+
+    (6) master_var -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
+    (7) master_var -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 17
+    BOOL            shift and go to state 18
+
+
+state 17
+
+    (6) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 19
+
+
+state 18
+
+    (7) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 20
+
+
+state 19
+
+    (6) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 21
+
+
+state 20
+
+    (7) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 22
+
+
+state 21
+
+    (6) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 6 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 6 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 22
+
+    (7) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 7 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    NEW             reduce using rule 7 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
 
