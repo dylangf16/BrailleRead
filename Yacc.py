@@ -143,20 +143,42 @@ def p_master(p):
     master += 1
     if master != 1:
         syntax_errors.append(f'Debe existir solamente un @Master, hay otra declaración en la línea: {p.lineno}')
-    p[0] = ('master', p[3])
+    #p[0] = ('master', p[3])
 
 
 # Esto es para lidiar con las variables globales
 def p_master_sentences(p):
     '''master_sentences : master_sentence
                         | master_sentences master_sentence'''
+    if len(p) == 2:
+        p[0] = [p[1]]  # Create a list with a single item
+    else:
+        p[0] = p[1] + [p[2]]  # Append the new item to the existing list
 
 def p_master_sentence(p):
-    '''master_sentence : master_var'''
+    '''master_sentence : master_var
+                       | sentence1
+                       | sentence2
+                       | sentence3
+                       | sentence4
+                       | sentence5
+                       | sentence6
+                       | sentence7
+                       | sentence8
+                       | sentence9
+                       | sentence10
+                       | sentence11
+                       | sentence12
+                       | sentence13
+                       | sentence14
+                       | sentence15
+                       | empty'''
+    p[0] = p[1]  # Assign the value of the matched alternative to p[0]
 
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                     | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
+    print("Paso variable global")
     if len(p[2]) > 2 and len(p[2]) < 12:
         if p[5] == 'Num' and isinstance(p[7], int):
             variables_globales[p[2]] = [p[5], p[7]]
@@ -250,7 +272,6 @@ def p_sentence2(p):
     else:
         syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
-
 def p_sentence3(p):
     '''sentence3 : CALL LPARENT ID RPARENT SEMICOLON'''
 
@@ -261,8 +282,13 @@ def p_sentence3(p):
 
 
 def p_sentence4(p):
-    '''sentence4 : PRINTVALUES RPARENT STRING RPARENT'''
-    print(p[3])
+    '''sentence4 : PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+                     | PRINTVALUES LPARENT ID RPARENT SEMICOLON'''
+    if isinstance(p[3], str):
+        print(p[3])
+    else:
+        print(variables_globales[p[3]])
+
 
 
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]

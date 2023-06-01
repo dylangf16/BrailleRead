@@ -20,89 +20,106 @@ Rule 2     master -> empty
 Rule 3     master_sentences -> master_sentence
 Rule 4     master_sentences -> master_sentences master_sentence
 Rule 5     master_sentence -> master_var
-Rule 6     master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-Rule 7     master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
-Rule 8     procedure -> PROC ID LPARENT sentences RPARENT SEMICOLON
-Rule 9     sentences -> sentence
-Rule 10    sentences -> sentences sentence
-Rule 11    sentence -> sentence1
-Rule 12    sentence -> sentence2
-Rule 13    sentence -> sentence3
-Rule 14    sentence -> sentence4
-Rule 15    sentence -> sentence5
-Rule 16    sentence -> sentence6
-Rule 17    sentence -> sentence7
-Rule 18    sentence -> sentence8
-Rule 19    sentence -> sentence9
-Rule 20    sentence -> sentence10
-Rule 21    sentence -> sentence11
-Rule 22    sentence -> sentence12
-Rule 23    sentence -> sentence13
-Rule 24    sentence -> sentence14
-Rule 25    sentence -> sentence15
-Rule 26    sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-Rule 27    sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
-Rule 28    sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
-Rule 29    sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-Rule 30    sentence3 -> CALL LPARENT ID RPARENT SEMICOLON
-Rule 31    sentence4 -> PRINTVALUES RPARENT STRING RPARENT
-Rule 32    sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
-Rule 33    sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
-Rule 34    sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
-Rule 35    sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
-Rule 36    sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
-Rule 37    sentence7 -> ID MAQ INTEGER
-Rule 38    sentence8 -> ID MEQ INTEGER
-Rule 39    sentence9 -> ID EQUAL INTEGER
-Rule 40    sentence10 -> ID DIFFERENT INTEGER
-Rule 41    sentence11 -> ID MEQEQUAL INTEGER
-Rule 42    sentence12 -> ID MAQEQUAL INTEGER
-Rule 43    sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON
-Rule 44    sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
-Rule 45    sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON
-Rule 46    instructions -> sentence
-Rule 47    instructions -> sentence sentences
-Rule 48    empty -> <empty>
+Rule 6     master_sentence -> sentence1
+Rule 7     master_sentence -> sentence2
+Rule 8     master_sentence -> sentence3
+Rule 9     master_sentence -> sentence4
+Rule 10    master_sentence -> sentence5
+Rule 11    master_sentence -> sentence6
+Rule 12    master_sentence -> sentence7
+Rule 13    master_sentence -> sentence8
+Rule 14    master_sentence -> sentence9
+Rule 15    master_sentence -> sentence10
+Rule 16    master_sentence -> sentence11
+Rule 17    master_sentence -> sentence12
+Rule 18    master_sentence -> sentence13
+Rule 19    master_sentence -> sentence14
+Rule 20    master_sentence -> sentence15
+Rule 21    master_sentence -> empty
+Rule 22    master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+Rule 23    master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+Rule 24    procedure -> PROC ID LPARENT sentences RPARENT SEMICOLON
+Rule 25    sentences -> sentence
+Rule 26    sentences -> sentences sentence
+Rule 27    sentence -> sentence1
+Rule 28    sentence -> sentence2
+Rule 29    sentence -> sentence3
+Rule 30    sentence -> sentence4
+Rule 31    sentence -> sentence5
+Rule 32    sentence -> sentence6
+Rule 33    sentence -> sentence7
+Rule 34    sentence -> sentence8
+Rule 35    sentence -> sentence9
+Rule 36    sentence -> sentence10
+Rule 37    sentence -> sentence11
+Rule 38    sentence -> sentence12
+Rule 39    sentence -> sentence13
+Rule 40    sentence -> sentence14
+Rule 41    sentence -> sentence15
+Rule 42    sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+Rule 43    sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+Rule 44    sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+Rule 45    sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+Rule 46    sentence3 -> CALL LPARENT ID RPARENT SEMICOLON
+Rule 47    sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+Rule 48    sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON
+Rule 49    sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+Rule 50    sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+Rule 51    sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+Rule 52    sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+Rule 53    sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+Rule 54    sentence7 -> ID MAQ INTEGER
+Rule 55    sentence8 -> ID MEQ INTEGER
+Rule 56    sentence9 -> ID EQUAL INTEGER
+Rule 57    sentence10 -> ID DIFFERENT INTEGER
+Rule 58    sentence11 -> ID MEQEQUAL INTEGER
+Rule 59    sentence12 -> ID MAQEQUAL INTEGER
+Rule 60    sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON
+Rule 61    sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+Rule 62    sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+Rule 63    instructions -> sentence
+Rule 64    instructions -> sentence sentences
+Rule 65    empty -> <empty>
 
 Terminals, with rules where they appear
 
-ADD                  : 32 36
-ALTER                : 32 33 34 35
-ALTERB               : 36
+ADD                  : 49 53
+ALTER                : 49 50 51 52
+ALTERB               : 53
 ARROBA               : 
-BOOL                 : 7 27 29
-BREAK                : 44
-CALL                 : 30
+BOOL                 : 23 43 45
+BREAK                : 61
+CALL                 : 46
 CASE                 : 
-COMA                 : 6 6 7 7 26 26 27 27 28 29 32 32 33 33 34 34 35 35 36 36
+COMA                 : 22 22 23 23 42 42 43 43 44 45 49 49 50 50 51 51 52 52 53 53
 COMMENT              : 
-DIFFERENT            : 40
-DIV                  : 35
+DIFFERENT            : 57
+DIV                  : 52
 ELSE                 : 
-EQUAL                : 39
-ID                   : 6 7 8 26 27 28 29 30 32 33 34 35 36 37 38 39 40 41 42 43
-INTEGER              : 6 26 28 32 33 34 35 36 37 38 39 40 41 42
-ISTRUE               : 43
-LPARENT              : 1 6 7 8 26 27 28 29 30 32 33 34 35 36 43 44 45
-MAQ                  : 37
-MAQEQUAL             : 42
+EQUAL                : 56
+ID                   : 22 23 24 42 43 44 45 46 48 49 50 51 52 53 54 55 56 57 58 59 60
+INTEGER              : 22 42 44 49 50 51 52 53 54 55 56 57 58 59
+ISTRUE               : 60
+LPARENT              : 1 22 23 24 42 43 44 45 46 47 48 49 50 51 52 53 60 61 62
+MAQ                  : 54
+MAQEQUAL             : 59
 MASTER               : 1
-MEQ                  : 38
-MEQEQUAL             : 41
-MUL                  : 34
-NEW                  : 6 7 26 27
-PRINTVALUES          : 31
-PROC                 : 8
-REPEAT               : 44
-RPARENT              : 1 6 7 8 26 27 28 29 30 31 31 32 33 34 35 36 43 44 45
-SEMICOLON            : 1 6 7 8 26 27 28 29 30 32 33 34 35 36 43 44 45
+MEQ                  : 55
+MEQEQUAL             : 58
+MUL                  : 51
+NEW                  : 22 23 42 43
+PRINTVALUES          : 47 48
+PROC                 : 24
+REPEAT               : 61
+RPARENT              : 1 22 23 24 42 43 44 45 46 47 48 49 50 51 52 53 60 61 62
+SEMICOLON            : 1 22 23 24 42 43 44 45 46 47 48 49 50 51 52 53 60 61 62
 SIGNAL               : 
-STRING               : 31
-SUB                  : 33
+STRING               : 47
+SUB                  : 50
 THEN                 : 
-TYPE                 : 6 7 26 27
-UNTIL                : 45
-VALUES               : 28 29
+TYPE                 : 22 23 42 43
+UNTIL                : 62
+VALUES               : 44 45
 VIEWSIGNAL           : 
 WHEN                 : 
 WHILE                : 
@@ -110,30 +127,30 @@ error                :
 
 Nonterminals, with rules where they appear
 
-empty                : 2
-instructions         : 45
+empty                : 2 21
+instructions         : 62
 master               : 0
 master_sentence      : 3 4
 master_sentences     : 1 4
 master_var           : 5
 procedure            : 
-sentence             : 9 10 46 47
-sentence1            : 11
-sentence10           : 20
-sentence11           : 21
-sentence12           : 22
-sentence13           : 23
-sentence14           : 24
-sentence15           : 25
-sentence2            : 12
-sentence3            : 13
-sentence4            : 14
-sentence5            : 15
-sentence6            : 16
-sentence7            : 17
-sentence8            : 18
-sentence9            : 19
-sentences            : 8 10 44 45 47
+sentence             : 25 26 63 64
+sentence1            : 6 27
+sentence10           : 15 36
+sentence11           : 16 37
+sentence12           : 17 38
+sentence13           : 18 39
+sentence14           : 19 40
+sentence15           : 20 41
+sentence2            : 7 28
+sentence3            : 8 29
+sentence4            : 9 30
+sentence5            : 10 31
+sentence6            : 11 32
+sentence7            : 12 33
+sentence8            : 13 34
+sentence9            : 14 35
+sentences            : 24 26 61 62 64
 
 Parsing method: LALR
 
@@ -142,10 +159,10 @@ state 0
     (0) S' -> . master
     (1) master -> . MASTER LPARENT master_sentences RPARENT SEMICOLON
     (2) master -> . empty
-    (48) empty -> .
+    (65) empty -> .
 
     MASTER          shift and go to state 2
-    $end            reduce using rule 48 (empty -> .)
+    $end            reduce using rule 65 (empty -> .)
 
     master                         shift and go to state 1
     empty                          shift and go to state 3
@@ -176,28 +193,199 @@ state 4
     (3) master_sentences -> . master_sentence
     (4) master_sentences -> . master_sentences master_sentence
     (5) master_sentence -> . master_var
-    (6) master_var -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-    (7) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (6) master_sentence -> . sentence1
+    (7) master_sentence -> . sentence2
+    (8) master_sentence -> . sentence3
+    (9) master_sentence -> . sentence4
+    (10) master_sentence -> . sentence5
+    (11) master_sentence -> . sentence6
+    (12) master_sentence -> . sentence7
+    (13) master_sentence -> . sentence8
+    (14) master_sentence -> . sentence9
+    (15) master_sentence -> . sentence10
+    (16) master_sentence -> . sentence11
+    (17) master_sentence -> . sentence12
+    (18) master_sentence -> . sentence13
+    (19) master_sentence -> . sentence14
+    (20) master_sentence -> . sentence15
+    (21) master_sentence -> . empty
+    (22) master_var -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (23) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+    (65) empty -> .
 
-    NEW             shift and go to state 8
+  ! shift/reduce conflict for NEW resolved as shift
+  ! shift/reduce conflict for VALUES resolved as shift
+  ! shift/reduce conflict for CALL resolved as shift
+  ! shift/reduce conflict for PRINTVALUES resolved as shift
+  ! shift/reduce conflict for ALTER resolved as shift
+  ! shift/reduce conflict for ALTERB resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for ISTRUE resolved as shift
+  ! shift/reduce conflict for REPEAT resolved as shift
+  ! shift/reduce conflict for UNTIL resolved as shift
+    NEW             shift and go to state 24
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+    RPARENT         reduce using rule 65 (empty -> .)
+
+  ! NEW             [ reduce using rule 65 (empty -> .) ]
+  ! VALUES          [ reduce using rule 65 (empty -> .) ]
+  ! CALL            [ reduce using rule 65 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 65 (empty -> .) ]
+  ! ALTER           [ reduce using rule 65 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 65 (empty -> .) ]
+  ! ID              [ reduce using rule 65 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 65 (empty -> .) ]
+  ! REPEAT          [ reduce using rule 65 (empty -> .) ]
+  ! UNTIL           [ reduce using rule 65 (empty -> .) ]
 
     master_sentences               shift and go to state 5
     master_sentence                shift and go to state 6
     master_var                     shift and go to state 7
+    sentence1                      shift and go to state 8
+    sentence2                      shift and go to state 9
+    sentence3                      shift and go to state 10
+    sentence4                      shift and go to state 11
+    sentence5                      shift and go to state 12
+    sentence6                      shift and go to state 13
+    sentence7                      shift and go to state 14
+    sentence8                      shift and go to state 15
+    sentence9                      shift and go to state 16
+    sentence10                     shift and go to state 17
+    sentence11                     shift and go to state 18
+    sentence12                     shift and go to state 19
+    sentence13                     shift and go to state 20
+    sentence14                     shift and go to state 21
+    sentence15                     shift and go to state 22
+    empty                          shift and go to state 23
 
 state 5
 
     (1) master -> MASTER LPARENT master_sentences . RPARENT SEMICOLON
     (4) master_sentences -> master_sentences . master_sentence
     (5) master_sentence -> . master_var
-    (6) master_var -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-    (7) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (6) master_sentence -> . sentence1
+    (7) master_sentence -> . sentence2
+    (8) master_sentence -> . sentence3
+    (9) master_sentence -> . sentence4
+    (10) master_sentence -> . sentence5
+    (11) master_sentence -> . sentence6
+    (12) master_sentence -> . sentence7
+    (13) master_sentence -> . sentence8
+    (14) master_sentence -> . sentence9
+    (15) master_sentence -> . sentence10
+    (16) master_sentence -> . sentence11
+    (17) master_sentence -> . sentence12
+    (18) master_sentence -> . sentence13
+    (19) master_sentence -> . sentence14
+    (20) master_sentence -> . sentence15
+    (21) master_sentence -> . empty
+    (22) master_var -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (23) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+    (65) empty -> .
 
-    RPARENT         shift and go to state 9
-    NEW             shift and go to state 8
+  ! shift/reduce conflict for RPARENT resolved as shift
+  ! shift/reduce conflict for NEW resolved as shift
+  ! shift/reduce conflict for VALUES resolved as shift
+  ! shift/reduce conflict for CALL resolved as shift
+  ! shift/reduce conflict for PRINTVALUES resolved as shift
+  ! shift/reduce conflict for ALTER resolved as shift
+  ! shift/reduce conflict for ALTERB resolved as shift
+  ! shift/reduce conflict for ID resolved as shift
+  ! shift/reduce conflict for ISTRUE resolved as shift
+  ! shift/reduce conflict for REPEAT resolved as shift
+  ! shift/reduce conflict for UNTIL resolved as shift
+    RPARENT         shift and go to state 34
+    NEW             shift and go to state 24
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
 
-    master_sentence                shift and go to state 10
+  ! RPARENT         [ reduce using rule 65 (empty -> .) ]
+  ! NEW             [ reduce using rule 65 (empty -> .) ]
+  ! VALUES          [ reduce using rule 65 (empty -> .) ]
+  ! CALL            [ reduce using rule 65 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 65 (empty -> .) ]
+  ! ALTER           [ reduce using rule 65 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 65 (empty -> .) ]
+  ! ID              [ reduce using rule 65 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 65 (empty -> .) ]
+  ! REPEAT          [ reduce using rule 65 (empty -> .) ]
+  ! UNTIL           [ reduce using rule 65 (empty -> .) ]
+
+    master_sentence                shift and go to state 35
     master_var                     shift and go to state 7
+    sentence1                      shift and go to state 8
+    sentence2                      shift and go to state 9
+    sentence3                      shift and go to state 10
+    sentence4                      shift and go to state 11
+    sentence5                      shift and go to state 12
+    sentence6                      shift and go to state 13
+    sentence7                      shift and go to state 14
+    sentence8                      shift and go to state 15
+    sentence9                      shift and go to state 16
+    sentence10                     shift and go to state 17
+    sentence11                     shift and go to state 18
+    sentence12                     shift and go to state 19
+    sentence13                     shift and go to state 20
+    sentence14                     shift and go to state 21
+    sentence15                     shift and go to state 22
+    empty                          shift and go to state 23
 
 state 6
 
@@ -205,6 +393,15 @@ state 6
 
     RPARENT         reduce using rule 3 (master_sentences -> master_sentence .)
     NEW             reduce using rule 3 (master_sentences -> master_sentence .)
+    VALUES          reduce using rule 3 (master_sentences -> master_sentence .)
+    CALL            reduce using rule 3 (master_sentences -> master_sentence .)
+    PRINTVALUES     reduce using rule 3 (master_sentences -> master_sentence .)
+    ALTER           reduce using rule 3 (master_sentences -> master_sentence .)
+    ALTERB          reduce using rule 3 (master_sentences -> master_sentence .)
+    ID              reduce using rule 3 (master_sentences -> master_sentence .)
+    ISTRUE          reduce using rule 3 (master_sentences -> master_sentence .)
+    REPEAT          reduce using rule 3 (master_sentences -> master_sentence .)
+    UNTIL           reduce using rule 3 (master_sentences -> master_sentence .)
 
 
 state 7
@@ -213,119 +410,2281 @@ state 7
 
     RPARENT         reduce using rule 5 (master_sentence -> master_var .)
     NEW             reduce using rule 5 (master_sentence -> master_var .)
+    VALUES          reduce using rule 5 (master_sentence -> master_var .)
+    CALL            reduce using rule 5 (master_sentence -> master_var .)
+    PRINTVALUES     reduce using rule 5 (master_sentence -> master_var .)
+    ALTER           reduce using rule 5 (master_sentence -> master_var .)
+    ALTERB          reduce using rule 5 (master_sentence -> master_var .)
+    ID              reduce using rule 5 (master_sentence -> master_var .)
+    ISTRUE          reduce using rule 5 (master_sentence -> master_var .)
+    REPEAT          reduce using rule 5 (master_sentence -> master_var .)
+    UNTIL           reduce using rule 5 (master_sentence -> master_var .)
 
 
 state 8
 
-    (6) master_var -> NEW . ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-    (7) master_var -> NEW . ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (6) master_sentence -> sentence1 .
 
-    ID              shift and go to state 11
+    RPARENT         reduce using rule 6 (master_sentence -> sentence1 .)
+    NEW             reduce using rule 6 (master_sentence -> sentence1 .)
+    VALUES          reduce using rule 6 (master_sentence -> sentence1 .)
+    CALL            reduce using rule 6 (master_sentence -> sentence1 .)
+    PRINTVALUES     reduce using rule 6 (master_sentence -> sentence1 .)
+    ALTER           reduce using rule 6 (master_sentence -> sentence1 .)
+    ALTERB          reduce using rule 6 (master_sentence -> sentence1 .)
+    ID              reduce using rule 6 (master_sentence -> sentence1 .)
+    ISTRUE          reduce using rule 6 (master_sentence -> sentence1 .)
+    REPEAT          reduce using rule 6 (master_sentence -> sentence1 .)
+    UNTIL           reduce using rule 6 (master_sentence -> sentence1 .)
 
 
 state 9
 
-    (1) master -> MASTER LPARENT master_sentences RPARENT . SEMICOLON
+    (7) master_sentence -> sentence2 .
 
-    SEMICOLON       shift and go to state 12
+    RPARENT         reduce using rule 7 (master_sentence -> sentence2 .)
+    NEW             reduce using rule 7 (master_sentence -> sentence2 .)
+    VALUES          reduce using rule 7 (master_sentence -> sentence2 .)
+    CALL            reduce using rule 7 (master_sentence -> sentence2 .)
+    PRINTVALUES     reduce using rule 7 (master_sentence -> sentence2 .)
+    ALTER           reduce using rule 7 (master_sentence -> sentence2 .)
+    ALTERB          reduce using rule 7 (master_sentence -> sentence2 .)
+    ID              reduce using rule 7 (master_sentence -> sentence2 .)
+    ISTRUE          reduce using rule 7 (master_sentence -> sentence2 .)
+    REPEAT          reduce using rule 7 (master_sentence -> sentence2 .)
+    UNTIL           reduce using rule 7 (master_sentence -> sentence2 .)
 
 
 state 10
+
+    (8) master_sentence -> sentence3 .
+
+    RPARENT         reduce using rule 8 (master_sentence -> sentence3 .)
+    NEW             reduce using rule 8 (master_sentence -> sentence3 .)
+    VALUES          reduce using rule 8 (master_sentence -> sentence3 .)
+    CALL            reduce using rule 8 (master_sentence -> sentence3 .)
+    PRINTVALUES     reduce using rule 8 (master_sentence -> sentence3 .)
+    ALTER           reduce using rule 8 (master_sentence -> sentence3 .)
+    ALTERB          reduce using rule 8 (master_sentence -> sentence3 .)
+    ID              reduce using rule 8 (master_sentence -> sentence3 .)
+    ISTRUE          reduce using rule 8 (master_sentence -> sentence3 .)
+    REPEAT          reduce using rule 8 (master_sentence -> sentence3 .)
+    UNTIL           reduce using rule 8 (master_sentence -> sentence3 .)
+
+
+state 11
+
+    (9) master_sentence -> sentence4 .
+
+    RPARENT         reduce using rule 9 (master_sentence -> sentence4 .)
+    NEW             reduce using rule 9 (master_sentence -> sentence4 .)
+    VALUES          reduce using rule 9 (master_sentence -> sentence4 .)
+    CALL            reduce using rule 9 (master_sentence -> sentence4 .)
+    PRINTVALUES     reduce using rule 9 (master_sentence -> sentence4 .)
+    ALTER           reduce using rule 9 (master_sentence -> sentence4 .)
+    ALTERB          reduce using rule 9 (master_sentence -> sentence4 .)
+    ID              reduce using rule 9 (master_sentence -> sentence4 .)
+    ISTRUE          reduce using rule 9 (master_sentence -> sentence4 .)
+    REPEAT          reduce using rule 9 (master_sentence -> sentence4 .)
+    UNTIL           reduce using rule 9 (master_sentence -> sentence4 .)
+
+
+state 12
+
+    (10) master_sentence -> sentence5 .
+
+    RPARENT         reduce using rule 10 (master_sentence -> sentence5 .)
+    NEW             reduce using rule 10 (master_sentence -> sentence5 .)
+    VALUES          reduce using rule 10 (master_sentence -> sentence5 .)
+    CALL            reduce using rule 10 (master_sentence -> sentence5 .)
+    PRINTVALUES     reduce using rule 10 (master_sentence -> sentence5 .)
+    ALTER           reduce using rule 10 (master_sentence -> sentence5 .)
+    ALTERB          reduce using rule 10 (master_sentence -> sentence5 .)
+    ID              reduce using rule 10 (master_sentence -> sentence5 .)
+    ISTRUE          reduce using rule 10 (master_sentence -> sentence5 .)
+    REPEAT          reduce using rule 10 (master_sentence -> sentence5 .)
+    UNTIL           reduce using rule 10 (master_sentence -> sentence5 .)
+
+
+state 13
+
+    (11) master_sentence -> sentence6 .
+
+    RPARENT         reduce using rule 11 (master_sentence -> sentence6 .)
+    NEW             reduce using rule 11 (master_sentence -> sentence6 .)
+    VALUES          reduce using rule 11 (master_sentence -> sentence6 .)
+    CALL            reduce using rule 11 (master_sentence -> sentence6 .)
+    PRINTVALUES     reduce using rule 11 (master_sentence -> sentence6 .)
+    ALTER           reduce using rule 11 (master_sentence -> sentence6 .)
+    ALTERB          reduce using rule 11 (master_sentence -> sentence6 .)
+    ID              reduce using rule 11 (master_sentence -> sentence6 .)
+    ISTRUE          reduce using rule 11 (master_sentence -> sentence6 .)
+    REPEAT          reduce using rule 11 (master_sentence -> sentence6 .)
+    UNTIL           reduce using rule 11 (master_sentence -> sentence6 .)
+
+
+state 14
+
+    (12) master_sentence -> sentence7 .
+
+    RPARENT         reduce using rule 12 (master_sentence -> sentence7 .)
+    NEW             reduce using rule 12 (master_sentence -> sentence7 .)
+    VALUES          reduce using rule 12 (master_sentence -> sentence7 .)
+    CALL            reduce using rule 12 (master_sentence -> sentence7 .)
+    PRINTVALUES     reduce using rule 12 (master_sentence -> sentence7 .)
+    ALTER           reduce using rule 12 (master_sentence -> sentence7 .)
+    ALTERB          reduce using rule 12 (master_sentence -> sentence7 .)
+    ID              reduce using rule 12 (master_sentence -> sentence7 .)
+    ISTRUE          reduce using rule 12 (master_sentence -> sentence7 .)
+    REPEAT          reduce using rule 12 (master_sentence -> sentence7 .)
+    UNTIL           reduce using rule 12 (master_sentence -> sentence7 .)
+
+
+state 15
+
+    (13) master_sentence -> sentence8 .
+
+    RPARENT         reduce using rule 13 (master_sentence -> sentence8 .)
+    NEW             reduce using rule 13 (master_sentence -> sentence8 .)
+    VALUES          reduce using rule 13 (master_sentence -> sentence8 .)
+    CALL            reduce using rule 13 (master_sentence -> sentence8 .)
+    PRINTVALUES     reduce using rule 13 (master_sentence -> sentence8 .)
+    ALTER           reduce using rule 13 (master_sentence -> sentence8 .)
+    ALTERB          reduce using rule 13 (master_sentence -> sentence8 .)
+    ID              reduce using rule 13 (master_sentence -> sentence8 .)
+    ISTRUE          reduce using rule 13 (master_sentence -> sentence8 .)
+    REPEAT          reduce using rule 13 (master_sentence -> sentence8 .)
+    UNTIL           reduce using rule 13 (master_sentence -> sentence8 .)
+
+
+state 16
+
+    (14) master_sentence -> sentence9 .
+
+    RPARENT         reduce using rule 14 (master_sentence -> sentence9 .)
+    NEW             reduce using rule 14 (master_sentence -> sentence9 .)
+    VALUES          reduce using rule 14 (master_sentence -> sentence9 .)
+    CALL            reduce using rule 14 (master_sentence -> sentence9 .)
+    PRINTVALUES     reduce using rule 14 (master_sentence -> sentence9 .)
+    ALTER           reduce using rule 14 (master_sentence -> sentence9 .)
+    ALTERB          reduce using rule 14 (master_sentence -> sentence9 .)
+    ID              reduce using rule 14 (master_sentence -> sentence9 .)
+    ISTRUE          reduce using rule 14 (master_sentence -> sentence9 .)
+    REPEAT          reduce using rule 14 (master_sentence -> sentence9 .)
+    UNTIL           reduce using rule 14 (master_sentence -> sentence9 .)
+
+
+state 17
+
+    (15) master_sentence -> sentence10 .
+
+    RPARENT         reduce using rule 15 (master_sentence -> sentence10 .)
+    NEW             reduce using rule 15 (master_sentence -> sentence10 .)
+    VALUES          reduce using rule 15 (master_sentence -> sentence10 .)
+    CALL            reduce using rule 15 (master_sentence -> sentence10 .)
+    PRINTVALUES     reduce using rule 15 (master_sentence -> sentence10 .)
+    ALTER           reduce using rule 15 (master_sentence -> sentence10 .)
+    ALTERB          reduce using rule 15 (master_sentence -> sentence10 .)
+    ID              reduce using rule 15 (master_sentence -> sentence10 .)
+    ISTRUE          reduce using rule 15 (master_sentence -> sentence10 .)
+    REPEAT          reduce using rule 15 (master_sentence -> sentence10 .)
+    UNTIL           reduce using rule 15 (master_sentence -> sentence10 .)
+
+
+state 18
+
+    (16) master_sentence -> sentence11 .
+
+    RPARENT         reduce using rule 16 (master_sentence -> sentence11 .)
+    NEW             reduce using rule 16 (master_sentence -> sentence11 .)
+    VALUES          reduce using rule 16 (master_sentence -> sentence11 .)
+    CALL            reduce using rule 16 (master_sentence -> sentence11 .)
+    PRINTVALUES     reduce using rule 16 (master_sentence -> sentence11 .)
+    ALTER           reduce using rule 16 (master_sentence -> sentence11 .)
+    ALTERB          reduce using rule 16 (master_sentence -> sentence11 .)
+    ID              reduce using rule 16 (master_sentence -> sentence11 .)
+    ISTRUE          reduce using rule 16 (master_sentence -> sentence11 .)
+    REPEAT          reduce using rule 16 (master_sentence -> sentence11 .)
+    UNTIL           reduce using rule 16 (master_sentence -> sentence11 .)
+
+
+state 19
+
+    (17) master_sentence -> sentence12 .
+
+    RPARENT         reduce using rule 17 (master_sentence -> sentence12 .)
+    NEW             reduce using rule 17 (master_sentence -> sentence12 .)
+    VALUES          reduce using rule 17 (master_sentence -> sentence12 .)
+    CALL            reduce using rule 17 (master_sentence -> sentence12 .)
+    PRINTVALUES     reduce using rule 17 (master_sentence -> sentence12 .)
+    ALTER           reduce using rule 17 (master_sentence -> sentence12 .)
+    ALTERB          reduce using rule 17 (master_sentence -> sentence12 .)
+    ID              reduce using rule 17 (master_sentence -> sentence12 .)
+    ISTRUE          reduce using rule 17 (master_sentence -> sentence12 .)
+    REPEAT          reduce using rule 17 (master_sentence -> sentence12 .)
+    UNTIL           reduce using rule 17 (master_sentence -> sentence12 .)
+
+
+state 20
+
+    (18) master_sentence -> sentence13 .
+
+    RPARENT         reduce using rule 18 (master_sentence -> sentence13 .)
+    NEW             reduce using rule 18 (master_sentence -> sentence13 .)
+    VALUES          reduce using rule 18 (master_sentence -> sentence13 .)
+    CALL            reduce using rule 18 (master_sentence -> sentence13 .)
+    PRINTVALUES     reduce using rule 18 (master_sentence -> sentence13 .)
+    ALTER           reduce using rule 18 (master_sentence -> sentence13 .)
+    ALTERB          reduce using rule 18 (master_sentence -> sentence13 .)
+    ID              reduce using rule 18 (master_sentence -> sentence13 .)
+    ISTRUE          reduce using rule 18 (master_sentence -> sentence13 .)
+    REPEAT          reduce using rule 18 (master_sentence -> sentence13 .)
+    UNTIL           reduce using rule 18 (master_sentence -> sentence13 .)
+
+
+state 21
+
+    (19) master_sentence -> sentence14 .
+
+    RPARENT         reduce using rule 19 (master_sentence -> sentence14 .)
+    NEW             reduce using rule 19 (master_sentence -> sentence14 .)
+    VALUES          reduce using rule 19 (master_sentence -> sentence14 .)
+    CALL            reduce using rule 19 (master_sentence -> sentence14 .)
+    PRINTVALUES     reduce using rule 19 (master_sentence -> sentence14 .)
+    ALTER           reduce using rule 19 (master_sentence -> sentence14 .)
+    ALTERB          reduce using rule 19 (master_sentence -> sentence14 .)
+    ID              reduce using rule 19 (master_sentence -> sentence14 .)
+    ISTRUE          reduce using rule 19 (master_sentence -> sentence14 .)
+    REPEAT          reduce using rule 19 (master_sentence -> sentence14 .)
+    UNTIL           reduce using rule 19 (master_sentence -> sentence14 .)
+
+
+state 22
+
+    (20) master_sentence -> sentence15 .
+
+    RPARENT         reduce using rule 20 (master_sentence -> sentence15 .)
+    NEW             reduce using rule 20 (master_sentence -> sentence15 .)
+    VALUES          reduce using rule 20 (master_sentence -> sentence15 .)
+    CALL            reduce using rule 20 (master_sentence -> sentence15 .)
+    PRINTVALUES     reduce using rule 20 (master_sentence -> sentence15 .)
+    ALTER           reduce using rule 20 (master_sentence -> sentence15 .)
+    ALTERB          reduce using rule 20 (master_sentence -> sentence15 .)
+    ID              reduce using rule 20 (master_sentence -> sentence15 .)
+    ISTRUE          reduce using rule 20 (master_sentence -> sentence15 .)
+    REPEAT          reduce using rule 20 (master_sentence -> sentence15 .)
+    UNTIL           reduce using rule 20 (master_sentence -> sentence15 .)
+
+
+state 23
+
+    (21) master_sentence -> empty .
+
+    RPARENT         reduce using rule 21 (master_sentence -> empty .)
+    NEW             reduce using rule 21 (master_sentence -> empty .)
+    VALUES          reduce using rule 21 (master_sentence -> empty .)
+    CALL            reduce using rule 21 (master_sentence -> empty .)
+    PRINTVALUES     reduce using rule 21 (master_sentence -> empty .)
+    ALTER           reduce using rule 21 (master_sentence -> empty .)
+    ALTERB          reduce using rule 21 (master_sentence -> empty .)
+    ID              reduce using rule 21 (master_sentence -> empty .)
+    ISTRUE          reduce using rule 21 (master_sentence -> empty .)
+    REPEAT          reduce using rule 21 (master_sentence -> empty .)
+    UNTIL           reduce using rule 21 (master_sentence -> empty .)
+
+
+state 24
+
+    (22) master_var -> NEW . ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (23) master_var -> NEW . ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (42) sentence1 -> NEW . ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW . ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    ID              shift and go to state 36
+
+
+state 25
+
+    (54) sentence7 -> ID . MAQ INTEGER
+    (55) sentence8 -> ID . MEQ INTEGER
+    (56) sentence9 -> ID . EQUAL INTEGER
+    (57) sentence10 -> ID . DIFFERENT INTEGER
+    (58) sentence11 -> ID . MEQEQUAL INTEGER
+    (59) sentence12 -> ID . MAQEQUAL INTEGER
+
+    MAQ             shift and go to state 37
+    MEQ             shift and go to state 38
+    EQUAL           shift and go to state 39
+    DIFFERENT       shift and go to state 40
+    MEQEQUAL        shift and go to state 41
+    MAQEQUAL        shift and go to state 42
+
+
+state 26
+
+    (44) sentence2 -> VALUES . LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> VALUES . LPARENT ID COMA BOOL RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 43
+
+
+state 27
+
+    (46) sentence3 -> CALL . LPARENT ID RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 44
+
+
+state 28
+
+    (47) sentence4 -> PRINTVALUES . LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> PRINTVALUES . LPARENT ID RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 45
+
+
+state 29
+
+    (49) sentence5 -> ALTER . LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> ALTER . LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> ALTER . LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> ALTER . LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 46
+
+
+state 30
+
+    (53) sentence6 -> ALTERB . LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 47
+
+
+state 31
+
+    (60) sentence13 -> ISTRUE . LPARENT ID RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 48
+
+
+state 32
+
+    (61) sentence14 -> REPEAT . LPARENT sentences BREAK RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 49
+
+
+state 33
+
+    (62) sentence15 -> UNTIL . LPARENT instructions RPARENT sentences SEMICOLON
+
+    LPARENT         shift and go to state 50
+
+
+state 34
+
+    (1) master -> MASTER LPARENT master_sentences RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 51
+
+
+state 35
 
     (4) master_sentences -> master_sentences master_sentence .
 
     RPARENT         reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
     NEW             reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    VALUES          reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    CALL            reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    PRINTVALUES     reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    ALTER           reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    ALTERB          reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    ID              reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    ISTRUE          reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    REPEAT          reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
+    UNTIL           reduce using rule 4 (master_sentences -> master_sentences master_sentence .)
 
 
-state 11
+state 36
 
-    (6) master_var -> NEW ID . COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-    (7) master_var -> NEW ID . COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (22) master_var -> NEW ID . COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (23) master_var -> NEW ID . COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (42) sentence1 -> NEW ID . COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID . COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
 
-    COMA            shift and go to state 13
+    COMA            shift and go to state 52
 
 
-state 12
+state 37
+
+    (54) sentence7 -> ID MAQ . INTEGER
+
+    INTEGER         shift and go to state 53
+
+
+state 38
+
+    (55) sentence8 -> ID MEQ . INTEGER
+
+    INTEGER         shift and go to state 54
+
+
+state 39
+
+    (56) sentence9 -> ID EQUAL . INTEGER
+
+    INTEGER         shift and go to state 55
+
+
+state 40
+
+    (57) sentence10 -> ID DIFFERENT . INTEGER
+
+    INTEGER         shift and go to state 56
+
+
+state 41
+
+    (58) sentence11 -> ID MEQEQUAL . INTEGER
+
+    INTEGER         shift and go to state 57
+
+
+state 42
+
+    (59) sentence12 -> ID MAQEQUAL . INTEGER
+
+    INTEGER         shift and go to state 58
+
+
+state 43
+
+    (44) sentence2 -> VALUES LPARENT . ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> VALUES LPARENT . ID COMA BOOL RPARENT SEMICOLON
+
+    ID              shift and go to state 59
+
+
+state 44
+
+    (46) sentence3 -> CALL LPARENT . ID RPARENT SEMICOLON
+
+    ID              shift and go to state 60
+
+
+state 45
+
+    (47) sentence4 -> PRINTVALUES LPARENT . STRING RPARENT SEMICOLON
+    (48) sentence4 -> PRINTVALUES LPARENT . ID RPARENT SEMICOLON
+
+    STRING          shift and go to state 61
+    ID              shift and go to state 62
+
+
+state 46
+
+    (49) sentence5 -> ALTER LPARENT . ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> ALTER LPARENT . ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> ALTER LPARENT . ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> ALTER LPARENT . ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+
+    ID              shift and go to state 63
+
+
+state 47
+
+    (53) sentence6 -> ALTERB LPARENT . ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+
+    ID              shift and go to state 64
+
+
+state 48
+
+    (60) sentence13 -> ISTRUE LPARENT . ID RPARENT SEMICOLON
+
+    ID              shift and go to state 65
+
+
+state 49
+
+    (61) sentence14 -> REPEAT LPARENT . sentences BREAK RPARENT SEMICOLON
+    (25) sentences -> . sentence
+    (26) sentences -> . sentences sentence
+    (27) sentence -> . sentence1
+    (28) sentence -> . sentence2
+    (29) sentence -> . sentence3
+    (30) sentence -> . sentence4
+    (31) sentence -> . sentence5
+    (32) sentence -> . sentence6
+    (33) sentence -> . sentence7
+    (34) sentence -> . sentence8
+    (35) sentence -> . sentence9
+    (36) sentence -> . sentence10
+    (37) sentence -> . sentence11
+    (38) sentence -> . sentence12
+    (39) sentence -> . sentence13
+    (40) sentence -> . sentence14
+    (41) sentence -> . sentence15
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+
+    NEW             shift and go to state 83
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+
+    sentences                      shift and go to state 66
+    sentence                       shift and go to state 67
+    sentence1                      shift and go to state 68
+    sentence2                      shift and go to state 69
+    sentence3                      shift and go to state 70
+    sentence4                      shift and go to state 71
+    sentence5                      shift and go to state 72
+    sentence6                      shift and go to state 73
+    sentence7                      shift and go to state 74
+    sentence8                      shift and go to state 75
+    sentence9                      shift and go to state 76
+    sentence10                     shift and go to state 77
+    sentence11                     shift and go to state 78
+    sentence12                     shift and go to state 79
+    sentence13                     shift and go to state 80
+    sentence14                     shift and go to state 81
+    sentence15                     shift and go to state 82
+
+state 50
+
+    (62) sentence15 -> UNTIL LPARENT . instructions RPARENT sentences SEMICOLON
+    (63) instructions -> . sentence
+    (64) instructions -> . sentence sentences
+    (27) sentence -> . sentence1
+    (28) sentence -> . sentence2
+    (29) sentence -> . sentence3
+    (30) sentence -> . sentence4
+    (31) sentence -> . sentence5
+    (32) sentence -> . sentence6
+    (33) sentence -> . sentence7
+    (34) sentence -> . sentence8
+    (35) sentence -> . sentence9
+    (36) sentence -> . sentence10
+    (37) sentence -> . sentence11
+    (38) sentence -> . sentence12
+    (39) sentence -> . sentence13
+    (40) sentence -> . sentence14
+    (41) sentence -> . sentence15
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+
+    NEW             shift and go to state 83
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+
+    instructions                   shift and go to state 84
+    sentence                       shift and go to state 85
+    sentence1                      shift and go to state 68
+    sentence2                      shift and go to state 69
+    sentence3                      shift and go to state 70
+    sentence4                      shift and go to state 71
+    sentence5                      shift and go to state 72
+    sentence6                      shift and go to state 73
+    sentence7                      shift and go to state 74
+    sentence8                      shift and go to state 75
+    sentence9                      shift and go to state 76
+    sentence10                     shift and go to state 77
+    sentence11                     shift and go to state 78
+    sentence12                     shift and go to state 79
+    sentence13                     shift and go to state 80
+    sentence14                     shift and go to state 81
+    sentence15                     shift and go to state 82
+
+state 51
 
     (1) master -> MASTER LPARENT master_sentences RPARENT SEMICOLON .
 
     $end            reduce using rule 1 (master -> MASTER LPARENT master_sentences RPARENT SEMICOLON .)
 
 
-state 13
+state 52
 
-    (6) master_var -> NEW ID COMA . LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-    (7) master_var -> NEW ID COMA . LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (22) master_var -> NEW ID COMA . LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (23) master_var -> NEW ID COMA . LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (42) sentence1 -> NEW ID COMA . LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA . LPARENT TYPE COMA BOOL RPARENT SEMICOLON
 
-    LPARENT         shift and go to state 14
-
-
-state 14
-
-    (6) master_var -> NEW ID COMA LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
-    (7) master_var -> NEW ID COMA LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
-
-    TYPE            shift and go to state 15
+    LPARENT         shift and go to state 86
 
 
-state 15
+state 53
 
-    (6) master_var -> NEW ID COMA LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
-    (7) master_var -> NEW ID COMA LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
+    (54) sentence7 -> ID MAQ INTEGER .
 
-    COMA            shift and go to state 16
-
-
-state 16
-
-    (6) master_var -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
-    (7) master_var -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
-
-    INTEGER         shift and go to state 17
-    BOOL            shift and go to state 18
-
-
-state 17
-
-    (6) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
-
-    RPARENT         shift and go to state 19
+    RPARENT         reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    NEW             reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    VALUES          reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    CALL            reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    PRINTVALUES     reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    ALTER           reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    ALTERB          reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    ID              reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    ISTRUE          reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    REPEAT          reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    UNTIL           reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    BREAK           reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
+    SEMICOLON       reduce using rule 54 (sentence7 -> ID MAQ INTEGER .)
 
 
-state 18
+state 54
 
-    (7) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
+    (55) sentence8 -> ID MEQ INTEGER .
 
-    RPARENT         shift and go to state 20
-
-
-state 19
-
-    (6) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
-
-    SEMICOLON       shift and go to state 21
-
-
-state 20
-
-    (7) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
-
-    SEMICOLON       shift and go to state 22
+    RPARENT         reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    NEW             reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    VALUES          reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    CALL            reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    PRINTVALUES     reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    ALTER           reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    ALTERB          reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    ID              reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    ISTRUE          reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    REPEAT          reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    UNTIL           reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    BREAK           reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
+    SEMICOLON       reduce using rule 55 (sentence8 -> ID MEQ INTEGER .)
 
 
-state 21
+state 55
 
-    (6) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
+    (56) sentence9 -> ID EQUAL INTEGER .
 
-    RPARENT         reduce using rule 6 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
-    NEW             reduce using rule 6 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    RPARENT         reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    NEW             reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    VALUES          reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    CALL            reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    PRINTVALUES     reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    ALTER           reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    ALTERB          reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    ID              reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    ISTRUE          reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    REPEAT          reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    UNTIL           reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    BREAK           reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
+    SEMICOLON       reduce using rule 56 (sentence9 -> ID EQUAL INTEGER .)
 
 
-state 22
+state 56
 
-    (7) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
+    (57) sentence10 -> ID DIFFERENT INTEGER .
 
-    RPARENT         reduce using rule 7 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
-    NEW             reduce using rule 7 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    RPARENT         reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    NEW             reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    VALUES          reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    CALL            reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    PRINTVALUES     reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    ALTER           reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    ALTERB          reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    ID              reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    ISTRUE          reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    REPEAT          reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    UNTIL           reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    BREAK           reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
+    SEMICOLON       reduce using rule 57 (sentence10 -> ID DIFFERENT INTEGER .)
 
+
+state 57
+
+    (58) sentence11 -> ID MEQEQUAL INTEGER .
+
+    RPARENT         reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    NEW             reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    VALUES          reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    CALL            reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    PRINTVALUES     reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    ALTER           reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    ALTERB          reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    ID              reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    ISTRUE          reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    REPEAT          reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    UNTIL           reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    BREAK           reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+    SEMICOLON       reduce using rule 58 (sentence11 -> ID MEQEQUAL INTEGER .)
+
+
+state 58
+
+    (59) sentence12 -> ID MAQEQUAL INTEGER .
+
+    RPARENT         reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    NEW             reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    VALUES          reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    CALL            reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    PRINTVALUES     reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    ALTER           reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    ALTERB          reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    ID              reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    ISTRUE          reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    REPEAT          reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    UNTIL           reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    BREAK           reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+    SEMICOLON       reduce using rule 59 (sentence12 -> ID MAQEQUAL INTEGER .)
+
+
+state 59
+
+    (44) sentence2 -> VALUES LPARENT ID . COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> VALUES LPARENT ID . COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 87
+
+
+state 60
+
+    (46) sentence3 -> CALL LPARENT ID . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 88
+
+
+state 61
+
+    (47) sentence4 -> PRINTVALUES LPARENT STRING . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 89
+
+
+state 62
+
+    (48) sentence4 -> PRINTVALUES LPARENT ID . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 90
+
+
+state 63
+
+    (49) sentence5 -> ALTER LPARENT ID . COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> ALTER LPARENT ID . COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> ALTER LPARENT ID . COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> ALTER LPARENT ID . COMA DIV COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 91
+
+
+state 64
+
+    (53) sentence6 -> ALTERB LPARENT ID . COMA ADD COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 92
+
+
+state 65
+
+    (60) sentence13 -> ISTRUE LPARENT ID . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 93
+
+
+state 66
+
+    (61) sentence14 -> REPEAT LPARENT sentences . BREAK RPARENT SEMICOLON
+    (26) sentences -> sentences . sentence
+    (27) sentence -> . sentence1
+    (28) sentence -> . sentence2
+    (29) sentence -> . sentence3
+    (30) sentence -> . sentence4
+    (31) sentence -> . sentence5
+    (32) sentence -> . sentence6
+    (33) sentence -> . sentence7
+    (34) sentence -> . sentence8
+    (35) sentence -> . sentence9
+    (36) sentence -> . sentence10
+    (37) sentence -> . sentence11
+    (38) sentence -> . sentence12
+    (39) sentence -> . sentence13
+    (40) sentence -> . sentence14
+    (41) sentence -> . sentence15
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+
+    BREAK           shift and go to state 94
+    NEW             shift and go to state 83
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+
+    sentence                       shift and go to state 95
+    sentence1                      shift and go to state 68
+    sentence2                      shift and go to state 69
+    sentence3                      shift and go to state 70
+    sentence4                      shift and go to state 71
+    sentence5                      shift and go to state 72
+    sentence6                      shift and go to state 73
+    sentence7                      shift and go to state 74
+    sentence8                      shift and go to state 75
+    sentence9                      shift and go to state 76
+    sentence10                     shift and go to state 77
+    sentence11                     shift and go to state 78
+    sentence12                     shift and go to state 79
+    sentence13                     shift and go to state 80
+    sentence14                     shift and go to state 81
+    sentence15                     shift and go to state 82
+
+state 67
+
+    (25) sentences -> sentence .
+
+    BREAK           reduce using rule 25 (sentences -> sentence .)
+    NEW             reduce using rule 25 (sentences -> sentence .)
+    VALUES          reduce using rule 25 (sentences -> sentence .)
+    CALL            reduce using rule 25 (sentences -> sentence .)
+    PRINTVALUES     reduce using rule 25 (sentences -> sentence .)
+    ALTER           reduce using rule 25 (sentences -> sentence .)
+    ALTERB          reduce using rule 25 (sentences -> sentence .)
+    ID              reduce using rule 25 (sentences -> sentence .)
+    ISTRUE          reduce using rule 25 (sentences -> sentence .)
+    REPEAT          reduce using rule 25 (sentences -> sentence .)
+    UNTIL           reduce using rule 25 (sentences -> sentence .)
+    RPARENT         reduce using rule 25 (sentences -> sentence .)
+    SEMICOLON       reduce using rule 25 (sentences -> sentence .)
+
+
+state 68
+
+    (27) sentence -> sentence1 .
+
+    BREAK           reduce using rule 27 (sentence -> sentence1 .)
+    NEW             reduce using rule 27 (sentence -> sentence1 .)
+    VALUES          reduce using rule 27 (sentence -> sentence1 .)
+    CALL            reduce using rule 27 (sentence -> sentence1 .)
+    PRINTVALUES     reduce using rule 27 (sentence -> sentence1 .)
+    ALTER           reduce using rule 27 (sentence -> sentence1 .)
+    ALTERB          reduce using rule 27 (sentence -> sentence1 .)
+    ID              reduce using rule 27 (sentence -> sentence1 .)
+    ISTRUE          reduce using rule 27 (sentence -> sentence1 .)
+    REPEAT          reduce using rule 27 (sentence -> sentence1 .)
+    UNTIL           reduce using rule 27 (sentence -> sentence1 .)
+    RPARENT         reduce using rule 27 (sentence -> sentence1 .)
+    SEMICOLON       reduce using rule 27 (sentence -> sentence1 .)
+
+
+state 69
+
+    (28) sentence -> sentence2 .
+
+    BREAK           reduce using rule 28 (sentence -> sentence2 .)
+    NEW             reduce using rule 28 (sentence -> sentence2 .)
+    VALUES          reduce using rule 28 (sentence -> sentence2 .)
+    CALL            reduce using rule 28 (sentence -> sentence2 .)
+    PRINTVALUES     reduce using rule 28 (sentence -> sentence2 .)
+    ALTER           reduce using rule 28 (sentence -> sentence2 .)
+    ALTERB          reduce using rule 28 (sentence -> sentence2 .)
+    ID              reduce using rule 28 (sentence -> sentence2 .)
+    ISTRUE          reduce using rule 28 (sentence -> sentence2 .)
+    REPEAT          reduce using rule 28 (sentence -> sentence2 .)
+    UNTIL           reduce using rule 28 (sentence -> sentence2 .)
+    RPARENT         reduce using rule 28 (sentence -> sentence2 .)
+    SEMICOLON       reduce using rule 28 (sentence -> sentence2 .)
+
+
+state 70
+
+    (29) sentence -> sentence3 .
+
+    BREAK           reduce using rule 29 (sentence -> sentence3 .)
+    NEW             reduce using rule 29 (sentence -> sentence3 .)
+    VALUES          reduce using rule 29 (sentence -> sentence3 .)
+    CALL            reduce using rule 29 (sentence -> sentence3 .)
+    PRINTVALUES     reduce using rule 29 (sentence -> sentence3 .)
+    ALTER           reduce using rule 29 (sentence -> sentence3 .)
+    ALTERB          reduce using rule 29 (sentence -> sentence3 .)
+    ID              reduce using rule 29 (sentence -> sentence3 .)
+    ISTRUE          reduce using rule 29 (sentence -> sentence3 .)
+    REPEAT          reduce using rule 29 (sentence -> sentence3 .)
+    UNTIL           reduce using rule 29 (sentence -> sentence3 .)
+    RPARENT         reduce using rule 29 (sentence -> sentence3 .)
+    SEMICOLON       reduce using rule 29 (sentence -> sentence3 .)
+
+
+state 71
+
+    (30) sentence -> sentence4 .
+
+    BREAK           reduce using rule 30 (sentence -> sentence4 .)
+    NEW             reduce using rule 30 (sentence -> sentence4 .)
+    VALUES          reduce using rule 30 (sentence -> sentence4 .)
+    CALL            reduce using rule 30 (sentence -> sentence4 .)
+    PRINTVALUES     reduce using rule 30 (sentence -> sentence4 .)
+    ALTER           reduce using rule 30 (sentence -> sentence4 .)
+    ALTERB          reduce using rule 30 (sentence -> sentence4 .)
+    ID              reduce using rule 30 (sentence -> sentence4 .)
+    ISTRUE          reduce using rule 30 (sentence -> sentence4 .)
+    REPEAT          reduce using rule 30 (sentence -> sentence4 .)
+    UNTIL           reduce using rule 30 (sentence -> sentence4 .)
+    RPARENT         reduce using rule 30 (sentence -> sentence4 .)
+    SEMICOLON       reduce using rule 30 (sentence -> sentence4 .)
+
+
+state 72
+
+    (31) sentence -> sentence5 .
+
+    BREAK           reduce using rule 31 (sentence -> sentence5 .)
+    NEW             reduce using rule 31 (sentence -> sentence5 .)
+    VALUES          reduce using rule 31 (sentence -> sentence5 .)
+    CALL            reduce using rule 31 (sentence -> sentence5 .)
+    PRINTVALUES     reduce using rule 31 (sentence -> sentence5 .)
+    ALTER           reduce using rule 31 (sentence -> sentence5 .)
+    ALTERB          reduce using rule 31 (sentence -> sentence5 .)
+    ID              reduce using rule 31 (sentence -> sentence5 .)
+    ISTRUE          reduce using rule 31 (sentence -> sentence5 .)
+    REPEAT          reduce using rule 31 (sentence -> sentence5 .)
+    UNTIL           reduce using rule 31 (sentence -> sentence5 .)
+    RPARENT         reduce using rule 31 (sentence -> sentence5 .)
+    SEMICOLON       reduce using rule 31 (sentence -> sentence5 .)
+
+
+state 73
+
+    (32) sentence -> sentence6 .
+
+    BREAK           reduce using rule 32 (sentence -> sentence6 .)
+    NEW             reduce using rule 32 (sentence -> sentence6 .)
+    VALUES          reduce using rule 32 (sentence -> sentence6 .)
+    CALL            reduce using rule 32 (sentence -> sentence6 .)
+    PRINTVALUES     reduce using rule 32 (sentence -> sentence6 .)
+    ALTER           reduce using rule 32 (sentence -> sentence6 .)
+    ALTERB          reduce using rule 32 (sentence -> sentence6 .)
+    ID              reduce using rule 32 (sentence -> sentence6 .)
+    ISTRUE          reduce using rule 32 (sentence -> sentence6 .)
+    REPEAT          reduce using rule 32 (sentence -> sentence6 .)
+    UNTIL           reduce using rule 32 (sentence -> sentence6 .)
+    RPARENT         reduce using rule 32 (sentence -> sentence6 .)
+    SEMICOLON       reduce using rule 32 (sentence -> sentence6 .)
+
+
+state 74
+
+    (33) sentence -> sentence7 .
+
+    BREAK           reduce using rule 33 (sentence -> sentence7 .)
+    NEW             reduce using rule 33 (sentence -> sentence7 .)
+    VALUES          reduce using rule 33 (sentence -> sentence7 .)
+    CALL            reduce using rule 33 (sentence -> sentence7 .)
+    PRINTVALUES     reduce using rule 33 (sentence -> sentence7 .)
+    ALTER           reduce using rule 33 (sentence -> sentence7 .)
+    ALTERB          reduce using rule 33 (sentence -> sentence7 .)
+    ID              reduce using rule 33 (sentence -> sentence7 .)
+    ISTRUE          reduce using rule 33 (sentence -> sentence7 .)
+    REPEAT          reduce using rule 33 (sentence -> sentence7 .)
+    UNTIL           reduce using rule 33 (sentence -> sentence7 .)
+    RPARENT         reduce using rule 33 (sentence -> sentence7 .)
+    SEMICOLON       reduce using rule 33 (sentence -> sentence7 .)
+
+
+state 75
+
+    (34) sentence -> sentence8 .
+
+    BREAK           reduce using rule 34 (sentence -> sentence8 .)
+    NEW             reduce using rule 34 (sentence -> sentence8 .)
+    VALUES          reduce using rule 34 (sentence -> sentence8 .)
+    CALL            reduce using rule 34 (sentence -> sentence8 .)
+    PRINTVALUES     reduce using rule 34 (sentence -> sentence8 .)
+    ALTER           reduce using rule 34 (sentence -> sentence8 .)
+    ALTERB          reduce using rule 34 (sentence -> sentence8 .)
+    ID              reduce using rule 34 (sentence -> sentence8 .)
+    ISTRUE          reduce using rule 34 (sentence -> sentence8 .)
+    REPEAT          reduce using rule 34 (sentence -> sentence8 .)
+    UNTIL           reduce using rule 34 (sentence -> sentence8 .)
+    RPARENT         reduce using rule 34 (sentence -> sentence8 .)
+    SEMICOLON       reduce using rule 34 (sentence -> sentence8 .)
+
+
+state 76
+
+    (35) sentence -> sentence9 .
+
+    BREAK           reduce using rule 35 (sentence -> sentence9 .)
+    NEW             reduce using rule 35 (sentence -> sentence9 .)
+    VALUES          reduce using rule 35 (sentence -> sentence9 .)
+    CALL            reduce using rule 35 (sentence -> sentence9 .)
+    PRINTVALUES     reduce using rule 35 (sentence -> sentence9 .)
+    ALTER           reduce using rule 35 (sentence -> sentence9 .)
+    ALTERB          reduce using rule 35 (sentence -> sentence9 .)
+    ID              reduce using rule 35 (sentence -> sentence9 .)
+    ISTRUE          reduce using rule 35 (sentence -> sentence9 .)
+    REPEAT          reduce using rule 35 (sentence -> sentence9 .)
+    UNTIL           reduce using rule 35 (sentence -> sentence9 .)
+    RPARENT         reduce using rule 35 (sentence -> sentence9 .)
+    SEMICOLON       reduce using rule 35 (sentence -> sentence9 .)
+
+
+state 77
+
+    (36) sentence -> sentence10 .
+
+    BREAK           reduce using rule 36 (sentence -> sentence10 .)
+    NEW             reduce using rule 36 (sentence -> sentence10 .)
+    VALUES          reduce using rule 36 (sentence -> sentence10 .)
+    CALL            reduce using rule 36 (sentence -> sentence10 .)
+    PRINTVALUES     reduce using rule 36 (sentence -> sentence10 .)
+    ALTER           reduce using rule 36 (sentence -> sentence10 .)
+    ALTERB          reduce using rule 36 (sentence -> sentence10 .)
+    ID              reduce using rule 36 (sentence -> sentence10 .)
+    ISTRUE          reduce using rule 36 (sentence -> sentence10 .)
+    REPEAT          reduce using rule 36 (sentence -> sentence10 .)
+    UNTIL           reduce using rule 36 (sentence -> sentence10 .)
+    RPARENT         reduce using rule 36 (sentence -> sentence10 .)
+    SEMICOLON       reduce using rule 36 (sentence -> sentence10 .)
+
+
+state 78
+
+    (37) sentence -> sentence11 .
+
+    BREAK           reduce using rule 37 (sentence -> sentence11 .)
+    NEW             reduce using rule 37 (sentence -> sentence11 .)
+    VALUES          reduce using rule 37 (sentence -> sentence11 .)
+    CALL            reduce using rule 37 (sentence -> sentence11 .)
+    PRINTVALUES     reduce using rule 37 (sentence -> sentence11 .)
+    ALTER           reduce using rule 37 (sentence -> sentence11 .)
+    ALTERB          reduce using rule 37 (sentence -> sentence11 .)
+    ID              reduce using rule 37 (sentence -> sentence11 .)
+    ISTRUE          reduce using rule 37 (sentence -> sentence11 .)
+    REPEAT          reduce using rule 37 (sentence -> sentence11 .)
+    UNTIL           reduce using rule 37 (sentence -> sentence11 .)
+    RPARENT         reduce using rule 37 (sentence -> sentence11 .)
+    SEMICOLON       reduce using rule 37 (sentence -> sentence11 .)
+
+
+state 79
+
+    (38) sentence -> sentence12 .
+
+    BREAK           reduce using rule 38 (sentence -> sentence12 .)
+    NEW             reduce using rule 38 (sentence -> sentence12 .)
+    VALUES          reduce using rule 38 (sentence -> sentence12 .)
+    CALL            reduce using rule 38 (sentence -> sentence12 .)
+    PRINTVALUES     reduce using rule 38 (sentence -> sentence12 .)
+    ALTER           reduce using rule 38 (sentence -> sentence12 .)
+    ALTERB          reduce using rule 38 (sentence -> sentence12 .)
+    ID              reduce using rule 38 (sentence -> sentence12 .)
+    ISTRUE          reduce using rule 38 (sentence -> sentence12 .)
+    REPEAT          reduce using rule 38 (sentence -> sentence12 .)
+    UNTIL           reduce using rule 38 (sentence -> sentence12 .)
+    RPARENT         reduce using rule 38 (sentence -> sentence12 .)
+    SEMICOLON       reduce using rule 38 (sentence -> sentence12 .)
+
+
+state 80
+
+    (39) sentence -> sentence13 .
+
+    BREAK           reduce using rule 39 (sentence -> sentence13 .)
+    NEW             reduce using rule 39 (sentence -> sentence13 .)
+    VALUES          reduce using rule 39 (sentence -> sentence13 .)
+    CALL            reduce using rule 39 (sentence -> sentence13 .)
+    PRINTVALUES     reduce using rule 39 (sentence -> sentence13 .)
+    ALTER           reduce using rule 39 (sentence -> sentence13 .)
+    ALTERB          reduce using rule 39 (sentence -> sentence13 .)
+    ID              reduce using rule 39 (sentence -> sentence13 .)
+    ISTRUE          reduce using rule 39 (sentence -> sentence13 .)
+    REPEAT          reduce using rule 39 (sentence -> sentence13 .)
+    UNTIL           reduce using rule 39 (sentence -> sentence13 .)
+    RPARENT         reduce using rule 39 (sentence -> sentence13 .)
+    SEMICOLON       reduce using rule 39 (sentence -> sentence13 .)
+
+
+state 81
+
+    (40) sentence -> sentence14 .
+
+    BREAK           reduce using rule 40 (sentence -> sentence14 .)
+    NEW             reduce using rule 40 (sentence -> sentence14 .)
+    VALUES          reduce using rule 40 (sentence -> sentence14 .)
+    CALL            reduce using rule 40 (sentence -> sentence14 .)
+    PRINTVALUES     reduce using rule 40 (sentence -> sentence14 .)
+    ALTER           reduce using rule 40 (sentence -> sentence14 .)
+    ALTERB          reduce using rule 40 (sentence -> sentence14 .)
+    ID              reduce using rule 40 (sentence -> sentence14 .)
+    ISTRUE          reduce using rule 40 (sentence -> sentence14 .)
+    REPEAT          reduce using rule 40 (sentence -> sentence14 .)
+    UNTIL           reduce using rule 40 (sentence -> sentence14 .)
+    RPARENT         reduce using rule 40 (sentence -> sentence14 .)
+    SEMICOLON       reduce using rule 40 (sentence -> sentence14 .)
+
+
+state 82
+
+    (41) sentence -> sentence15 .
+
+    BREAK           reduce using rule 41 (sentence -> sentence15 .)
+    NEW             reduce using rule 41 (sentence -> sentence15 .)
+    VALUES          reduce using rule 41 (sentence -> sentence15 .)
+    CALL            reduce using rule 41 (sentence -> sentence15 .)
+    PRINTVALUES     reduce using rule 41 (sentence -> sentence15 .)
+    ALTER           reduce using rule 41 (sentence -> sentence15 .)
+    ALTERB          reduce using rule 41 (sentence -> sentence15 .)
+    ID              reduce using rule 41 (sentence -> sentence15 .)
+    ISTRUE          reduce using rule 41 (sentence -> sentence15 .)
+    REPEAT          reduce using rule 41 (sentence -> sentence15 .)
+    UNTIL           reduce using rule 41 (sentence -> sentence15 .)
+    RPARENT         reduce using rule 41 (sentence -> sentence15 .)
+    SEMICOLON       reduce using rule 41 (sentence -> sentence15 .)
+
+
+state 83
+
+    (42) sentence1 -> NEW . ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW . ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    ID              shift and go to state 96
+
+
+state 84
+
+    (62) sentence15 -> UNTIL LPARENT instructions . RPARENT sentences SEMICOLON
+
+    RPARENT         shift and go to state 97
+
+
+state 85
+
+    (63) instructions -> sentence .
+    (64) instructions -> sentence . sentences
+    (25) sentences -> . sentence
+    (26) sentences -> . sentences sentence
+    (27) sentence -> . sentence1
+    (28) sentence -> . sentence2
+    (29) sentence -> . sentence3
+    (30) sentence -> . sentence4
+    (31) sentence -> . sentence5
+    (32) sentence -> . sentence6
+    (33) sentence -> . sentence7
+    (34) sentence -> . sentence8
+    (35) sentence -> . sentence9
+    (36) sentence -> . sentence10
+    (37) sentence -> . sentence11
+    (38) sentence -> . sentence12
+    (39) sentence -> . sentence13
+    (40) sentence -> . sentence14
+    (41) sentence -> . sentence15
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+
+    RPARENT         reduce using rule 63 (instructions -> sentence .)
+    NEW             shift and go to state 83
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+
+    sentence                       shift and go to state 67
+    sentences                      shift and go to state 98
+    sentence1                      shift and go to state 68
+    sentence2                      shift and go to state 69
+    sentence3                      shift and go to state 70
+    sentence4                      shift and go to state 71
+    sentence5                      shift and go to state 72
+    sentence6                      shift and go to state 73
+    sentence7                      shift and go to state 74
+    sentence8                      shift and go to state 75
+    sentence9                      shift and go to state 76
+    sentence10                     shift and go to state 77
+    sentence11                     shift and go to state 78
+    sentence12                     shift and go to state 79
+    sentence13                     shift and go to state 80
+    sentence14                     shift and go to state 81
+    sentence15                     shift and go to state 82
+
+state 86
+
+    (22) master_var -> NEW ID COMA LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
+    (23) master_var -> NEW ID COMA LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
+    (42) sentence1 -> NEW ID COMA LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
+
+    TYPE            shift and go to state 99
+
+
+state 87
+
+    (44) sentence2 -> VALUES LPARENT ID COMA . INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> VALUES LPARENT ID COMA . BOOL RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 100
+    BOOL            shift and go to state 101
+
+
+state 88
+
+    (46) sentence3 -> CALL LPARENT ID RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 102
+
+
+state 89
+
+    (47) sentence4 -> PRINTVALUES LPARENT STRING RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 103
+
+
+state 90
+
+    (48) sentence4 -> PRINTVALUES LPARENT ID RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 104
+
+
+state 91
+
+    (49) sentence5 -> ALTER LPARENT ID COMA . ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> ALTER LPARENT ID COMA . SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> ALTER LPARENT ID COMA . MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> ALTER LPARENT ID COMA . DIV COMA INTEGER RPARENT SEMICOLON
+
+    ADD             shift and go to state 105
+    SUB             shift and go to state 106
+    MUL             shift and go to state 107
+    DIV             shift and go to state 108
+
+
+state 92
+
+    (53) sentence6 -> ALTERB LPARENT ID COMA . ADD COMA INTEGER RPARENT SEMICOLON
+
+    ADD             shift and go to state 109
+
+
+state 93
+
+    (60) sentence13 -> ISTRUE LPARENT ID RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 110
+
+
+state 94
+
+    (61) sentence14 -> REPEAT LPARENT sentences BREAK . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 111
+
+
+state 95
+
+    (26) sentences -> sentences sentence .
+
+    BREAK           reduce using rule 26 (sentences -> sentences sentence .)
+    NEW             reduce using rule 26 (sentences -> sentences sentence .)
+    VALUES          reduce using rule 26 (sentences -> sentences sentence .)
+    CALL            reduce using rule 26 (sentences -> sentences sentence .)
+    PRINTVALUES     reduce using rule 26 (sentences -> sentences sentence .)
+    ALTER           reduce using rule 26 (sentences -> sentences sentence .)
+    ALTERB          reduce using rule 26 (sentences -> sentences sentence .)
+    ID              reduce using rule 26 (sentences -> sentences sentence .)
+    ISTRUE          reduce using rule 26 (sentences -> sentences sentence .)
+    REPEAT          reduce using rule 26 (sentences -> sentences sentence .)
+    UNTIL           reduce using rule 26 (sentences -> sentences sentence .)
+    RPARENT         reduce using rule 26 (sentences -> sentences sentence .)
+    SEMICOLON       reduce using rule 26 (sentences -> sentences sentence .)
+
+
+state 96
+
+    (42) sentence1 -> NEW ID . COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID . COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 112
+
+
+state 97
+
+    (62) sentence15 -> UNTIL LPARENT instructions RPARENT . sentences SEMICOLON
+    (25) sentences -> . sentence
+    (26) sentences -> . sentences sentence
+    (27) sentence -> . sentence1
+    (28) sentence -> . sentence2
+    (29) sentence -> . sentence3
+    (30) sentence -> . sentence4
+    (31) sentence -> . sentence5
+    (32) sentence -> . sentence6
+    (33) sentence -> . sentence7
+    (34) sentence -> . sentence8
+    (35) sentence -> . sentence9
+    (36) sentence -> . sentence10
+    (37) sentence -> . sentence11
+    (38) sentence -> . sentence12
+    (39) sentence -> . sentence13
+    (40) sentence -> . sentence14
+    (41) sentence -> . sentence15
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+
+    NEW             shift and go to state 83
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+
+    sentences                      shift and go to state 113
+    sentence                       shift and go to state 67
+    sentence1                      shift and go to state 68
+    sentence2                      shift and go to state 69
+    sentence3                      shift and go to state 70
+    sentence4                      shift and go to state 71
+    sentence5                      shift and go to state 72
+    sentence6                      shift and go to state 73
+    sentence7                      shift and go to state 74
+    sentence8                      shift and go to state 75
+    sentence9                      shift and go to state 76
+    sentence10                     shift and go to state 77
+    sentence11                     shift and go to state 78
+    sentence12                     shift and go to state 79
+    sentence13                     shift and go to state 80
+    sentence14                     shift and go to state 81
+    sentence15                     shift and go to state 82
+
+state 98
+
+    (64) instructions -> sentence sentences .
+    (26) sentences -> sentences . sentence
+    (27) sentence -> . sentence1
+    (28) sentence -> . sentence2
+    (29) sentence -> . sentence3
+    (30) sentence -> . sentence4
+    (31) sentence -> . sentence5
+    (32) sentence -> . sentence6
+    (33) sentence -> . sentence7
+    (34) sentence -> . sentence8
+    (35) sentence -> . sentence9
+    (36) sentence -> . sentence10
+    (37) sentence -> . sentence11
+    (38) sentence -> . sentence12
+    (39) sentence -> . sentence13
+    (40) sentence -> . sentence14
+    (41) sentence -> . sentence15
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+
+    RPARENT         reduce using rule 64 (instructions -> sentence sentences .)
+    NEW             shift and go to state 83
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+
+    sentence                       shift and go to state 95
+    sentence1                      shift and go to state 68
+    sentence2                      shift and go to state 69
+    sentence3                      shift and go to state 70
+    sentence4                      shift and go to state 71
+    sentence5                      shift and go to state 72
+    sentence6                      shift and go to state 73
+    sentence7                      shift and go to state 74
+    sentence8                      shift and go to state 75
+    sentence9                      shift and go to state 76
+    sentence10                     shift and go to state 77
+    sentence11                     shift and go to state 78
+    sentence12                     shift and go to state 79
+    sentence13                     shift and go to state 80
+    sentence14                     shift and go to state 81
+    sentence15                     shift and go to state 82
+
+state 99
+
+    (22) master_var -> NEW ID COMA LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
+    (23) master_var -> NEW ID COMA LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 114
+
+
+state 100
+
+    (44) sentence2 -> VALUES LPARENT ID COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 115
+
+
+state 101
+
+    (45) sentence2 -> VALUES LPARENT ID COMA BOOL . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 116
+
+
+state 102
+
+    (46) sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    NEW             reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    VALUES          reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    CALL            reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    ALTER           reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    ID              reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    BREAK           reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 46 (sentence3 -> CALL LPARENT ID RPARENT SEMICOLON .)
+
+
+state 103
+
+    (47) sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    NEW             reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    VALUES          reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    CALL            reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    ALTER           reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    ID              reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    BREAK           reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 47 (sentence4 -> PRINTVALUES LPARENT STRING RPARENT SEMICOLON .)
+
+
+state 104
+
+    (48) sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    NEW             reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    VALUES          reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    CALL            reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    ALTER           reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    ID              reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    BREAK           reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 48 (sentence4 -> PRINTVALUES LPARENT ID RPARENT SEMICOLON .)
+
+
+state 105
+
+    (49) sentence5 -> ALTER LPARENT ID COMA ADD . COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 117
+
+
+state 106
+
+    (50) sentence5 -> ALTER LPARENT ID COMA SUB . COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 118
+
+
+state 107
+
+    (51) sentence5 -> ALTER LPARENT ID COMA MUL . COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 119
+
+
+state 108
+
+    (52) sentence5 -> ALTER LPARENT ID COMA DIV . COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 120
+
+
+state 109
+
+    (53) sentence6 -> ALTERB LPARENT ID COMA ADD . COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 121
+
+
+state 110
+
+    (60) sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    NEW             reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    VALUES          reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    CALL            reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    ALTER           reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    ID              reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    BREAK           reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 60 (sentence13 -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
+
+
+state 111
+
+    (61) sentence14 -> REPEAT LPARENT sentences BREAK RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 122
+
+
+state 112
+
+    (42) sentence1 -> NEW ID COMA . LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA . LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 123
+
+
+state 113
+
+    (62) sentence15 -> UNTIL LPARENT instructions RPARENT sentences . SEMICOLON
+    (26) sentences -> sentences . sentence
+    (27) sentence -> . sentence1
+    (28) sentence -> . sentence2
+    (29) sentence -> . sentence3
+    (30) sentence -> . sentence4
+    (31) sentence -> . sentence5
+    (32) sentence -> . sentence6
+    (33) sentence -> . sentence7
+    (34) sentence -> . sentence8
+    (35) sentence -> . sentence9
+    (36) sentence -> . sentence10
+    (37) sentence -> . sentence11
+    (38) sentence -> . sentence12
+    (39) sentence -> . sentence13
+    (40) sentence -> . sentence14
+    (41) sentence -> . sentence15
+    (42) sentence1 -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+    (44) sentence2 -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (45) sentence2 -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+    (46) sentence3 -> . CALL LPARENT ID RPARENT SEMICOLON
+    (47) sentence4 -> . PRINTVALUES LPARENT STRING RPARENT SEMICOLON
+    (48) sentence4 -> . PRINTVALUES LPARENT ID RPARENT SEMICOLON
+    (49) sentence5 -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (50) sentence5 -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
+    (51) sentence5 -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
+    (52) sentence5 -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
+    (53) sentence6 -> . ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
+    (54) sentence7 -> . ID MAQ INTEGER
+    (55) sentence8 -> . ID MEQ INTEGER
+    (56) sentence9 -> . ID EQUAL INTEGER
+    (57) sentence10 -> . ID DIFFERENT INTEGER
+    (58) sentence11 -> . ID MEQEQUAL INTEGER
+    (59) sentence12 -> . ID MAQEQUAL INTEGER
+    (60) sentence13 -> . ISTRUE LPARENT ID RPARENT SEMICOLON
+    (61) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
+    (62) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
+
+    SEMICOLON       shift and go to state 124
+    NEW             shift and go to state 83
+    VALUES          shift and go to state 26
+    CALL            shift and go to state 27
+    PRINTVALUES     shift and go to state 28
+    ALTER           shift and go to state 29
+    ALTERB          shift and go to state 30
+    ID              shift and go to state 25
+    ISTRUE          shift and go to state 31
+    REPEAT          shift and go to state 32
+    UNTIL           shift and go to state 33
+
+    sentence                       shift and go to state 95
+    sentence1                      shift and go to state 68
+    sentence2                      shift and go to state 69
+    sentence3                      shift and go to state 70
+    sentence4                      shift and go to state 71
+    sentence5                      shift and go to state 72
+    sentence6                      shift and go to state 73
+    sentence7                      shift and go to state 74
+    sentence8                      shift and go to state 75
+    sentence9                      shift and go to state 76
+    sentence10                     shift and go to state 77
+    sentence11                     shift and go to state 78
+    sentence12                     shift and go to state 79
+    sentence13                     shift and go to state 80
+    sentence14                     shift and go to state 81
+    sentence15                     shift and go to state 82
+
+state 114
+
+    (22) master_var -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
+    (23) master_var -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 125
+    BOOL            shift and go to state 126
+
+
+state 115
+
+    (44) sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 127
+
+
+state 116
+
+    (45) sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 128
+
+
+state 117
+
+    (49) sentence5 -> ALTER LPARENT ID COMA ADD COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 129
+
+
+state 118
+
+    (50) sentence5 -> ALTER LPARENT ID COMA SUB COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 130
+
+
+state 119
+
+    (51) sentence5 -> ALTER LPARENT ID COMA MUL COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 131
+
+
+state 120
+
+    (52) sentence5 -> ALTER LPARENT ID COMA DIV COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 132
+
+
+state 121
+
+    (53) sentence6 -> ALTERB LPARENT ID COMA ADD COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 133
+
+
+state 122
+
+    (61) sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    NEW             reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    VALUES          reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    CALL            reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    ALTER           reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    ID              reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    BREAK           reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 61 (sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON .)
+
+
+state 123
+
+    (42) sentence1 -> NEW ID COMA LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
+
+    TYPE            shift and go to state 134
+
+
+state 124
+
+    (62) sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .
+
+    RPARENT         reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    NEW             reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    VALUES          reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    CALL            reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    PRINTVALUES     reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    ALTER           reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    ALTERB          reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    ID              reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    ISTRUE          reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    REPEAT          reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    UNTIL           reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    BREAK           reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+    SEMICOLON       reduce using rule 62 (sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON .)
+
+
+state 125
+
+    (22) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 135
+
+
+state 126
+
+    (23) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 136
+
+
+state 127
+
+    (44) sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    BREAK           reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 44 (sentence2 -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 128
+
+    (45) sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    NEW             reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    VALUES          reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    CALL            reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    ALTER           reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    ID              reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    BREAK           reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 45 (sentence2 -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
+
+
+state 129
+
+    (49) sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 137
+
+
+state 130
+
+    (50) sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 138
+
+
+state 131
+
+    (51) sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 139
+
+
+state 132
+
+    (52) sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 140
+
+
+state 133
+
+    (53) sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 141
+
+
+state 134
+
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
+
+    COMA            shift and go to state 142
+
+
+state 135
+
+    (22) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 143
+
+
+state 136
+
+    (23) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 144
+
+
+state 137
+
+    (49) sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 145
+
+
+state 138
+
+    (50) sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 146
+
+
+state 139
+
+    (51) sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 147
+
+
+state 140
+
+    (52) sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 148
+
+
+state 141
+
+    (53) sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 149
+
+
+state 142
+
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 150
+    BOOL            shift and go to state 151
+
+
+state 143
+
+    (22) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
+
+  ! reduce/reduce conflict for RPARENT resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for NEW resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for VALUES resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for CALL resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for PRINTVALUES resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ALTER resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ALTERB resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ID resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ISTRUE resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for REPEAT resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for UNTIL resolved using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    RPARENT         reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 22 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+
+  ! RPARENT         [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! NEW             [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! VALUES          [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! CALL            [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! PRINTVALUES     [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! ALTER           [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! ALTERB          [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! ID              [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! ISTRUE          [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! REPEAT          [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+  ! UNTIL           [ reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .) ]
+
+
+state 144
+
+    (23) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
+
+  ! reduce/reduce conflict for RPARENT resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for NEW resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for VALUES resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for CALL resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for PRINTVALUES resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ALTER resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ALTERB resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ID resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for ISTRUE resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for REPEAT resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+  ! reduce/reduce conflict for UNTIL resolved using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    RPARENT         reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    NEW             reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    VALUES          reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    CALL            reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ALTER           reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ID              reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 23 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+
+  ! RPARENT         [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! NEW             [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! VALUES          [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! CALL            [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! PRINTVALUES     [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! ALTER           [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! ALTERB          [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! ID              [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! ISTRUE          [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! REPEAT          [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+  ! UNTIL           [ reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .) ]
+
+
+state 145
+
+    (49) sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    BREAK           reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 49 (sentence5 -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 146
+
+    (50) sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    BREAK           reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 50 (sentence5 -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 147
+
+    (51) sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    BREAK           reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 51 (sentence5 -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 148
+
+    (52) sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    BREAK           reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 52 (sentence5 -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 149
+
+    (53) sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .
+
+    RPARENT         reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    BREAK           reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 53 (sentence6 -> ALTERB LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 150
+
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 152
+
+
+state 151
+
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 153
+
+
+state 152
+
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 154
+
+
+state 153
+
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 155
+
+
+state 154
+
+    (42) sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
+
+    BREAK           reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    RPARENT         reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 42 (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
+
+
+state 155
+
+    (43) sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
+
+    BREAK           reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    NEW             reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    VALUES          reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    CALL            reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ALTER           reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ID              reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    REPEAT          reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    UNTIL           reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    RPARENT         reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+    SEMICOLON       reduce using rule 43 (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for NEW in state 4 resolved as shift
+WARNING: shift/reduce conflict for VALUES in state 4 resolved as shift
+WARNING: shift/reduce conflict for CALL in state 4 resolved as shift
+WARNING: shift/reduce conflict for PRINTVALUES in state 4 resolved as shift
+WARNING: shift/reduce conflict for ALTER in state 4 resolved as shift
+WARNING: shift/reduce conflict for ALTERB in state 4 resolved as shift
+WARNING: shift/reduce conflict for ID in state 4 resolved as shift
+WARNING: shift/reduce conflict for ISTRUE in state 4 resolved as shift
+WARNING: shift/reduce conflict for REPEAT in state 4 resolved as shift
+WARNING: shift/reduce conflict for UNTIL in state 4 resolved as shift
+WARNING: shift/reduce conflict for RPARENT in state 5 resolved as shift
+WARNING: shift/reduce conflict for NEW in state 5 resolved as shift
+WARNING: shift/reduce conflict for VALUES in state 5 resolved as shift
+WARNING: shift/reduce conflict for CALL in state 5 resolved as shift
+WARNING: shift/reduce conflict for PRINTVALUES in state 5 resolved as shift
+WARNING: shift/reduce conflict for ALTER in state 5 resolved as shift
+WARNING: shift/reduce conflict for ALTERB in state 5 resolved as shift
+WARNING: shift/reduce conflict for ID in state 5 resolved as shift
+WARNING: shift/reduce conflict for ISTRUE in state 5 resolved as shift
+WARNING: shift/reduce conflict for REPEAT in state 5 resolved as shift
+WARNING: shift/reduce conflict for UNTIL in state 5 resolved as shift
+WARNING: reduce/reduce conflict in state 143 resolved using rule (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON)
+WARNING: rejected rule (sentence1 -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON) in state 143
+WARNING: reduce/reduce conflict in state 144 resolved using rule (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON)
+WARNING: rejected rule (sentence1 -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON) in state 144

@@ -1,5 +1,5 @@
-@Master (
-    New @variable1(Num, 15);
+@Master(
+    New @variable1,(Num, 15);
     PrintValues(@variable1);
     CALL (@Procedure1);
 );
