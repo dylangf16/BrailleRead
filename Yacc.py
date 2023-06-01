@@ -143,8 +143,6 @@ def p_master(p):
     master += 1
     if master != 1:
         syntax_errors.append(f'Debe existir solamente un @Master, hay otra declaración en la línea: {p.lineno}')
-    #p[0] = ('master', p[3])
-
 
 # Esto es para lidiar con las variables globales
 def p_master_sentences(p):
