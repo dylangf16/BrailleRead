@@ -7,7 +7,7 @@ lexical_errors = []
 
 # List of token names
 tokens = ['MASTER','ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
-          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING'
+          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING', 'PLUS'
           ]
 
 reserved = [
@@ -49,6 +49,7 @@ t_ADD = r'ADD'
 t_SUB = r'SUB'
 t_MUL = r'MUL'
 t_DIV = r'DIV'
+t_PLUS = r'\+'
 
 t_PROC = r'Proc'
 t_NEW = r'New'
@@ -158,8 +159,7 @@ def p_master_sentence(p):
                        | sentence1
                        | sentence2
                        | sentence3
-                       | sentence4
-                       | sentence4_aux
+                       | print_values
                        | sentence5
                        | sentence6
                        | sentence7
@@ -217,8 +217,7 @@ def p_sentence(p):
     '''sentence : sentence1
                 | sentence2
                 | sentence3
-                | sentence4
-                | sentence4_aux
+                | print_values
                 | sentence5
                 | sentence6
                 | sentence7
@@ -285,18 +284,34 @@ def find_local_variable_value(variable_name):
             return var_value
     return None  # Variable not found
 
-def p_sentence4(p):
-    '''sentence4 : PRINTVALUES LPARENT ID RPARENT SEMICOLON'''
-    if p[3] in variables_locales:
-        print(find_local_variable_value(p[3]))
-    elif p[3] in variables_globales:
-        print(variables_globales[p[3]][1])
+def p_print_values(p):
+    '''print_values : PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON'''
+# Recursividad para agarrar todas las sentencias
+
+def p_printable_sentences(p):
+    '''printable_sentences : printable_sentence_var
+                | printable_sentence_string
+                | printable_sentence_var PLUS printable_sentence_var
+                | printable_sentence_string PLUS printable_sentence_string
+                | printable_sentence_var PLUS printable_sentence_string
+                | printable_sentence_string PLUS printable_sentence_var
+                | printable_sentences PLUS printable_sentence_var
+                | printable_sentences PLUS printable_sentence_string
+                | PLUS printable_sentences PLUS printable_sentence_var
+                | PLUS printable_sentences PLUS printable_sentence_string'''
+
+def p_printable_sentence_var(p):
+    '''printable_sentence_var : ID '''
+    if p[1] in variables_locales:
+        print(find_local_variable_value(p[1]))
+    elif p[1] in variables_globales:
+        print(variables_globales[p[1]][1])
     else:
         syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
-def p_sentence4_aux(p):
-    '''sentence4_aux : PRINTVALUES LPARENT STRING RPARENT SEMICOLON'''
-    print(p[3])
+def p_printable_sentence_string(p):
+    '''printable_sentence_string : STRING '''
+    print(p[1])
 
 
 
