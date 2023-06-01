@@ -161,6 +161,7 @@ def p_master_sentence(p):
                        | sentence2
                        | sentence3
                        | sentence4
+                       | sentence4_aux
                        | sentence5
                        | sentence6
                        | sentence7
@@ -219,6 +220,7 @@ def p_sentence(p):
                 | sentence2
                 | sentence3
                 | sentence4
+                | sentence4_aux
                 | sentence5
                 | sentence6
                 | sentence7
@@ -274,20 +276,29 @@ def p_sentence2(p):
 
 def p_sentence3(p):
     '''sentence3 : CALL LPARENT ID RPARENT SEMICOLON'''
-
     if p[3] in procs:
         # Aquí puedes llamar a la función correspondiente
         # Por ejemplo, si las funciones están definidas como funciones normales de Python:
         return procs[p[3]]()
 
+def find_local_variable_value(variable_name):
+    for var_name, var_value in variables_locales:
+        if var_name == variable_name:
+            return var_value
+    return None  # Variable not found
 
 def p_sentence4(p):
-    '''sentence4 : PRINTVALUES LPARENT STRING RPARENT SEMICOLON
-                     | PRINTVALUES LPARENT ID RPARENT SEMICOLON'''
-    if isinstance(p[3], str):
-        print(p[3])
+    '''sentence4 : PRINTVALUES LPARENT ID RPARENT SEMICOLON'''
+    if p[3] in variables_locales:
+        print(find_local_variable_value(p[3]))
+    elif p[3] in variables_globales:
+        print(variables_globales[p[3]][1])
     else:
-        print(variables_globales[p[3]])
+        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+def p_sentence4_aux(p):
+    '''sentence4_aux : PRINTVALUES LPARENT STRING RPARENT SEMICOLON'''
+    print(p[3])
 
 
 
