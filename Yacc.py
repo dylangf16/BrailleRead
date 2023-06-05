@@ -135,11 +135,25 @@ precedence = (
     ('left', 'MUL', 'DIV'),
 )
 
+def p_start(p):
+    '''start : master procedure
+            | procedure master
+            | master'''
+    p[0] = p[1]
+def p_procedure(p):
+    '''procedure : PROC ID LPARENT sentences RPARENT SEMICOLON'''
+    # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico
+    # de un procedimiento
+    if p[2] not in procs:
+        procs.append(p[2])
+        print(str(p[2]) + " agregado a la lista de procs")
+    print("Función analizando: " + p[2])
+    p[0] = ('procedure', p[2], p[4])
+
 def p_master(p):
-    '''master : MASTER LPARENT master_sentences RPARENT SEMICOLON
-                | empty'''
+    '''master : MASTER LPARENT master_sentences RPARENT SEMICOLON'''
     # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico de @Master
-    print("pasó proc_master")
+    print("pasó master")
     global master
     master += 1
     if master != 1:
@@ -156,7 +170,6 @@ def p_master_sentences(p):
 
 def p_master_sentence(p):
     '''master_sentence : master_var
-                       | sentence1
                        | sentence2
                        | sentence3
                        | print_values
@@ -190,20 +203,6 @@ def p_master_var(p):
         syntax_errors.append(
             f'Error en línea {p.lineno}, posición {p.lexpos}, tamaño de nombre de variable no cumple con el estándar')
 
-def p_procedure(p):
-    '''procedure : PROC ID LPARENT sentences RPARENT SEMICOLON'''
-    # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico
-    # de un procedimiento
-    if p[2] not in procs:
-        procs.append(p[2])
-        print(str(p[2]) + " agregado a la lista de procs")
-    print("Función analizando: " + p[2])
-    print("Sentencias detectadas: ")
-    for rule in p[4]:
-        print(rule)
-
-    p[0] = ('procedure', p[2], p[4])
-
 
 # Recursividad para agarrar todas las sentencias
 def p_sentences(p):
@@ -229,18 +228,19 @@ def p_sentence(p):
                 | sentence13
                 | sentence14
                 | sentence15 '''
-    p[0] = p[1]
+    #p[0] = p[1]
 
 
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
 def p_sentence1(p):
     '''sentence1 : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
+    print("Paso variable local")
     if len(p[2]) > 2 and len(p[2]) < 12:
         if p[5] == 'Num' and isinstance(p[7], int):
-            variables_locales[p[2]] = [proc_en_analisis, [5], p[7]]
+            variables_locales[p[2]] = [p[5], p[7]]
         elif p[5] == 'Bool' and isinstance(p[7], bool):
-            variables_locales[p[2]] = [proc_en_analisis, [5], p[7]]
+            variables_locales[p[2]] = [p[5], p[7]]
         else:
             syntax_errors.append(
                 f'Error en línea {p.lineno}, posición {p.lexpos}, valor dado no corresponde al tipado seleccionado')
@@ -279,7 +279,7 @@ def p_sentence3(p):
         return procs[p[3]]()
 
 def find_local_variable_value(variable_name):
-    for var_name, var_value in variables_locales:
+    for var_name, var_value in variables_locales.items():
         if var_name == variable_name:
             return var_value
     return None  # Variable not found
