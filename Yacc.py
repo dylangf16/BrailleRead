@@ -1,6 +1,7 @@
 import ply.yacc as yacc
 import ply.lex as lex
-import sys
+from collections import deque
+
 
 #Lex ---------------------
 lexical_errors = []
@@ -123,6 +124,8 @@ def t_error(t):
     t.lexer.skip(1)
 
 # Dictionary of names
+processingMaster = True
+called_procs = []
 procs = []
 variables_locales = {}
 variables_globales = {}
@@ -136,29 +139,41 @@ precedence = (
 )
 
 def p_start(p):
-    '''start : master procedure
-            | procedure master
+    '''start : master procedures
             | master'''
     p[0] = p[1]
-def p_procedure(p):
-    '''procedure : PROC ID LPARENT sentences RPARENT SEMICOLON'''
-    # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico
-    # de un procedimiento
+
+def p_declare_procedure(p):
+    '''declare_procedure : PROC ID'''
+    global procs, proc_en_analisis
     if p[2] not in procs:
         procs.append(p[2])
         print(str(p[2]) + " agregado a la lista de procs")
-    print("Función analizando: " + p[2])
+        proc_en_analisis = p[2]
+    else:
+        syntax_errors.append(f'Ya hay un procedure con este nombre, hay otra declaración en la línea: {p.lineno}')
+
+def p_procedures(p):
+    '''procedures : procedure
+                    | procedures procedure'''
+def p_procedure(p):
+    '''procedure : declare_procedure LPARENT sentences RPARENT SEMICOLON'''
+    # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico
+    # de un procedimiento
+    for element in procs:
+        if element in called_procs:
+            called_procs.remove(element)
     p[0] = ('procedure', p[2], p[4])
-    proc_en_analisis = p[2]
 
 def p_master(p):
     '''master : MASTER LPARENT master_sentences RPARENT SEMICOLON'''
-    # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico de @Master
+    # Acción semántica: Realizar las aciones correspondientes al análisis sintáctico de @Master
     print("pasó master")
-    global master
+    global master, processingMaster
     master += 1
     if master != 1:
         syntax_errors.append(f'Debe existir solamente un @Master, hay otra declaración en la línea: {p.lineno}')
+    processingMaster = False
 
 # Esto es para lidiar con las variables globales
 def p_master_sentences(p):
@@ -236,51 +251,50 @@ def p_sentence(p):
 def p_local_variable(p):
     '''local_variable : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
-    print("Paso variable local")
-    if len(p[2]) > 2 and len(p[2]) < 12:
-        if p[5] == 'Num' and isinstance(p[7], int):
-            variables_locales[p[2]] = [p[5], p[7]]
-        elif p[5] == 'Bool' and isinstance(p[7], bool):
-            variables_locales[p[2]] = [p[5], p[7]]
+    if proc_en_analisis in called_procs:
+        print("Paso variable local")
+        if len(p[2]) > 2 and len(p[2]) < 12:
+            if p[5] == 'Num' and isinstance(p[7], int):
+                variables_locales[p[2]] = [proc_en_analisis,p[5], p[7]]
+            elif p[5] == 'Bool' and isinstance(p[7], bool):
+                variables_locales[p[2]] = [proc_en_analisis,p[5], p[7]]
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}, valor dado no corresponde al tipado seleccionado')
         else:
             syntax_errors.append(
-                f'Error en línea {p.lineno}, posición {p.lexpos}, valor dado no corresponde al tipado seleccionado')
-    else:
-        syntax_errors.append(
-            f'Error en línea {p.lineno}, posición {p.lexpos}, tamaño de nombre de variable no cumple con el estándar')
-
+                f'Error en línea {p.lineno}, posición {p.lexpos}, tamaño de nombre de variable no cumple con el estándar')
 
 def p_values(p):
     '''values : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
                  | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON'''
-    if p[3] in variables_locales:
-        if isinstance(p[5], int) and variables_locales[p[3]][0] == 'Num':
-            variables_locales[p[3]][1] = p[5]
-        elif isinstance(p[5], bool) and variables_locales[p[3]][0] == 'Bool':
-            variables_locales[p[3]][1] = p[5]
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[3] in variables_locales:
+            if isinstance(p[5], int) and variables_locales[p[3]][1] == 'Num':
+                variables_locales[p[3]][2] = p[5]
+            elif isinstance(p[5], bool) and variables_locales[p[3]][1] == 'Bool':
+                variables_locales[p[3]][2] = p[5]
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+        elif p[3] in variables_globales:
+            if isinstance(p[5], int) and variables_globales[p[3]][0] == 'Num':
+                variables_globales[p[3]][1] = p[5]
+            elif isinstance(p[5], bool) and variables_globales[p[3]][0] == 'Bool':
+                variables_globales[p[3]][1] = p[5]
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
         else:
-            syntax_errors.append(
-                f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
-    elif p[3] in variables_globales:
-        if isinstance(p[5], int) and variables_globales[p[3]][0] == 'Num':
-            variables_globales[p[3]][1] = p[5]
-        elif isinstance(p[5], bool) and variables_globales[p[3]][0] == 'Bool':
-            variables_globales[p[3]][1] = p[5]
-        else:
-            syntax_errors.append(
-                f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
-    else:
-        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
 def p_call(p):
     '''call : CALL LPARENT ID RPARENT SEMICOLON'''
-    if p[3] in procs:
-        # Aquí puedes llamar a la función correspondiente
-        # Por ejemplo, si las funciones están definidas como funciones normales de Python:
-        return procs[p[3]]()
+    if proc_en_analisis in called_procs or processingMaster:
+        called_procs.append(p[3])
 
 def find_local_variable_value(variable_name):
-    for var_name, var_value in variables_locales.items():
+    for var_name, (var_proc,var_type, var_value) in variables_locales.items():
         if var_name == variable_name:
             return var_value
     return None  # Variable not found
@@ -301,17 +315,18 @@ def p_printable_sentences(p):
 
 def p_printable_sentence_var(p):
     '''printable_sentence_var : ID '''
-    if p[1] in variables_locales:
-        print(find_local_variable_value(p[1]))
-    elif p[1] in variables_globales:
-        print(variables_globales[p[1]][1])
-    else:
-        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[1] in variables_locales:
+            print(find_local_variable_value(p[1]))
+        elif p[1] in variables_globales:
+            print(variables_globales[p[1]][1])
+        else:
+            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
 def p_printable_sentence_string(p):
     '''printable_sentence_string : STRING '''
-    print(p[1])
-
+    if proc_en_analisis in called_procs or processingMaster:
+        print(p[1])
 
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
 def p_alter(p):
@@ -319,297 +334,309 @@ def p_alter(p):
                 | ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
                 | ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
                 | ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON'''
-    if p[5] == "ADD":
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[5] == "ADD":
+            if p[3] in variables_globales:
+                valor_actual = variables_globales[p[3]]
+                nuevo_valor = (valor_actual[0], valor_actual[1] + p[7])
+                variables_globales[p[3]] = nuevo_valor
+                print(variables_globales[p[3]][1])
+            elif p[3] in variables_locales:
+                for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+                    if var_type == 'Num':
+                        if var_name == p[3]:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[p[3]]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] + p[7])
+                                variables_locales[p[3]] = nuevo_valor
+                            else:
+                                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                    else:
+                        syntax_errors.append(
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+        elif p[5] == "SUB":
+            if p[3] in variables_globales:
+                valor_actual = variables_globales[p[3]]
+                nuevo_valor = (valor_actual[0], valor_actual[1] - p[7])
+                variables_globales[p[3]] = nuevo_valor
+            elif p[3] in variables_locales:
+                for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+                    if var_type == 'Num':
+                        if var_name == p[3]:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[p[3]]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] - p[7])
+                                variables_locales[p[3]] = nuevo_valor
+                                print(find_local_variable_value(p[3]))
+                            else:
+                                syntax_errors.append(
+                                    f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                    else:
+                        syntax_errors.append(
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+        elif p[5] == "MUL":
+            if p[3] in variables_globales:
+                valor_actual = variables_globales[p[3]]
+                nuevo_valor = (valor_actual[0], valor_actual[1] * p[7])
+                variables_globales[p[3]] = nuevo_valor
+                print(variables_globales[p[3]][1])
+            elif p[3] in variables_locales:
+                for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+                    if var_type == 'Num':
+                        if var_name == p[3]:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[p[3]]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] * p[7])
+                                variables_locales[p[3]] = nuevo_valor
+                                print(find_local_variable_value(p[3]))
+                            else:
+                                syntax_errors.append(
+                                    f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                    else:
+                        syntax_errors.append(
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+        elif p[5] == "DIV":
+            if p[3] in variables_globales:
+                valor_actual = variables_globales[p[3]]
+                nuevo_valor = (valor_actual[0], valor_actual[1] / p[7])
+                variables_globales[p[3]] = nuevo_valor
+                print(variables_globales[p[3]][1])
+            elif p[3] in variables_locales:
+                for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+                    if var_type == 'Num':
+                        if var_name == p[3]:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[p[3]]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] / p[7])
+                                variables_locales[p[3]] = nuevo_valor
+                                print(find_local_variable_value(p[3]))
+                            else:
+                                syntax_errors.append(
+                                    f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                    else:
+                        syntax_errors.append(
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+        else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+
+def p_alterB(p):
+    '''alterB : ALTERB LPARENT ID RPARENT SEMICOLON'''
+    if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_globales:
-            valor_actual = variables_globales[p[3]]
-            nuevo_valor = (valor_actual[0], valor_actual[1] + p[7])
-            variables_globales[p[3]] = nuevo_valor
-            print(variables_globales[p[3]][1])
+            for clave, (dato1, dato2) in variables_globales.items():
+                if clave == p[3]:
+                    valor_actual = variables_globales[p[3]]
+                    if dato2 == True:
+                        nuevo_valor = (valor_actual[0], False)
+                        variables_globales[p[3]] = nuevo_valor
+                    else:
+                        nuevo_valor = (valor_actual[0], True)
+                        variables_globales[p[3]] = nuevo_valor
         elif p[3] in variables_locales:
             for clave, (dato1, dato2, dato3) in variables_locales.items():
                 if clave == p[3]:
                     if dato1 == proc_en_analisis:
-                        valor_actual = variables_locales[p[2]]
-                        nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] + p[7])
-                        variables_locales[p[3]] = nuevo_valor
-                        print(find_local_variable_value(p[3]))
+                        if dato3 == True:
+                            valor_actual = variables_locales[p[2]]
+                            nuevo_valor = (valor_actual[0], valor_actual[1], False)
+                            variables_locales[p[3]] = nuevo_valor
+                        else:
+                            valor_actual = variables_locales[p[2]]
+                            nuevo_valor = (valor_actual[0], valor_actual[1], True)
+                            variables_locales[p[3]] = nuevo_valor
+                    else:
+                        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                else:
+                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+def p_sentence7(p):
+    '''sentence7 : ID MAQ INTEGER'''
+    if proc_en_analisis in called_procs or processingMaster:
+        for clave, (dato1, dato2) in variables_globales.items():
+            if clave == p[1]:
+                valor_actual = variables_globales[p[1]]
+                if p[3] > dato2:
+                    return True
+                else:
+                    return False
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+        for clave, (dato1, dato2, dato3) in variables_locales.items():
+            if clave == p[1]:
+                if dato1 == proc_en_analisis:
+                    if p[3] > dato3:
+                        return True
+                    else:
+                        return False
+                else:
+                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+def p_sentence8(p):
+    '''sentence8 : ID MEQ INTEGER'''
+    if proc_en_analisis in called_procs or processingMaster:
+        for clave, (dato1, dato2) in variables_globales.items():
+            if clave == p[1]:
+                valor_actual = variables_globales[p[1]]
+                if p[3] < dato2:
+                    return True
+                else:
+                    return False
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+        for clave, (dato1, dato2, dato3) in variables_locales.items():
+            if clave == p[1]:
+                if dato1 == proc_en_analisis:
+                    if p[3] < dato3:
+                        return True
+                    else:
+                        return False
+                else:
+                    syntax_errors.append(
+                        f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+def p_sentence9(p):
+    '''sentence9 : ID EQUAL INTEGER'''
+    if proc_en_analisis in called_procs or processingMaster:
+        for clave, (dato1, dato2) in variables_globales.items():
+            if clave == p[1]:
+                valor_actual = variables_globales[p[1]]
+                if p[3] == dato2:
+                    return True
+                else:
+                    return False
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+        for clave, (dato1, dato2, dato3) in variables_locales.items():
+            if clave == p[1]:
+                if dato1 == proc_en_analisis:
+                    if p[3] == dato3:
+                        return True
+                    else:
+                        return False
+                else:
+                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+def p_sentence10(p):
+    '''sentence10 : ID DIFFERENT INTEGER'''
+    if proc_en_analisis in called_procs or processingMaster:
+        for clave, (dato1, dato2) in variables_globales.items():
+            if clave == p[1]:
+                valor_actual = variables_globales[p[1]]
+                if p[3] != dato2:
+                    return True
+                else:
+                    return False
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+        for clave, (dato1, dato2, dato3) in variables_locales.items():
+            if clave == p[1]:
+                if dato1 == proc_en_analisis:
+                    if p[3] != dato3:
+                        return True
+                    else:
+                        return False
+                else:
+                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+
+def p_sentence11(p):
+    '''sentence11 : ID MEQEQUAL INTEGER'''
+    if proc_en_analisis in called_procs or processingMaster:
+        for clave, (dato1, dato2) in variables_globales.items():
+            if clave == p[1]:
+                valor_actual = variables_globales[p[1]]
+                if p[3] <= dato2:
+                    return True
+                else:
+                    return False
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+        for clave, (dato1, dato2, dato3) in variables_locales.items():
+            if clave == p[1]:
+                if dato1 == proc_en_analisis:
+                    if p[3] <= dato3:
+                        return True
+                    else:
+                        return False
+                else:
+                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+def p_sentence12(p):
+    '''sentence12 : ID MAQEQUAL INTEGER'''
+    if proc_en_analisis in called_procs or processingMaster:
+        for clave, (dato1, dato2) in variables_globales.items():
+            if clave == p[1]:
+                valor_actual = variables_globales[p[1]]
+                if p[3] >= dato2:
+                    return True
+                else:
+                    return False
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+        for clave, (dato1, dato2, dato3) in variables_locales.items():
+            if clave == p[1]:
+                if dato1 == proc_en_analisis:
+                    if p[3] >= dato3:
+                        return True
+                    else:
+                        return False
+                else:
+                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+            else:
+                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+def p_isTrue(p):
+    '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[3] in variables_globales:
+            for clave, (dato1, dato2) in variables_globales.items():
+                if clave == p[3]:
+                    valor_actual = variables_globales[p[3]]
+                    if dato2:
+                        print("True")
+                        return True
+                    else:
+                        print("False")
+                        return False
+        elif p[3] in variables_locales:
+            for clave, (dato1, dato2, dato3) in variables_locales.items():
+                if clave == p[3]:
+                    if dato1 == proc_en_analisis:
+                        if dato3:
+                            print("True")
+                            return True
+                        else:
+                            print("False")
+                            return False
                     else:
                         syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                 else:
                     syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-    elif p[5] == "SUB":
-        if p[3] in variables_globales:
-            valor_actual = variables_globales[p[3]]
-            nuevo_valor = (valor_actual[0], valor_actual[1] - p[7])
-            variables_globales[p[3]] = nuevo_valor
-            print(variables_globales[p[3]][1])
-        elif p[3] in variables_locales:
-            for clave, (dato1, dato2, dato3) in variables_locales.items():
-                if clave == p[3]:
-                    if dato1 == proc_en_analisis:
-                        valor_actual = variables_locales[p[2]]
-                        nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] - p[7])
-                        variables_locales[p[3]] = nuevo_valor
-                        print(find_local_variable_value(p[3]))
-                    else:
-                        syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-                else:
-                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-    elif p[5] == "MUL":
-        if p[3] in variables_globales:
-            valor_actual = variables_globales[p[3]]
-            nuevo_valor = (valor_actual[0], valor_actual[1] * p[7])
-            variables_globales[p[3]] = nuevo_valor
-            print(variables_globales[p[3]][1])
-        elif p[3] in variables_locales:
-            for clave, (dato1, dato2, dato3) in variables_locales.items():
-                if clave == p[3]:
-                    if dato1 == proc_en_analisis:
-                        valor_actual = variables_locales[p[2]]
-                        nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] * p[7])
-                        variables_locales[p[3]] = nuevo_valor
-                        print(find_local_variable_value(p[3]))
-                    else:
-                        syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-                else:
-                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-    elif p[5] == "DIV":
-        if p[3] in variables_globales:
-            valor_actual = variables_globales[p[3]]
-            nuevo_valor = (valor_actual[0], valor_actual[1] / p[7])
-            variables_globales[p[3]] = nuevo_valor
-            print(variables_globales[p[3]][1])
-        elif p[3] in variables_locales:
-            for clave, (dato1, dato2, dato3) in variables_locales.items():
-                if clave == p[3]:
-                    if dato1 == proc_en_analisis:
-                        valor_actual = variables_locales[p[2]]
-                        nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] / p[7])
-                        variables_locales[p[3]] = nuevo_valor
-                        print(find_local_variable_value(p[3]))
-                    else:
-                        syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-                else:
-                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-    else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-def p_alterB(p):
-    '''alterB : ALTERB LPARENT ID RPARENT SEMICOLON'''
-    if p[3] in variables_globales:
-        for clave, (dato1, dato2) in variables_globales.items():
-            if clave == p[3]:
-                valor_actual = variables_globales[p[3]]
-                if dato2 == True:
-                    nuevo_valor = (valor_actual[0], False)
-                    variables_globales[p[3]] = nuevo_valor
-                else:
-                    nuevo_valor = (valor_actual[0], True)
-                    variables_globales[p[3]] = nuevo_valor
-    elif p[3] in variables_locales:
-        for clave, (dato1, dato2, dato3) in variables_locales.items():
-            if clave == p[3]:
-                if dato1 == proc_en_analisis:
-                    if dato3 == True:
-                        valor_actual = variables_locales[p[2]]
-                        nuevo_valor = (valor_actual[0], valor_actual[1], False)
-                        variables_locales[p[3]] = nuevo_valor
-                    else:
-                        valor_actual = variables_locales[p[2]]
-                        nuevo_valor = (valor_actual[0], valor_actual[1], True)
-                        variables_locales[p[3]] = nuevo_valor
-                else:
-                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-def p_sentence7(p):
-    '''sentence7 : ID MAQ INTEGER'''
-    for clave, (dato1, dato2) in variables_globales.items():
-        if clave == p[1]:
-            valor_actual = variables_globales[p[1]]
-            if p[3] > dato2:
-                return True
-            else:
-                return False
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-    for clave, (dato1, dato2, dato3) in variables_locales.items():
-        if clave == p[1]:
-            if dato1 == proc_en_analisis:
-                if p[3] > dato3:
-                    return True
-                else:
-                    return False
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-def p_sentence8(p):
-    '''sentence8 : ID MEQ INTEGER'''
-
-    for clave, (dato1, dato2) in variables_globales.items():
-        if clave == p[1]:
-            valor_actual = variables_globales[p[1]]
-            if p[3] < dato2:
-                return True
-            else:
-                return False
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-    for clave, (dato1, dato2, dato3) in variables_locales.items():
-        if clave == p[1]:
-            if dato1 == proc_en_analisis:
-                if p[3] < dato3:
-                    return True
-                else:
-                    return False
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-def p_sentence9(p):
-    '''sentence9 : ID EQUAL INTEGER'''
-
-    for clave, (dato1, dato2) in variables_globales.items():
-        if clave == p[1]:
-            valor_actual = variables_globales[p[1]]
-            if p[3] == dato2:
-                return True
-            else:
-                return False
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-    for clave, (dato1, dato2, dato3) in variables_locales.items():
-        if clave == p[1]:
-            if dato1 == proc_en_analisis:
-                if p[3] == dato3:
-                    return True
-                else:
-                    return False
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-
-def p_sentence10(p):
-    '''sentence10 : ID DIFFERENT INTEGER'''
-
-    for clave, (dato1, dato2) in variables_globales.items():
-        if clave == p[1]:
-            valor_actual = variables_globales[p[1]]
-            if p[3] != dato2:
-                return True
-            else:
-                return False
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-    for clave, (dato1, dato2, dato3) in variables_locales.items():
-        if clave == p[1]:
-            if dato1 == proc_en_analisis:
-                if p[3] != dato3:
-                    return True
-                else:
-                    return False
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-def p_sentence11(p):
-    '''sentence11 : ID MEQEQUAL INTEGER'''
-
-    for clave, (dato1, dato2) in variables_globales.items():
-        if clave == p[1]:
-            valor_actual = variables_globales[p[1]]
-            if p[3] <= dato2:
-                return True
-            else:
-                return False
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-    for clave, (dato1, dato2, dato3) in variables_locales.items():
-        if clave == p[1]:
-            if dato1 == proc_en_analisis:
-                if p[3] <= dato3:
-                    return True
-                else:
-                    return False
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-def p_sentence12(p):
-    '''sentence12 : ID MAQEQUAL INTEGER'''
-
-    for clave, (dato1, dato2) in variables_globales.items():
-        if clave == p[1]:
-            valor_actual = variables_globales[p[1]]
-            if p[3] >= dato2:
-                return True
-            else:
-                return False
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-    for clave, (dato1, dato2, dato3) in variables_locales.items():
-        if clave == p[1]:
-            if dato1 == proc_en_analisis:
-                if p[3] >= dato3:
-                    return True
-                else:
-                    return False
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-        else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
-def p_isTrue(p):
-    '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
-    if p[3] in variables_globales:
-        for clave, (dato1, dato2) in variables_globales.items():
-            if clave == p[3]:
-                valor_actual = variables_globales[p[3]]
-                if dato2:
-                    print("True")
-                    return True
-                else:
-                    print("False")
-                    return False
-    elif p[3] in variables_locales:
-        for clave, (dato1, dato2, dato3) in variables_locales.items():
-            if clave == p[3]:
-                if dato1 == proc_en_analisis:
-                    if dato3:
-                        print("True")
-                        return True
-                    else:
-                        print("False")
-                        return False
-                else:
-                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-            else:
-                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-    else:
-        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
 
 def p_sentence14(p):
