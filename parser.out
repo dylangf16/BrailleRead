@@ -30,12 +30,12 @@ Rule 12    master_sentence -> call
 Rule 13    master_sentence -> print_values
 Rule 14    master_sentence -> alter
 Rule 15    master_sentence -> alterB
-Rule 16    master_sentence -> sentence7
-Rule 17    master_sentence -> sentence8
-Rule 18    master_sentence -> sentence9
-Rule 19    master_sentence -> sentence10
-Rule 20    master_sentence -> sentence11
-Rule 21    master_sentence -> sentence12
+Rule 16    master_sentence -> comparisson_maq
+Rule 17    master_sentence -> comparisson_meq
+Rule 18    master_sentence -> comparisson_equal
+Rule 19    master_sentence -> comparisson_dif
+Rule 20    master_sentence -> comparisson_meqequal
+Rule 21    master_sentence -> comparisson_maqequal
 Rule 22    master_sentence -> isTrue
 Rule 23    master_sentence -> sentence14
 Rule 24    master_sentence -> sentence15
@@ -50,12 +50,12 @@ Rule 32    sentence -> call
 Rule 33    sentence -> print_values
 Rule 34    sentence -> alter
 Rule 35    sentence -> alterB
-Rule 36    sentence -> sentence7
-Rule 37    sentence -> sentence8
-Rule 38    sentence -> sentence9
-Rule 39    sentence -> sentence10
-Rule 40    sentence -> sentence11
-Rule 41    sentence -> sentence12
+Rule 36    sentence -> comparisson_maq
+Rule 37    sentence -> comparisson_meq
+Rule 38    sentence -> comparisson_equal
+Rule 39    sentence -> comparisson_dif
+Rule 40    sentence -> comparisson_meqequal
+Rule 41    sentence -> comparisson_maqequal
 Rule 42    sentence -> isTrue
 Rule 43    sentence -> sentence14
 Rule 44    sentence -> sentence15
@@ -80,12 +80,12 @@ Rule 62    alter -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
 Rule 63    alter -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
 Rule 64    alter -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
 Rule 65    alterB -> ALTERB LPARENT ID RPARENT SEMICOLON
-Rule 66    sentence7 -> ID MAQ INTEGER
-Rule 67    sentence8 -> ID MEQ INTEGER
-Rule 68    sentence9 -> ID EQUAL INTEGER
-Rule 69    sentence10 -> ID DIFFERENT INTEGER
-Rule 70    sentence11 -> ID MEQEQUAL INTEGER
-Rule 71    sentence12 -> ID MAQEQUAL INTEGER
+Rule 66    comparisson_maq -> ID MAQ INTEGER
+Rule 67    comparisson_meq -> ID MEQ INTEGER
+Rule 68    comparisson_equal -> ID EQUAL INTEGER
+Rule 69    comparisson_dif -> ID DIFFERENT INTEGER
+Rule 70    comparisson_meqequal -> ID MEQEQUAL INTEGER
+Rule 71    comparisson_maqequal -> ID MAQEQUAL INTEGER
 Rule 72    isTrue -> ISTRUE LPARENT ID RPARENT SEMICOLON
 Rule 73    sentence14 -> REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
 Rule 74    sentence15 -> UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -143,6 +143,12 @@ Nonterminals, with rules where they appear
 alter                : 14 34
 alterB               : 15 35
 call                 : 12 32
+comparisson_dif      : 19 39
+comparisson_equal    : 18 38
+comparisson_maq      : 16 36
+comparisson_maqequal : 21 41
+comparisson_meq      : 17 37
+comparisson_meqequal : 20 40
 declare_procedure    : 6
 empty                : 25
 instructions         : 74
@@ -159,14 +165,8 @@ printable_sentences  : 50 57 58
 procedure            : 4 5
 procedures           : 1 5
 sentence             : 28 29 75 76
-sentence10           : 19 39
-sentence11           : 20 40
-sentence12           : 21 41
 sentence14           : 23 43
 sentence15           : 24 44
-sentence7            : 16 36
-sentence8            : 17 37
-sentence9            : 18 38
 sentences            : 6 29 73 74 76
 start                : 0
 values               : 11 31
@@ -260,12 +260,12 @@ state 8
     (13) master_sentence -> . print_values
     (14) master_sentence -> . alter
     (15) master_sentence -> . alterB
-    (16) master_sentence -> . sentence7
-    (17) master_sentence -> . sentence8
-    (18) master_sentence -> . sentence9
-    (19) master_sentence -> . sentence10
-    (20) master_sentence -> . sentence11
-    (21) master_sentence -> . sentence12
+    (16) master_sentence -> . comparisson_maq
+    (17) master_sentence -> . comparisson_meq
+    (18) master_sentence -> . comparisson_equal
+    (19) master_sentence -> . comparisson_dif
+    (20) master_sentence -> . comparisson_meqequal
+    (21) master_sentence -> . comparisson_maqequal
     (22) master_sentence -> . isTrue
     (23) master_sentence -> . sentence14
     (24) master_sentence -> . sentence15
@@ -281,12 +281,12 @@ state 8
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -333,12 +333,12 @@ state 8
     print_values                   shift and go to state 17
     alter                          shift and go to state 18
     alterB                         shift and go to state 19
-    sentence7                      shift and go to state 20
-    sentence8                      shift and go to state 21
-    sentence9                      shift and go to state 22
-    sentence10                     shift and go to state 23
-    sentence11                     shift and go to state 24
-    sentence12                     shift and go to state 25
+    comparisson_maq                shift and go to state 20
+    comparisson_meq                shift and go to state 21
+    comparisson_equal              shift and go to state 22
+    comparisson_dif                shift and go to state 23
+    comparisson_meqequal           shift and go to state 24
+    comparisson_maqequal           shift and go to state 25
     isTrue                         shift and go to state 26
     sentence14                     shift and go to state 27
     sentence15                     shift and go to state 28
@@ -363,12 +363,12 @@ state 10
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -383,12 +383,12 @@ state 10
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -412,12 +412,12 @@ state 10
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -439,12 +439,12 @@ state 12
     (13) master_sentence -> . print_values
     (14) master_sentence -> . alter
     (15) master_sentence -> . alterB
-    (16) master_sentence -> . sentence7
-    (17) master_sentence -> . sentence8
-    (18) master_sentence -> . sentence9
-    (19) master_sentence -> . sentence10
-    (20) master_sentence -> . sentence11
-    (21) master_sentence -> . sentence12
+    (16) master_sentence -> . comparisson_maq
+    (17) master_sentence -> . comparisson_meq
+    (18) master_sentence -> . comparisson_equal
+    (19) master_sentence -> . comparisson_dif
+    (20) master_sentence -> . comparisson_meqequal
+    (21) master_sentence -> . comparisson_maqequal
     (22) master_sentence -> . isTrue
     (23) master_sentence -> . sentence14
     (24) master_sentence -> . sentence15
@@ -460,12 +460,12 @@ state 12
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -513,12 +513,12 @@ state 12
     print_values                   shift and go to state 17
     alter                          shift and go to state 18
     alterB                         shift and go to state 19
-    sentence7                      shift and go to state 20
-    sentence8                      shift and go to state 21
-    sentence9                      shift and go to state 22
-    sentence10                     shift and go to state 23
-    sentence11                     shift and go to state 24
-    sentence12                     shift and go to state 25
+    comparisson_maq                shift and go to state 20
+    comparisson_meq                shift and go to state 21
+    comparisson_equal              shift and go to state 22
+    comparisson_dif                shift and go to state 23
+    comparisson_meqequal           shift and go to state 24
+    comparisson_maqequal           shift and go to state 25
     isTrue                         shift and go to state 26
     sentence14                     shift and go to state 27
     sentence15                     shift and go to state 28
@@ -645,104 +645,104 @@ state 19
 
 state 20
 
-    (16) master_sentence -> sentence7 .
+    (16) master_sentence -> comparisson_maq .
 
-    RPARENT         reduce using rule 16 (master_sentence -> sentence7 .)
-    NEW             reduce using rule 16 (master_sentence -> sentence7 .)
-    VALUES          reduce using rule 16 (master_sentence -> sentence7 .)
-    CALL            reduce using rule 16 (master_sentence -> sentence7 .)
-    PRINTVALUES     reduce using rule 16 (master_sentence -> sentence7 .)
-    ALTER           reduce using rule 16 (master_sentence -> sentence7 .)
-    ALTERB          reduce using rule 16 (master_sentence -> sentence7 .)
-    ID              reduce using rule 16 (master_sentence -> sentence7 .)
-    ISTRUE          reduce using rule 16 (master_sentence -> sentence7 .)
-    REPEAT          reduce using rule 16 (master_sentence -> sentence7 .)
-    UNTIL           reduce using rule 16 (master_sentence -> sentence7 .)
+    RPARENT         reduce using rule 16 (master_sentence -> comparisson_maq .)
+    NEW             reduce using rule 16 (master_sentence -> comparisson_maq .)
+    VALUES          reduce using rule 16 (master_sentence -> comparisson_maq .)
+    CALL            reduce using rule 16 (master_sentence -> comparisson_maq .)
+    PRINTVALUES     reduce using rule 16 (master_sentence -> comparisson_maq .)
+    ALTER           reduce using rule 16 (master_sentence -> comparisson_maq .)
+    ALTERB          reduce using rule 16 (master_sentence -> comparisson_maq .)
+    ID              reduce using rule 16 (master_sentence -> comparisson_maq .)
+    ISTRUE          reduce using rule 16 (master_sentence -> comparisson_maq .)
+    REPEAT          reduce using rule 16 (master_sentence -> comparisson_maq .)
+    UNTIL           reduce using rule 16 (master_sentence -> comparisson_maq .)
 
 
 state 21
 
-    (17) master_sentence -> sentence8 .
+    (17) master_sentence -> comparisson_meq .
 
-    RPARENT         reduce using rule 17 (master_sentence -> sentence8 .)
-    NEW             reduce using rule 17 (master_sentence -> sentence8 .)
-    VALUES          reduce using rule 17 (master_sentence -> sentence8 .)
-    CALL            reduce using rule 17 (master_sentence -> sentence8 .)
-    PRINTVALUES     reduce using rule 17 (master_sentence -> sentence8 .)
-    ALTER           reduce using rule 17 (master_sentence -> sentence8 .)
-    ALTERB          reduce using rule 17 (master_sentence -> sentence8 .)
-    ID              reduce using rule 17 (master_sentence -> sentence8 .)
-    ISTRUE          reduce using rule 17 (master_sentence -> sentence8 .)
-    REPEAT          reduce using rule 17 (master_sentence -> sentence8 .)
-    UNTIL           reduce using rule 17 (master_sentence -> sentence8 .)
+    RPARENT         reduce using rule 17 (master_sentence -> comparisson_meq .)
+    NEW             reduce using rule 17 (master_sentence -> comparisson_meq .)
+    VALUES          reduce using rule 17 (master_sentence -> comparisson_meq .)
+    CALL            reduce using rule 17 (master_sentence -> comparisson_meq .)
+    PRINTVALUES     reduce using rule 17 (master_sentence -> comparisson_meq .)
+    ALTER           reduce using rule 17 (master_sentence -> comparisson_meq .)
+    ALTERB          reduce using rule 17 (master_sentence -> comparisson_meq .)
+    ID              reduce using rule 17 (master_sentence -> comparisson_meq .)
+    ISTRUE          reduce using rule 17 (master_sentence -> comparisson_meq .)
+    REPEAT          reduce using rule 17 (master_sentence -> comparisson_meq .)
+    UNTIL           reduce using rule 17 (master_sentence -> comparisson_meq .)
 
 
 state 22
 
-    (18) master_sentence -> sentence9 .
+    (18) master_sentence -> comparisson_equal .
 
-    RPARENT         reduce using rule 18 (master_sentence -> sentence9 .)
-    NEW             reduce using rule 18 (master_sentence -> sentence9 .)
-    VALUES          reduce using rule 18 (master_sentence -> sentence9 .)
-    CALL            reduce using rule 18 (master_sentence -> sentence9 .)
-    PRINTVALUES     reduce using rule 18 (master_sentence -> sentence9 .)
-    ALTER           reduce using rule 18 (master_sentence -> sentence9 .)
-    ALTERB          reduce using rule 18 (master_sentence -> sentence9 .)
-    ID              reduce using rule 18 (master_sentence -> sentence9 .)
-    ISTRUE          reduce using rule 18 (master_sentence -> sentence9 .)
-    REPEAT          reduce using rule 18 (master_sentence -> sentence9 .)
-    UNTIL           reduce using rule 18 (master_sentence -> sentence9 .)
+    RPARENT         reduce using rule 18 (master_sentence -> comparisson_equal .)
+    NEW             reduce using rule 18 (master_sentence -> comparisson_equal .)
+    VALUES          reduce using rule 18 (master_sentence -> comparisson_equal .)
+    CALL            reduce using rule 18 (master_sentence -> comparisson_equal .)
+    PRINTVALUES     reduce using rule 18 (master_sentence -> comparisson_equal .)
+    ALTER           reduce using rule 18 (master_sentence -> comparisson_equal .)
+    ALTERB          reduce using rule 18 (master_sentence -> comparisson_equal .)
+    ID              reduce using rule 18 (master_sentence -> comparisson_equal .)
+    ISTRUE          reduce using rule 18 (master_sentence -> comparisson_equal .)
+    REPEAT          reduce using rule 18 (master_sentence -> comparisson_equal .)
+    UNTIL           reduce using rule 18 (master_sentence -> comparisson_equal .)
 
 
 state 23
 
-    (19) master_sentence -> sentence10 .
+    (19) master_sentence -> comparisson_dif .
 
-    RPARENT         reduce using rule 19 (master_sentence -> sentence10 .)
-    NEW             reduce using rule 19 (master_sentence -> sentence10 .)
-    VALUES          reduce using rule 19 (master_sentence -> sentence10 .)
-    CALL            reduce using rule 19 (master_sentence -> sentence10 .)
-    PRINTVALUES     reduce using rule 19 (master_sentence -> sentence10 .)
-    ALTER           reduce using rule 19 (master_sentence -> sentence10 .)
-    ALTERB          reduce using rule 19 (master_sentence -> sentence10 .)
-    ID              reduce using rule 19 (master_sentence -> sentence10 .)
-    ISTRUE          reduce using rule 19 (master_sentence -> sentence10 .)
-    REPEAT          reduce using rule 19 (master_sentence -> sentence10 .)
-    UNTIL           reduce using rule 19 (master_sentence -> sentence10 .)
+    RPARENT         reduce using rule 19 (master_sentence -> comparisson_dif .)
+    NEW             reduce using rule 19 (master_sentence -> comparisson_dif .)
+    VALUES          reduce using rule 19 (master_sentence -> comparisson_dif .)
+    CALL            reduce using rule 19 (master_sentence -> comparisson_dif .)
+    PRINTVALUES     reduce using rule 19 (master_sentence -> comparisson_dif .)
+    ALTER           reduce using rule 19 (master_sentence -> comparisson_dif .)
+    ALTERB          reduce using rule 19 (master_sentence -> comparisson_dif .)
+    ID              reduce using rule 19 (master_sentence -> comparisson_dif .)
+    ISTRUE          reduce using rule 19 (master_sentence -> comparisson_dif .)
+    REPEAT          reduce using rule 19 (master_sentence -> comparisson_dif .)
+    UNTIL           reduce using rule 19 (master_sentence -> comparisson_dif .)
 
 
 state 24
 
-    (20) master_sentence -> sentence11 .
+    (20) master_sentence -> comparisson_meqequal .
 
-    RPARENT         reduce using rule 20 (master_sentence -> sentence11 .)
-    NEW             reduce using rule 20 (master_sentence -> sentence11 .)
-    VALUES          reduce using rule 20 (master_sentence -> sentence11 .)
-    CALL            reduce using rule 20 (master_sentence -> sentence11 .)
-    PRINTVALUES     reduce using rule 20 (master_sentence -> sentence11 .)
-    ALTER           reduce using rule 20 (master_sentence -> sentence11 .)
-    ALTERB          reduce using rule 20 (master_sentence -> sentence11 .)
-    ID              reduce using rule 20 (master_sentence -> sentence11 .)
-    ISTRUE          reduce using rule 20 (master_sentence -> sentence11 .)
-    REPEAT          reduce using rule 20 (master_sentence -> sentence11 .)
-    UNTIL           reduce using rule 20 (master_sentence -> sentence11 .)
+    RPARENT         reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    NEW             reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    VALUES          reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    CALL            reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    PRINTVALUES     reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    ALTER           reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    ALTERB          reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    ID              reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    ISTRUE          reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    REPEAT          reduce using rule 20 (master_sentence -> comparisson_meqequal .)
+    UNTIL           reduce using rule 20 (master_sentence -> comparisson_meqequal .)
 
 
 state 25
 
-    (21) master_sentence -> sentence12 .
+    (21) master_sentence -> comparisson_maqequal .
 
-    RPARENT         reduce using rule 21 (master_sentence -> sentence12 .)
-    NEW             reduce using rule 21 (master_sentence -> sentence12 .)
-    VALUES          reduce using rule 21 (master_sentence -> sentence12 .)
-    CALL            reduce using rule 21 (master_sentence -> sentence12 .)
-    PRINTVALUES     reduce using rule 21 (master_sentence -> sentence12 .)
-    ALTER           reduce using rule 21 (master_sentence -> sentence12 .)
-    ALTERB          reduce using rule 21 (master_sentence -> sentence12 .)
-    ID              reduce using rule 21 (master_sentence -> sentence12 .)
-    ISTRUE          reduce using rule 21 (master_sentence -> sentence12 .)
-    REPEAT          reduce using rule 21 (master_sentence -> sentence12 .)
-    UNTIL           reduce using rule 21 (master_sentence -> sentence12 .)
+    RPARENT         reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    NEW             reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    VALUES          reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    CALL            reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    PRINTVALUES     reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    ALTER           reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    ALTERB          reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    ID              reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    ISTRUE          reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    REPEAT          reduce using rule 21 (master_sentence -> comparisson_maqequal .)
+    UNTIL           reduce using rule 21 (master_sentence -> comparisson_maqequal .)
 
 
 state 26
@@ -823,12 +823,12 @@ state 30
 
 state 31
 
-    (66) sentence7 -> ID . MAQ INTEGER
-    (67) sentence8 -> ID . MEQ INTEGER
-    (68) sentence9 -> ID . EQUAL INTEGER
-    (69) sentence10 -> ID . DIFFERENT INTEGER
-    (70) sentence11 -> ID . MEQEQUAL INTEGER
-    (71) sentence12 -> ID . MAQEQUAL INTEGER
+    (66) comparisson_maq -> ID . MAQ INTEGER
+    (67) comparisson_meq -> ID . MEQ INTEGER
+    (68) comparisson_equal -> ID . EQUAL INTEGER
+    (69) comparisson_dif -> ID . DIFFERENT INTEGER
+    (70) comparisson_meqequal -> ID . MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> ID . MAQEQUAL INTEGER
 
     MAQ             shift and go to state 61
     MEQ             shift and go to state 62
@@ -908,12 +908,12 @@ state 40
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -928,12 +928,12 @@ state 40
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -957,12 +957,12 @@ state 40
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -1102,116 +1102,116 @@ state 47
 
 state 48
 
-    (36) sentence -> sentence7 .
+    (36) sentence -> comparisson_maq .
 
-    RPARENT         reduce using rule 36 (sentence -> sentence7 .)
-    NEW             reduce using rule 36 (sentence -> sentence7 .)
-    VALUES          reduce using rule 36 (sentence -> sentence7 .)
-    CALL            reduce using rule 36 (sentence -> sentence7 .)
-    PRINTVALUES     reduce using rule 36 (sentence -> sentence7 .)
-    ALTER           reduce using rule 36 (sentence -> sentence7 .)
-    ALTERB          reduce using rule 36 (sentence -> sentence7 .)
-    ID              reduce using rule 36 (sentence -> sentence7 .)
-    ISTRUE          reduce using rule 36 (sentence -> sentence7 .)
-    REPEAT          reduce using rule 36 (sentence -> sentence7 .)
-    UNTIL           reduce using rule 36 (sentence -> sentence7 .)
-    BREAK           reduce using rule 36 (sentence -> sentence7 .)
-    SEMICOLON       reduce using rule 36 (sentence -> sentence7 .)
+    RPARENT         reduce using rule 36 (sentence -> comparisson_maq .)
+    NEW             reduce using rule 36 (sentence -> comparisson_maq .)
+    VALUES          reduce using rule 36 (sentence -> comparisson_maq .)
+    CALL            reduce using rule 36 (sentence -> comparisson_maq .)
+    PRINTVALUES     reduce using rule 36 (sentence -> comparisson_maq .)
+    ALTER           reduce using rule 36 (sentence -> comparisson_maq .)
+    ALTERB          reduce using rule 36 (sentence -> comparisson_maq .)
+    ID              reduce using rule 36 (sentence -> comparisson_maq .)
+    ISTRUE          reduce using rule 36 (sentence -> comparisson_maq .)
+    REPEAT          reduce using rule 36 (sentence -> comparisson_maq .)
+    UNTIL           reduce using rule 36 (sentence -> comparisson_maq .)
+    BREAK           reduce using rule 36 (sentence -> comparisson_maq .)
+    SEMICOLON       reduce using rule 36 (sentence -> comparisson_maq .)
 
 
 state 49
 
-    (37) sentence -> sentence8 .
+    (37) sentence -> comparisson_meq .
 
-    RPARENT         reduce using rule 37 (sentence -> sentence8 .)
-    NEW             reduce using rule 37 (sentence -> sentence8 .)
-    VALUES          reduce using rule 37 (sentence -> sentence8 .)
-    CALL            reduce using rule 37 (sentence -> sentence8 .)
-    PRINTVALUES     reduce using rule 37 (sentence -> sentence8 .)
-    ALTER           reduce using rule 37 (sentence -> sentence8 .)
-    ALTERB          reduce using rule 37 (sentence -> sentence8 .)
-    ID              reduce using rule 37 (sentence -> sentence8 .)
-    ISTRUE          reduce using rule 37 (sentence -> sentence8 .)
-    REPEAT          reduce using rule 37 (sentence -> sentence8 .)
-    UNTIL           reduce using rule 37 (sentence -> sentence8 .)
-    BREAK           reduce using rule 37 (sentence -> sentence8 .)
-    SEMICOLON       reduce using rule 37 (sentence -> sentence8 .)
+    RPARENT         reduce using rule 37 (sentence -> comparisson_meq .)
+    NEW             reduce using rule 37 (sentence -> comparisson_meq .)
+    VALUES          reduce using rule 37 (sentence -> comparisson_meq .)
+    CALL            reduce using rule 37 (sentence -> comparisson_meq .)
+    PRINTVALUES     reduce using rule 37 (sentence -> comparisson_meq .)
+    ALTER           reduce using rule 37 (sentence -> comparisson_meq .)
+    ALTERB          reduce using rule 37 (sentence -> comparisson_meq .)
+    ID              reduce using rule 37 (sentence -> comparisson_meq .)
+    ISTRUE          reduce using rule 37 (sentence -> comparisson_meq .)
+    REPEAT          reduce using rule 37 (sentence -> comparisson_meq .)
+    UNTIL           reduce using rule 37 (sentence -> comparisson_meq .)
+    BREAK           reduce using rule 37 (sentence -> comparisson_meq .)
+    SEMICOLON       reduce using rule 37 (sentence -> comparisson_meq .)
 
 
 state 50
 
-    (38) sentence -> sentence9 .
+    (38) sentence -> comparisson_equal .
 
-    RPARENT         reduce using rule 38 (sentence -> sentence9 .)
-    NEW             reduce using rule 38 (sentence -> sentence9 .)
-    VALUES          reduce using rule 38 (sentence -> sentence9 .)
-    CALL            reduce using rule 38 (sentence -> sentence9 .)
-    PRINTVALUES     reduce using rule 38 (sentence -> sentence9 .)
-    ALTER           reduce using rule 38 (sentence -> sentence9 .)
-    ALTERB          reduce using rule 38 (sentence -> sentence9 .)
-    ID              reduce using rule 38 (sentence -> sentence9 .)
-    ISTRUE          reduce using rule 38 (sentence -> sentence9 .)
-    REPEAT          reduce using rule 38 (sentence -> sentence9 .)
-    UNTIL           reduce using rule 38 (sentence -> sentence9 .)
-    BREAK           reduce using rule 38 (sentence -> sentence9 .)
-    SEMICOLON       reduce using rule 38 (sentence -> sentence9 .)
+    RPARENT         reduce using rule 38 (sentence -> comparisson_equal .)
+    NEW             reduce using rule 38 (sentence -> comparisson_equal .)
+    VALUES          reduce using rule 38 (sentence -> comparisson_equal .)
+    CALL            reduce using rule 38 (sentence -> comparisson_equal .)
+    PRINTVALUES     reduce using rule 38 (sentence -> comparisson_equal .)
+    ALTER           reduce using rule 38 (sentence -> comparisson_equal .)
+    ALTERB          reduce using rule 38 (sentence -> comparisson_equal .)
+    ID              reduce using rule 38 (sentence -> comparisson_equal .)
+    ISTRUE          reduce using rule 38 (sentence -> comparisson_equal .)
+    REPEAT          reduce using rule 38 (sentence -> comparisson_equal .)
+    UNTIL           reduce using rule 38 (sentence -> comparisson_equal .)
+    BREAK           reduce using rule 38 (sentence -> comparisson_equal .)
+    SEMICOLON       reduce using rule 38 (sentence -> comparisson_equal .)
 
 
 state 51
 
-    (39) sentence -> sentence10 .
+    (39) sentence -> comparisson_dif .
 
-    RPARENT         reduce using rule 39 (sentence -> sentence10 .)
-    NEW             reduce using rule 39 (sentence -> sentence10 .)
-    VALUES          reduce using rule 39 (sentence -> sentence10 .)
-    CALL            reduce using rule 39 (sentence -> sentence10 .)
-    PRINTVALUES     reduce using rule 39 (sentence -> sentence10 .)
-    ALTER           reduce using rule 39 (sentence -> sentence10 .)
-    ALTERB          reduce using rule 39 (sentence -> sentence10 .)
-    ID              reduce using rule 39 (sentence -> sentence10 .)
-    ISTRUE          reduce using rule 39 (sentence -> sentence10 .)
-    REPEAT          reduce using rule 39 (sentence -> sentence10 .)
-    UNTIL           reduce using rule 39 (sentence -> sentence10 .)
-    BREAK           reduce using rule 39 (sentence -> sentence10 .)
-    SEMICOLON       reduce using rule 39 (sentence -> sentence10 .)
+    RPARENT         reduce using rule 39 (sentence -> comparisson_dif .)
+    NEW             reduce using rule 39 (sentence -> comparisson_dif .)
+    VALUES          reduce using rule 39 (sentence -> comparisson_dif .)
+    CALL            reduce using rule 39 (sentence -> comparisson_dif .)
+    PRINTVALUES     reduce using rule 39 (sentence -> comparisson_dif .)
+    ALTER           reduce using rule 39 (sentence -> comparisson_dif .)
+    ALTERB          reduce using rule 39 (sentence -> comparisson_dif .)
+    ID              reduce using rule 39 (sentence -> comparisson_dif .)
+    ISTRUE          reduce using rule 39 (sentence -> comparisson_dif .)
+    REPEAT          reduce using rule 39 (sentence -> comparisson_dif .)
+    UNTIL           reduce using rule 39 (sentence -> comparisson_dif .)
+    BREAK           reduce using rule 39 (sentence -> comparisson_dif .)
+    SEMICOLON       reduce using rule 39 (sentence -> comparisson_dif .)
 
 
 state 52
 
-    (40) sentence -> sentence11 .
+    (40) sentence -> comparisson_meqequal .
 
-    RPARENT         reduce using rule 40 (sentence -> sentence11 .)
-    NEW             reduce using rule 40 (sentence -> sentence11 .)
-    VALUES          reduce using rule 40 (sentence -> sentence11 .)
-    CALL            reduce using rule 40 (sentence -> sentence11 .)
-    PRINTVALUES     reduce using rule 40 (sentence -> sentence11 .)
-    ALTER           reduce using rule 40 (sentence -> sentence11 .)
-    ALTERB          reduce using rule 40 (sentence -> sentence11 .)
-    ID              reduce using rule 40 (sentence -> sentence11 .)
-    ISTRUE          reduce using rule 40 (sentence -> sentence11 .)
-    REPEAT          reduce using rule 40 (sentence -> sentence11 .)
-    UNTIL           reduce using rule 40 (sentence -> sentence11 .)
-    BREAK           reduce using rule 40 (sentence -> sentence11 .)
-    SEMICOLON       reduce using rule 40 (sentence -> sentence11 .)
+    RPARENT         reduce using rule 40 (sentence -> comparisson_meqequal .)
+    NEW             reduce using rule 40 (sentence -> comparisson_meqequal .)
+    VALUES          reduce using rule 40 (sentence -> comparisson_meqequal .)
+    CALL            reduce using rule 40 (sentence -> comparisson_meqequal .)
+    PRINTVALUES     reduce using rule 40 (sentence -> comparisson_meqequal .)
+    ALTER           reduce using rule 40 (sentence -> comparisson_meqequal .)
+    ALTERB          reduce using rule 40 (sentence -> comparisson_meqequal .)
+    ID              reduce using rule 40 (sentence -> comparisson_meqequal .)
+    ISTRUE          reduce using rule 40 (sentence -> comparisson_meqequal .)
+    REPEAT          reduce using rule 40 (sentence -> comparisson_meqequal .)
+    UNTIL           reduce using rule 40 (sentence -> comparisson_meqequal .)
+    BREAK           reduce using rule 40 (sentence -> comparisson_meqequal .)
+    SEMICOLON       reduce using rule 40 (sentence -> comparisson_meqequal .)
 
 
 state 53
 
-    (41) sentence -> sentence12 .
+    (41) sentence -> comparisson_maqequal .
 
-    RPARENT         reduce using rule 41 (sentence -> sentence12 .)
-    NEW             reduce using rule 41 (sentence -> sentence12 .)
-    VALUES          reduce using rule 41 (sentence -> sentence12 .)
-    CALL            reduce using rule 41 (sentence -> sentence12 .)
-    PRINTVALUES     reduce using rule 41 (sentence -> sentence12 .)
-    ALTER           reduce using rule 41 (sentence -> sentence12 .)
-    ALTERB          reduce using rule 41 (sentence -> sentence12 .)
-    ID              reduce using rule 41 (sentence -> sentence12 .)
-    ISTRUE          reduce using rule 41 (sentence -> sentence12 .)
-    REPEAT          reduce using rule 41 (sentence -> sentence12 .)
-    UNTIL           reduce using rule 41 (sentence -> sentence12 .)
-    BREAK           reduce using rule 41 (sentence -> sentence12 .)
-    SEMICOLON       reduce using rule 41 (sentence -> sentence12 .)
+    RPARENT         reduce using rule 41 (sentence -> comparisson_maqequal .)
+    NEW             reduce using rule 41 (sentence -> comparisson_maqequal .)
+    VALUES          reduce using rule 41 (sentence -> comparisson_maqequal .)
+    CALL            reduce using rule 41 (sentence -> comparisson_maqequal .)
+    PRINTVALUES     reduce using rule 41 (sentence -> comparisson_maqequal .)
+    ALTER           reduce using rule 41 (sentence -> comparisson_maqequal .)
+    ALTERB          reduce using rule 41 (sentence -> comparisson_maqequal .)
+    ID              reduce using rule 41 (sentence -> comparisson_maqequal .)
+    ISTRUE          reduce using rule 41 (sentence -> comparisson_maqequal .)
+    REPEAT          reduce using rule 41 (sentence -> comparisson_maqequal .)
+    UNTIL           reduce using rule 41 (sentence -> comparisson_maqequal .)
+    BREAK           reduce using rule 41 (sentence -> comparisson_maqequal .)
+    SEMICOLON       reduce using rule 41 (sentence -> comparisson_maqequal .)
 
 
 state 54
@@ -1313,42 +1313,42 @@ state 60
 
 state 61
 
-    (66) sentence7 -> ID MAQ . INTEGER
+    (66) comparisson_maq -> ID MAQ . INTEGER
 
     INTEGER         shift and go to state 80
 
 
 state 62
 
-    (67) sentence8 -> ID MEQ . INTEGER
+    (67) comparisson_meq -> ID MEQ . INTEGER
 
     INTEGER         shift and go to state 81
 
 
 state 63
 
-    (68) sentence9 -> ID EQUAL . INTEGER
+    (68) comparisson_equal -> ID EQUAL . INTEGER
 
     INTEGER         shift and go to state 82
 
 
 state 64
 
-    (69) sentence10 -> ID DIFFERENT . INTEGER
+    (69) comparisson_dif -> ID DIFFERENT . INTEGER
 
     INTEGER         shift and go to state 83
 
 
 state 65
 
-    (70) sentence11 -> ID MEQEQUAL . INTEGER
+    (70) comparisson_meqequal -> ID MEQEQUAL . INTEGER
 
     INTEGER         shift and go to state 84
 
 
 state 66
 
-    (71) sentence12 -> ID MAQEQUAL . INTEGER
+    (71) comparisson_maqequal -> ID MAQEQUAL . INTEGER
 
     INTEGER         shift and go to state 85
 
@@ -1425,12 +1425,12 @@ state 73
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -1445,12 +1445,12 @@ state 73
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -1474,12 +1474,12 @@ state 73
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -1495,12 +1495,12 @@ state 74
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -1515,12 +1515,12 @@ state 74
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -1544,12 +1544,12 @@ state 74
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -1606,116 +1606,116 @@ state 79
 
 state 80
 
-    (66) sentence7 -> ID MAQ INTEGER .
+    (66) comparisson_maq -> ID MAQ INTEGER .
 
-    RPARENT         reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    NEW             reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    VALUES          reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    CALL            reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    PRINTVALUES     reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    ALTER           reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    ALTERB          reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    ID              reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    ISTRUE          reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    REPEAT          reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    UNTIL           reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    BREAK           reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
-    SEMICOLON       reduce using rule 66 (sentence7 -> ID MAQ INTEGER .)
+    RPARENT         reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    NEW             reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    VALUES          reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    CALL            reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    PRINTVALUES     reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    ALTER           reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    ALTERB          reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    ID              reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    ISTRUE          reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    REPEAT          reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    UNTIL           reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    BREAK           reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
+    SEMICOLON       reduce using rule 66 (comparisson_maq -> ID MAQ INTEGER .)
 
 
 state 81
 
-    (67) sentence8 -> ID MEQ INTEGER .
+    (67) comparisson_meq -> ID MEQ INTEGER .
 
-    RPARENT         reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    NEW             reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    VALUES          reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    CALL            reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    PRINTVALUES     reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    ALTER           reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    ALTERB          reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    ID              reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    ISTRUE          reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    REPEAT          reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    UNTIL           reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    BREAK           reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
-    SEMICOLON       reduce using rule 67 (sentence8 -> ID MEQ INTEGER .)
+    RPARENT         reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    NEW             reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    VALUES          reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    CALL            reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    PRINTVALUES     reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    ALTER           reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    ALTERB          reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    ID              reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    ISTRUE          reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    REPEAT          reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    UNTIL           reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    BREAK           reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
+    SEMICOLON       reduce using rule 67 (comparisson_meq -> ID MEQ INTEGER .)
 
 
 state 82
 
-    (68) sentence9 -> ID EQUAL INTEGER .
+    (68) comparisson_equal -> ID EQUAL INTEGER .
 
-    RPARENT         reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    NEW             reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    VALUES          reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    CALL            reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    PRINTVALUES     reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    ALTER           reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    ALTERB          reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    ID              reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    ISTRUE          reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    REPEAT          reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    UNTIL           reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    BREAK           reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
-    SEMICOLON       reduce using rule 68 (sentence9 -> ID EQUAL INTEGER .)
+    RPARENT         reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    NEW             reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    VALUES          reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    CALL            reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    PRINTVALUES     reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    ALTER           reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    ALTERB          reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    ID              reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    ISTRUE          reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    REPEAT          reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    UNTIL           reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    BREAK           reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
+    SEMICOLON       reduce using rule 68 (comparisson_equal -> ID EQUAL INTEGER .)
 
 
 state 83
 
-    (69) sentence10 -> ID DIFFERENT INTEGER .
+    (69) comparisson_dif -> ID DIFFERENT INTEGER .
 
-    RPARENT         reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    NEW             reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    VALUES          reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    CALL            reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    PRINTVALUES     reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    ALTER           reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    ALTERB          reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    ID              reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    ISTRUE          reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    REPEAT          reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    UNTIL           reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    BREAK           reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
-    SEMICOLON       reduce using rule 69 (sentence10 -> ID DIFFERENT INTEGER .)
+    RPARENT         reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    NEW             reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    VALUES          reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    CALL            reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    PRINTVALUES     reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    ALTER           reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    ALTERB          reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    ID              reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    ISTRUE          reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    REPEAT          reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    UNTIL           reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    BREAK           reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
+    SEMICOLON       reduce using rule 69 (comparisson_dif -> ID DIFFERENT INTEGER .)
 
 
 state 84
 
-    (70) sentence11 -> ID MEQEQUAL INTEGER .
+    (70) comparisson_meqequal -> ID MEQEQUAL INTEGER .
 
-    RPARENT         reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    NEW             reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    VALUES          reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    CALL            reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    PRINTVALUES     reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    ALTER           reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    ALTERB          reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    ID              reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    ISTRUE          reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    REPEAT          reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    UNTIL           reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    BREAK           reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
-    SEMICOLON       reduce using rule 70 (sentence11 -> ID MEQEQUAL INTEGER .)
+    RPARENT         reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    NEW             reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    VALUES          reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    CALL            reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    PRINTVALUES     reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    ALTER           reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    ALTERB          reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    ID              reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    ISTRUE          reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    REPEAT          reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    UNTIL           reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    BREAK           reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
+    SEMICOLON       reduce using rule 70 (comparisson_meqequal -> ID MEQEQUAL INTEGER .)
 
 
 state 85
 
-    (71) sentence12 -> ID MAQEQUAL INTEGER .
+    (71) comparisson_maqequal -> ID MAQEQUAL INTEGER .
 
-    RPARENT         reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    NEW             reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    VALUES          reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    CALL            reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    PRINTVALUES     reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    ALTER           reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    ALTERB          reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    ID              reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    ISTRUE          reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    REPEAT          reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    UNTIL           reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    BREAK           reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
-    SEMICOLON       reduce using rule 71 (sentence12 -> ID MAQEQUAL INTEGER .)
+    RPARENT         reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    NEW             reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    VALUES          reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    CALL            reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    PRINTVALUES     reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    ALTER           reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    ALTERB          reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    ID              reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    ISTRUE          reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    REPEAT          reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    UNTIL           reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    BREAK           reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
+    SEMICOLON       reduce using rule 71 (comparisson_maqequal -> ID MAQEQUAL INTEGER .)
 
 
 state 86
@@ -1839,12 +1839,12 @@ state 97
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -1859,12 +1859,12 @@ state 97
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -1888,12 +1888,12 @@ state 97
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -1917,12 +1917,12 @@ state 99
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -1937,12 +1937,12 @@ state 99
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -1967,12 +1967,12 @@ state 99
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -2103,12 +2103,12 @@ state 113
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -2123,12 +2123,12 @@ state 113
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -2152,12 +2152,12 @@ state 113
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -2172,12 +2172,12 @@ state 114
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -2192,12 +2192,12 @@ state 114
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -2221,12 +2221,12 @@ state 114
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56
@@ -2427,12 +2427,12 @@ state 133
     (33) sentence -> . print_values
     (34) sentence -> . alter
     (35) sentence -> . alterB
-    (36) sentence -> . sentence7
-    (37) sentence -> . sentence8
-    (38) sentence -> . sentence9
-    (39) sentence -> . sentence10
-    (40) sentence -> . sentence11
-    (41) sentence -> . sentence12
+    (36) sentence -> . comparisson_maq
+    (37) sentence -> . comparisson_meq
+    (38) sentence -> . comparisson_equal
+    (39) sentence -> . comparisson_dif
+    (40) sentence -> . comparisson_meqequal
+    (41) sentence -> . comparisson_maqequal
     (42) sentence -> . isTrue
     (43) sentence -> . sentence14
     (44) sentence -> . sentence15
@@ -2447,12 +2447,12 @@ state 133
     (63) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (64) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (65) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (66) sentence7 -> . ID MAQ INTEGER
-    (67) sentence8 -> . ID MEQ INTEGER
-    (68) sentence9 -> . ID EQUAL INTEGER
-    (69) sentence10 -> . ID DIFFERENT INTEGER
-    (70) sentence11 -> . ID MEQEQUAL INTEGER
-    (71) sentence12 -> . ID MAQEQUAL INTEGER
+    (66) comparisson_maq -> . ID MAQ INTEGER
+    (67) comparisson_meq -> . ID MEQ INTEGER
+    (68) comparisson_equal -> . ID EQUAL INTEGER
+    (69) comparisson_dif -> . ID DIFFERENT INTEGER
+    (70) comparisson_meqequal -> . ID MEQEQUAL INTEGER
+    (71) comparisson_maqequal -> . ID MAQEQUAL INTEGER
     (72) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
     (73) sentence14 -> . REPEAT LPARENT sentences BREAK RPARENT SEMICOLON
     (74) sentence15 -> . UNTIL LPARENT instructions RPARENT sentences SEMICOLON
@@ -2476,12 +2476,12 @@ state 133
     print_values                   shift and go to state 45
     alter                          shift and go to state 46
     alterB                         shift and go to state 47
-    sentence7                      shift and go to state 48
-    sentence8                      shift and go to state 49
-    sentence9                      shift and go to state 50
-    sentence10                     shift and go to state 51
-    sentence11                     shift and go to state 52
-    sentence12                     shift and go to state 53
+    comparisson_maq                shift and go to state 48
+    comparisson_meq                shift and go to state 49
+    comparisson_equal              shift and go to state 50
+    comparisson_dif                shift and go to state 51
+    comparisson_meqequal           shift and go to state 52
+    comparisson_maqequal           shift and go to state 53
     isTrue                         shift and go to state 54
     sentence14                     shift and go to state 55
     sentence15                     shift and go to state 56

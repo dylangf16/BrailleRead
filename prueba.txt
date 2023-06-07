@@ -1,9 +1,8 @@
 @Master(
     New @variable1,(Num, 15);
     New @variable2,(Bool, True);
-    PrintValues(@variable2);
-    //CALL(@Procedure1);
-    CALL(@Procedure2);
+    CALL(@Procedure1);
+    //CALL(@Procedure2);
 );
 
 Proc @Procedure1 (
