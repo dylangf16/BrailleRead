@@ -139,8 +139,16 @@ precedence = (
 )
 
 def p_start(p):
-    '''start : master procedures
-            | master'''
+    '''start : master
+            | master procedures
+            | master master_vars procedures
+            | master_vars master
+            | master_vars master master_vars
+            | master_vars master master_vars procedures
+            | master_vars master master_vars procedures master_vars
+            | master_vars master procedures
+            | master_vars master procedures master_vars
+            | master_vars master procedures'''
     p[0] = p[1]
 
 def p_declare_procedure(p):
@@ -164,7 +172,6 @@ def p_procedure(p):
         if element in called_procs:
             called_procs.remove(element)
     p[0] = ('procedure', p[2], p[4])
-
 def p_master(p):
     '''master : MASTER LPARENT master_sentences RPARENT SEMICOLON'''
     # Acción semántica: Realizar las aciones correspondientes al análisis sintáctico de @Master
@@ -203,6 +210,9 @@ def p_master_sentence(p):
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
 
+def p_master_vars(p):
+    '''master_vars : master_var
+                    | master_vars master_var'''
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                     | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
@@ -246,6 +256,16 @@ def p_sentence(p):
                 | sentence15 '''
     p[0] = p[1]
 
+def p_return_statement(p):
+    '''return_statement : isTrue
+                        | comparisson_maqequal
+                        | comparisson_meqequal
+                        | comparisson_dif
+                        | comparisson_equal
+                        | comparisson_meq
+                        | comparisson_maq
+                        | alterB
+                        | alter'''
 
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
 def p_local_variable(p):
@@ -267,7 +287,8 @@ def p_local_variable(p):
 
 def p_values(p):
     '''values : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
-                 | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON'''
+                 | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
+                 | VALUES LPARENT ID COMA return_statement RPARENT SEMICOLON'''
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
             if isinstance(p[5], int) and variables_locales[p[3]][1] == 'Num':
@@ -276,7 +297,9 @@ def p_values(p):
                 variables_locales[p[3]][2] = p[5]
             else:
                 syntax_errors.append(
-                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
+                return
+            return variables_locales[p[3]][2]
         elif p[3] in variables_globales:
             if isinstance(p[5], int) and variables_globales[p[3]][0] == 'Num':
                 variables_globales[p[3]][1] = p[5]
@@ -284,7 +307,9 @@ def p_values(p):
                 variables_globales[p[3]][1] = p[5]
             else:
                 syntax_errors.append(
-                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
+                return
+            return variables_globales[p[3]][1]
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
@@ -306,12 +331,14 @@ def p_print_values(p):
 def p_printable_sentences(p):
     '''printable_sentences : printable_sentence_var
                 | printable_sentence_string
-                | printable_sentence_var PLUS printable_sentence_var
-                | printable_sentence_string PLUS printable_sentence_string
-                | printable_sentence_var PLUS printable_sentence_string
-                | printable_sentence_string PLUS printable_sentence_var
-                | PLUS printable_sentences PLUS printable_sentence_var
-                | PLUS printable_sentences PLUS printable_sentence_string'''
+                | printable_sentence_var COMA printable_sentence_var
+                | printable_sentence_string COMA printable_sentence_string
+                | printable_sentence_var COMA printable_sentence_string
+                | printable_sentence_string COMA printable_sentence_var
+                | printable_sentences COMA printable_sentence_var
+                | printable_sentences COMA printable_sentence_string
+                | COMA printable_sentences COMA printable_sentence_var
+                | COMA printable_sentences COMA printable_sentence_string'''
 
 def p_printable_sentence_var(p):
     '''printable_sentence_var : ID '''
@@ -321,7 +348,7 @@ def p_printable_sentence_var(p):
         elif p[1] in variables_globales:
             print(variables_globales[p[1]][1])
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
 
 def p_printable_sentence_string(p):
     '''printable_sentence_string : STRING '''
@@ -341,7 +368,7 @@ def p_alter(p):
                     valor_actual = variables_globales[p[3]]
                     nuevo_valor = (valor_actual[0], valor_actual[1] + p[7])
                     variables_globales[p[3]] = nuevo_valor
-                    print(variables_globales[p[3]][1])
+                    return variables_globales[p[3]][1]
                 else:
                     syntax_errors.append(
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
@@ -353,11 +380,12 @@ def p_alter(p):
                                 valor_actual = variables_locales[p[3]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] + p[7])
                                 variables_locales[p[3]] = nuevo_valor
+                                return variables_locales[p[3]][2]
                             elif index == len(variables_locales) - 1:
                                 syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
             else:
                 syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
         elif p[5] == "SUB":
@@ -366,7 +394,7 @@ def p_alter(p):
                     valor_actual = variables_globales[p[3]]
                     nuevo_valor = (valor_actual[0], valor_actual[1] - p[7])
                     variables_globales[p[3]] = nuevo_valor
-                    print(variables_globales[p[3]][1])
+                    return variables_globales[p[3]][1]
                 else:
                     syntax_errors.append(
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
@@ -378,11 +406,12 @@ def p_alter(p):
                                 valor_actual = variables_locales[p[3]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] - p[7])
                                 variables_locales[p[3]] = nuevo_valor
+                                return variables_locales[p[3]][2]
                             elif index == len(variables_locales) - 1:
                                 syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
             else:
                 syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
         elif p[5] == 'MUL':
@@ -391,7 +420,7 @@ def p_alter(p):
                     valor_actual = variables_globales[p[3]]
                     nuevo_valor = (valor_actual[0], valor_actual[1] * p[7])
                     variables_globales[p[3]] = nuevo_valor
-                    print(variables_globales[p[3]][1])
+                    return variables_globales[p[3]][1]
                 else:
                     syntax_errors.append(
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
@@ -403,6 +432,7 @@ def p_alter(p):
                                 valor_actual = variables_locales[p[3]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] * p[7])
                                 variables_locales[p[3]] = nuevo_valor
+                                return variables_locales[p[3]][2]
                             elif index == len(variables_locales) - 1:
                                 syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
@@ -416,7 +446,7 @@ def p_alter(p):
                     valor_actual = variables_globales[p[3]]
                     nuevo_valor = (valor_actual[0], valor_actual[1] / p[7])
                     variables_globales[p[3]] = nuevo_valor
-                    print(variables_globales[p[3]][1])
+                    return variables_globales[p[3]][1]
                 else:
                     syntax_errors.append(
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
@@ -428,6 +458,7 @@ def p_alter(p):
                                 valor_actual = variables_locales[p[3]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] / p[7])
                                 variables_locales[p[3]] = nuevo_valor
+                                return variables_locales[p[3]][2]
                             elif index == len(variables_locales) - 1:
                                 syntax_errors.append(
                                     f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
@@ -447,14 +478,16 @@ def p_alterB(p):
                         if var_value == True:
                             nuevo_valor = (valor_actual[0], False)
                             variables_globales[p[3]] = nuevo_valor
+                            return False
                         else:
                             nuevo_valor = (valor_actual[0], True)
                             variables_globales[p[3]] = nuevo_valor
+                            return True
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
         elif p[3] in variables_locales:
-            for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_globales.items()):
+            for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_name == p[3]:
                     if var_type == 'Bool':
                         if var_proc == proc_en_analisis:
@@ -462,10 +495,12 @@ def p_alterB(p):
                                 valor_actual = variables_locales[p[2]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], False)
                                 variables_locales[p[3]] = nuevo_valor
+                                return False
                             else:
                                 valor_actual = variables_locales[p[2]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], True)
                                 variables_locales[p[3]] = nuevo_valor
+                                return True
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
@@ -720,7 +755,6 @@ def p_isTrue(p):
                         syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
-
 
 def p_sentence14(p):
     '''sentence14 : REPEAT LPARENT sentences BREAK RPARENT SEMICOLON'''
