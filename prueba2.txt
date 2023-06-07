@@ -1,0 +1,15 @@
+@Master(
+    New @variable1,(Num, 2);
+    New @variable2,(Num, 5);
+    New @variable3,(Num, 1);
+    New @variable4,(Num, 3);
+
+    Case @variable4
+        When 1 Then
+        (Signal(@variable1, 1); )
+        When 2 Then
+        (Signal(@variable2, 0); )
+        When 3 Then
+        (Signal(@variable3, 1); ) ;
+
+);
