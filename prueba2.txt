@@ -6,7 +6,7 @@
 
     While IsTrue(@variable1);
     (
-        Signal(@variable2, 1);
+        Signal(@variable1, 1);
     );
 
 

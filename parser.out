@@ -90,21 +90,18 @@ Rule 74    sentence10 -> ID DIFFERENT INTEGER
 Rule 75    sentence11 -> ID MEQEQUAL INTEGER
 Rule 76    sentence12 -> ID MAQEQUAL INTEGER
 Rule 77    isTrue -> ISTRUE LPARENT ID RPARENT SEMICOLON
-Rule 78    while -> WHILE sentences LPARENT recursive_whiles
-Rule 79    recursive_whiles -> recursive_while
-Rule 80    recursive_whiles -> recursive_whiles recursive_while
-Rule 81    recursive_while -> sentences RPARENT SEMICOLON
-Rule 82    case -> CASE expression recursive_conditions SEMICOLON
-Rule 83    else_condition -> LPARENT sentences RPARENT
-Rule 84    recursive_conditions -> recursive_condition
-Rule 85    recursive_conditions -> recursive_conditions recursive_condition
-Rule 86    recursive_condition -> condition LPARENT sentences RPARENT
-Rule 87    expression -> ID
-Rule 88    condition -> WHEN INTEGER THEN
-Rule 89    signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-Rule 90    signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-Rule 91    viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
-Rule 92    empty -> <empty>
+Rule 78    while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON
+Rule 79    case -> CASE expression recursive_conditions SEMICOLON
+Rule 80    else_condition -> LPARENT sentences RPARENT
+Rule 81    recursive_conditions -> recursive_condition
+Rule 82    recursive_conditions -> recursive_conditions recursive_condition
+Rule 83    recursive_condition -> condition LPARENT sentences RPARENT
+Rule 84    expression -> ID
+Rule 85    condition -> WHEN INTEGER THEN
+Rule 86    signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+Rule 87    signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+Rule 88    viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+Rule 89    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -115,17 +112,17 @@ ARROBA               :
 BOOL                 : 29 51 53
 BREAK                : 
 CALL                 : 54
-CASE                 : 82
-COMA                 : 28 28 29 29 50 50 51 51 52 53 66 66 67 67 68 68 69 69 89 90
+CASE                 : 79
+COMA                 : 28 28 29 29 50 50 51 51 52 53 66 66 67 67 68 68 69 69 86 87
 COMMENT              : 
 DIFFERENT            : 74
 DIV                  : 69
 ELSE                 : 
 EQUAL                : 73
-ID                   : 3 28 29 50 51 52 53 54 64 66 67 68 69 70 71 72 73 74 75 76 77 87 90
-INTEGER              : 28 50 52 66 67 68 69 71 72 73 74 75 76 88 89 89 90 91
+ID                   : 3 28 29 50 51 52 53 54 64 66 67 68 69 70 71 72 73 74 75 76 77 84 87
+INTEGER              : 28 50 52 66 67 68 69 71 72 73 74 75 76 85 86 86 87 88
 ISTRUE               : 77
-LPARENT              : 6 7 28 29 50 51 52 53 54 55 66 67 68 69 70 77 78 83 86 89 90 91
+LPARENT              : 6 7 28 29 50 51 52 53 54 55 66 67 68 69 70 77 78 80 83 86 87 88
 MAQ                  : 71
 MAQEQUAL             : 76
 MASTER               : 7
@@ -138,17 +135,17 @@ PLUS                 : 58 59 60 61 62 62 63 63
 PRINTVALUES          : 55
 PROC                 : 3
 REPEAT               : 
-RPARENT              : 6 7 28 29 50 51 52 53 54 55 66 67 68 69 70 77 81 83 86 89 90 91
-SEMICOLON            : 6 7 28 29 50 51 52 53 54 55 66 67 68 69 70 77 81 82 89 90 91
-SIGNAL               : 89 90
+RPARENT              : 6 7 28 29 50 51 52 53 54 55 66 67 68 69 70 77 78 80 83 86 87 88
+SEMICOLON            : 6 7 28 29 50 51 52 53 54 55 66 67 68 69 70 77 78 79 86 87 88
+SIGNAL               : 86 87
 STRING               : 65
 SUB                  : 67
-THEN                 : 88
+THEN                 : 85
 TYPE                 : 28 29 50 51
 UNTIL                : 
 VALUES               : 52 53
-VIEWSIGNAL           : 91
-WHEN                 : 88
+VIEWSIGNAL           : 88
+WHEN                 : 85
 WHILE                : 78
 error                : 
 
@@ -158,11 +155,11 @@ alter                : 15 37
 alterB               : 16 38
 call                 : 13 35
 case                 : 12 34
-condition            : 86
+condition            : 83
 declare_procedure    : 6
 else_condition       : 
 empty                : 27 49
-expression           : 82
+expression           : 79
 isTrue               : 25 47
 local_variable       : 32
 master               : 1 2
@@ -175,10 +172,8 @@ printable_sentence_var : 56 58 58 60 61 62
 printable_sentences  : 55 62 63
 procedure            : 4 5
 procedures           : 1 5
-recursive_condition  : 84 85
-recursive_conditions : 82 85
-recursive_while      : 79 80
-recursive_whiles     : 78 80
+recursive_condition  : 81 82
+recursive_conditions : 79 82
 sentence             : 30 31
 sentence10           : 22 44
 sentence11           : 23 45
@@ -186,7 +181,7 @@ sentence12           : 24 46
 sentence7            : 19 41
 sentence8            : 20 42
 sentence9            : 21 43
-sentences            : 6 31 78 81 83 86
+sentences            : 6 31 78 78 80 83
 signal               : 17 39
 start                : 0
 values               : 11 33
@@ -298,7 +293,7 @@ state 8
     (29) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -306,9 +301,9 @@ state 8
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -316,8 +311,8 @@ state 8
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for NEW resolved as shift
   ! shift/reduce conflict for VALUES resolved as shift
@@ -343,20 +338,20 @@ state 8
     ID              shift and go to state 33
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
-    RPARENT         reduce using rule 92 (empty -> .)
+    RPARENT         reduce using rule 89 (empty -> .)
 
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     master_sentences               shift and go to state 12
     master_sentence                shift and go to state 13
@@ -414,7 +409,7 @@ state 10
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -422,9 +417,9 @@ state 10
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -432,8 +427,8 @@ state 10
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for NEW resolved as shift
   ! shift/reduce conflict for VALUES resolved as shift
@@ -459,20 +454,20 @@ state 10
     ID              shift and go to state 33
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
-    RPARENT         reduce using rule 92 (empty -> .)
+    RPARENT         reduce using rule 89 (empty -> .)
 
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     sentences                      shift and go to state 44
     sentence                       shift and go to state 45
@@ -528,7 +523,7 @@ state 12
     (29) master_var -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -536,9 +531,9 @@ state 12
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -546,8 +541,8 @@ state 12
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for RPARENT resolved as shift
   ! shift/reduce conflict for NEW resolved as shift
@@ -576,19 +571,19 @@ state 12
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
 
-  ! RPARENT         [ reduce using rule 92 (empty -> .) ]
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! RPARENT         [ reduce using rule 89 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     master_sentence                shift and go to state 66
     master_var                     shift and go to state 14
@@ -1006,8 +1001,8 @@ state 34
 
 state 35
 
-    (82) case -> CASE . expression recursive_conditions SEMICOLON
-    (87) expression -> . ID
+    (79) case -> CASE . expression recursive_conditions SEMICOLON
+    (84) expression -> . ID
 
     ID              shift and go to state 76
 
@@ -1046,15 +1041,15 @@ state 39
 
 state 40
 
-    (89) signal -> SIGNAL . LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> SIGNAL . LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (86) signal -> SIGNAL . LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> SIGNAL . LPARENT ID COMA INTEGER RPARENT SEMICOLON
 
     LPARENT         shift and go to state 81
 
 
 state 41
 
-    (91) viewsignal -> VIEWSIGNAL . LPARENT INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> VIEWSIGNAL . LPARENT INTEGER RPARENT SEMICOLON
 
     LPARENT         shift and go to state 82
 
@@ -1068,7 +1063,7 @@ state 42
 
 state 43
 
-    (78) while -> WHILE . sentences LPARENT recursive_whiles
+    (78) while -> WHILE . sentences LPARENT sentences RPARENT SEMICOLON
     (30) sentences -> . sentence
     (31) sentences -> . sentences sentence
     (32) sentence -> . local_variable
@@ -1093,7 +1088,7 @@ state 43
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -1101,9 +1096,9 @@ state 43
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -1111,8 +1106,8 @@ state 43
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for NEW resolved as shift
   ! shift/reduce conflict for VALUES resolved as shift
@@ -1138,20 +1133,20 @@ state 43
     ID              shift and go to state 33
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
-    LPARENT         reduce using rule 92 (empty -> .)
+    LPARENT         reduce using rule 89 (empty -> .)
 
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     sentences                      shift and go to state 84
     sentence                       shift and go to state 45
@@ -1200,7 +1195,7 @@ state 44
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -1208,9 +1203,9 @@ state 44
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -1218,8 +1213,8 @@ state 44
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for RPARENT resolved as shift
   ! shift/reduce conflict for NEW resolved as shift
@@ -1248,19 +1243,19 @@ state 44
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
 
-  ! RPARENT         [ reduce using rule 92 (empty -> .) ]
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! RPARENT         [ reduce using rule 89 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     sentence                       shift and go to state 86
     local_variable                 shift and go to state 46
@@ -1756,11 +1751,11 @@ state 74
 
 state 75
 
-    (82) case -> CASE expression . recursive_conditions SEMICOLON
-    (84) recursive_conditions -> . recursive_condition
-    (85) recursive_conditions -> . recursive_conditions recursive_condition
-    (86) recursive_condition -> . condition LPARENT sentences RPARENT
-    (88) condition -> . WHEN INTEGER THEN
+    (79) case -> CASE expression . recursive_conditions SEMICOLON
+    (81) recursive_conditions -> . recursive_condition
+    (82) recursive_conditions -> . recursive_conditions recursive_condition
+    (83) recursive_condition -> . condition LPARENT sentences RPARENT
+    (85) condition -> . WHEN INTEGER THEN
 
     WHEN            shift and go to state 100
 
@@ -1770,9 +1765,9 @@ state 75
 
 state 76
 
-    (87) expression -> ID .
+    (84) expression -> ID .
 
-    WHEN            reduce using rule 87 (expression -> ID .)
+    WHEN            reduce using rule 84 (expression -> ID .)
 
 
 state 77
@@ -1823,8 +1818,8 @@ state 80
 
 state 81
 
-    (89) signal -> SIGNAL LPARENT . INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> SIGNAL LPARENT . ID COMA INTEGER RPARENT SEMICOLON
+    (86) signal -> SIGNAL LPARENT . INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> SIGNAL LPARENT . ID COMA INTEGER RPARENT SEMICOLON
 
     INTEGER         shift and go to state 110
     ID              shift and go to state 111
@@ -1832,7 +1827,7 @@ state 81
 
 state 82
 
-    (91) viewsignal -> VIEWSIGNAL LPARENT . INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> VIEWSIGNAL LPARENT . INTEGER RPARENT SEMICOLON
 
     INTEGER         shift and go to state 112
 
@@ -1846,7 +1841,7 @@ state 83
 
 state 84
 
-    (78) while -> WHILE sentences . LPARENT recursive_whiles
+    (78) while -> WHILE sentences . LPARENT sentences RPARENT SEMICOLON
     (31) sentences -> sentences . sentence
     (32) sentence -> . local_variable
     (33) sentence -> . values
@@ -1870,7 +1865,7 @@ state 84
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -1878,9 +1873,9 @@ state 84
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -1888,8 +1883,8 @@ state 84
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for LPARENT resolved as shift
   ! shift/reduce conflict for NEW resolved as shift
@@ -1918,19 +1913,19 @@ state 84
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
 
-  ! LPARENT         [ reduce using rule 92 (empty -> .) ]
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! LPARENT         [ reduce using rule 89 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     sentence                       shift and go to state 86
     local_variable                 shift and go to state 46
@@ -2133,10 +2128,10 @@ state 96
 
 state 97
 
-    (82) case -> CASE expression recursive_conditions . SEMICOLON
-    (85) recursive_conditions -> recursive_conditions . recursive_condition
-    (86) recursive_condition -> . condition LPARENT sentences RPARENT
-    (88) condition -> . WHEN INTEGER THEN
+    (79) case -> CASE expression recursive_conditions . SEMICOLON
+    (82) recursive_conditions -> recursive_conditions . recursive_condition
+    (83) recursive_condition -> . condition LPARENT sentences RPARENT
+    (85) condition -> . WHEN INTEGER THEN
 
     SEMICOLON       shift and go to state 119
     WHEN            shift and go to state 100
@@ -2146,22 +2141,22 @@ state 97
 
 state 98
 
-    (84) recursive_conditions -> recursive_condition .
+    (81) recursive_conditions -> recursive_condition .
 
-    SEMICOLON       reduce using rule 84 (recursive_conditions -> recursive_condition .)
-    WHEN            reduce using rule 84 (recursive_conditions -> recursive_condition .)
+    SEMICOLON       reduce using rule 81 (recursive_conditions -> recursive_condition .)
+    WHEN            reduce using rule 81 (recursive_conditions -> recursive_condition .)
 
 
 state 99
 
-    (86) recursive_condition -> condition . LPARENT sentences RPARENT
+    (83) recursive_condition -> condition . LPARENT sentences RPARENT
 
     LPARENT         shift and go to state 121
 
 
 state 100
 
-    (88) condition -> WHEN . INTEGER THEN
+    (85) condition -> WHEN . INTEGER THEN
 
     INTEGER         shift and go to state 122
 
@@ -2264,21 +2259,21 @@ state 109
 
 state 110
 
-    (89) signal -> SIGNAL LPARENT INTEGER . COMA INTEGER RPARENT SEMICOLON
+    (86) signal -> SIGNAL LPARENT INTEGER . COMA INTEGER RPARENT SEMICOLON
 
     COMA            shift and go to state 130
 
 
 state 111
 
-    (90) signal -> SIGNAL LPARENT ID . COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> SIGNAL LPARENT ID . COMA INTEGER RPARENT SEMICOLON
 
     COMA            shift and go to state 131
 
 
 state 112
 
-    (91) viewsignal -> VIEWSIGNAL LPARENT INTEGER . RPARENT SEMICOLON
+    (88) viewsignal -> VIEWSIGNAL LPARENT INTEGER . RPARENT SEMICOLON
 
     RPARENT         shift and go to state 132
 
@@ -2292,10 +2287,7 @@ state 113
 
 state 114
 
-    (78) while -> WHILE sentences LPARENT . recursive_whiles
-    (79) recursive_whiles -> . recursive_while
-    (80) recursive_whiles -> . recursive_whiles recursive_while
-    (81) recursive_while -> . sentences RPARENT SEMICOLON
+    (78) while -> WHILE sentences LPARENT . sentences RPARENT SEMICOLON
     (30) sentences -> . sentence
     (31) sentences -> . sentences sentence
     (32) sentence -> . local_variable
@@ -2320,7 +2312,7 @@ state 114
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -2328,9 +2320,9 @@ state 114
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -2338,8 +2330,8 @@ state 114
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for NEW resolved as shift
   ! shift/reduce conflict for VALUES resolved as shift
@@ -2365,24 +2357,22 @@ state 114
     ID              shift and go to state 33
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
-    RPARENT         reduce using rule 92 (empty -> .)
+    RPARENT         reduce using rule 89 (empty -> .)
 
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     sentences                      shift and go to state 134
-    recursive_whiles               shift and go to state 135
-    recursive_while                shift and go to state 136
     sentence                       shift and go to state 45
     local_variable                 shift and go to state 46
     values                         shift and go to state 47
@@ -2416,7 +2406,7 @@ state 116
     (50) local_variable -> NEW ID COMA . LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
     (51) local_variable -> NEW ID COMA . LPARENT TYPE COMA BOOL RPARENT SEMICOLON
 
-    LPARENT         shift and go to state 137
+    LPARENT         shift and go to state 135
 
 
 state 117
@@ -2424,7 +2414,7 @@ state 117
     (28) master_var -> NEW ID COMA LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
     (29) master_var -> NEW ID COMA LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
 
-    TYPE            shift and go to state 138
+    TYPE            shift and go to state 136
 
 
 state 118
@@ -2432,41 +2422,41 @@ state 118
     (52) values -> VALUES LPARENT ID COMA . INTEGER RPARENT SEMICOLON
     (53) values -> VALUES LPARENT ID COMA . BOOL RPARENT SEMICOLON
 
-    INTEGER         shift and go to state 139
-    BOOL            shift and go to state 140
+    INTEGER         shift and go to state 137
+    BOOL            shift and go to state 138
 
 
 state 119
 
-    (82) case -> CASE expression recursive_conditions SEMICOLON .
+    (79) case -> CASE expression recursive_conditions SEMICOLON .
 
-    RPARENT         reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    NEW             reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    VALUES          reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    CASE            reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    CALL            reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    PRINTVALUES     reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    ALTER           reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    ALTERB          reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    SIGNAL          reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    VIEWSIGNAL      reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    ID              reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    ISTRUE          reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    WHILE           reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
-    LPARENT         reduce using rule 82 (case -> CASE expression recursive_conditions SEMICOLON .)
+    RPARENT         reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    NEW             reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    VALUES          reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    CASE            reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    CALL            reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    PRINTVALUES     reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    ALTER           reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    ALTERB          reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    SIGNAL          reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    VIEWSIGNAL      reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    ID              reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    ISTRUE          reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    WHILE           reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
+    LPARENT         reduce using rule 79 (case -> CASE expression recursive_conditions SEMICOLON .)
 
 
 state 120
 
-    (85) recursive_conditions -> recursive_conditions recursive_condition .
+    (82) recursive_conditions -> recursive_conditions recursive_condition .
 
-    SEMICOLON       reduce using rule 85 (recursive_conditions -> recursive_conditions recursive_condition .)
-    WHEN            reduce using rule 85 (recursive_conditions -> recursive_conditions recursive_condition .)
+    SEMICOLON       reduce using rule 82 (recursive_conditions -> recursive_conditions recursive_condition .)
+    WHEN            reduce using rule 82 (recursive_conditions -> recursive_conditions recursive_condition .)
 
 
 state 121
 
-    (86) recursive_condition -> condition LPARENT . sentences RPARENT
+    (83) recursive_condition -> condition LPARENT . sentences RPARENT
     (30) sentences -> . sentence
     (31) sentences -> . sentences sentence
     (32) sentence -> . local_variable
@@ -2491,7 +2481,7 @@ state 121
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -2499,9 +2489,9 @@ state 121
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -2509,8 +2499,8 @@ state 121
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for NEW resolved as shift
   ! shift/reduce conflict for VALUES resolved as shift
@@ -2536,22 +2526,22 @@ state 121
     ID              shift and go to state 33
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
-    RPARENT         reduce using rule 92 (empty -> .)
+    RPARENT         reduce using rule 89 (empty -> .)
 
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
-    sentences                      shift and go to state 141
+    sentences                      shift and go to state 139
     sentence                       shift and go to state 45
     local_variable                 shift and go to state 46
     values                         shift and go to state 47
@@ -2574,23 +2564,23 @@ state 121
 
 state 122
 
-    (88) condition -> WHEN INTEGER . THEN
+    (85) condition -> WHEN INTEGER . THEN
 
-    THEN            shift and go to state 142
+    THEN            shift and go to state 140
 
 
 state 123
 
     (54) call -> CALL LPARENT ID RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 143
+    SEMICOLON       shift and go to state 141
 
 
 state 124
 
     (55) print_values -> PRINTVALUES LPARENT printable_sentences RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 144
+    SEMICOLON       shift and go to state 142
 
 
 state 125
@@ -2603,8 +2593,8 @@ state 125
     ID              shift and go to state 106
     STRING          shift and go to state 107
 
-    printable_sentence_var         shift and go to state 145
-    printable_sentence_string      shift and go to state 146
+    printable_sentence_var         shift and go to state 143
+    printable_sentence_string      shift and go to state 144
 
 state 126
 
@@ -2616,15 +2606,15 @@ state 126
     STRING          shift and go to state 107
     ID              shift and go to state 106
 
-    printable_sentence_string      shift and go to state 147
-    printable_sentence_var         shift and go to state 148
+    printable_sentence_string      shift and go to state 145
+    printable_sentence_var         shift and go to state 146
 
 state 127
 
     (62) printable_sentences -> PLUS printable_sentences . PLUS printable_sentence_var
     (63) printable_sentences -> PLUS printable_sentences . PLUS printable_sentence_string
 
-    PLUS            shift and go to state 149
+    PLUS            shift and go to state 147
 
 
 state 128
@@ -2634,50 +2624,50 @@ state 128
     (68) alter -> ALTER LPARENT ID COMA . MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> ALTER LPARENT ID COMA . DIV COMA INTEGER RPARENT SEMICOLON
 
-    ADD             shift and go to state 150
-    SUB             shift and go to state 151
-    MUL             shift and go to state 152
-    DIV             shift and go to state 153
+    ADD             shift and go to state 148
+    SUB             shift and go to state 149
+    MUL             shift and go to state 150
+    DIV             shift and go to state 151
 
 
 state 129
 
     (70) alterB -> ALTERB LPARENT ID RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 154
+    SEMICOLON       shift and go to state 152
 
 
 state 130
 
-    (89) signal -> SIGNAL LPARENT INTEGER COMA . INTEGER RPARENT SEMICOLON
+    (86) signal -> SIGNAL LPARENT INTEGER COMA . INTEGER RPARENT SEMICOLON
 
-    INTEGER         shift and go to state 155
+    INTEGER         shift and go to state 153
 
 
 state 131
 
-    (90) signal -> SIGNAL LPARENT ID COMA . INTEGER RPARENT SEMICOLON
+    (87) signal -> SIGNAL LPARENT ID COMA . INTEGER RPARENT SEMICOLON
 
-    INTEGER         shift and go to state 156
+    INTEGER         shift and go to state 154
 
 
 state 132
 
-    (91) viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT . SEMICOLON
+    (88) viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 157
+    SEMICOLON       shift and go to state 155
 
 
 state 133
 
     (77) isTrue -> ISTRUE LPARENT ID RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 158
+    SEMICOLON       shift and go to state 156
 
 
 state 134
 
-    (81) recursive_while -> sentences . RPARENT SEMICOLON
+    (78) while -> WHILE sentences LPARENT sentences . RPARENT SEMICOLON
     (31) sentences -> sentences . sentence
     (32) sentence -> . local_variable
     (33) sentence -> . values
@@ -2701,7 +2691,7 @@ state 134
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -2709,9 +2699,9 @@ state 134
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -2719,8 +2709,8 @@ state 134
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for RPARENT resolved as shift
   ! shift/reduce conflict for NEW resolved as shift
@@ -2735,7 +2725,7 @@ state 134
   ! shift/reduce conflict for ID resolved as shift
   ! shift/reduce conflict for ISTRUE resolved as shift
   ! shift/reduce conflict for WHILE resolved as shift
-    RPARENT         shift and go to state 159
+    RPARENT         shift and go to state 157
     NEW             shift and go to state 64
     VALUES          shift and go to state 34
     CASE            shift and go to state 35
@@ -2749,19 +2739,19 @@ state 134
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
 
-  ! RPARENT         [ reduce using rule 92 (empty -> .) ]
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! RPARENT         [ reduce using rule 89 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     sentence                       shift and go to state 86
     local_variable                 shift and go to state 46
@@ -2785,195 +2775,37 @@ state 134
 
 state 135
 
-    (78) while -> WHILE sentences LPARENT recursive_whiles .
-    (80) recursive_whiles -> recursive_whiles . recursive_while
-    (81) recursive_while -> . sentences RPARENT SEMICOLON
-    (30) sentences -> . sentence
-    (31) sentences -> . sentences sentence
-    (32) sentence -> . local_variable
-    (33) sentence -> . values
-    (34) sentence -> . case
-    (35) sentence -> . call
-    (36) sentence -> . print_values
-    (37) sentence -> . alter
-    (38) sentence -> . alterB
-    (39) sentence -> . signal
-    (40) sentence -> . viewsignal
-    (41) sentence -> . sentence7
-    (42) sentence -> . sentence8
-    (43) sentence -> . sentence9
-    (44) sentence -> . sentence10
-    (45) sentence -> . sentence11
-    (46) sentence -> . sentence12
-    (47) sentence -> . isTrue
-    (48) sentence -> . while
-    (49) sentence -> . empty
-    (50) local_variable -> . NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-    (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
-    (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
-    (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
-    (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
-    (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
-    (67) alter -> . ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
-    (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
-    (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
-    (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
-    (71) sentence7 -> . ID MAQ INTEGER
-    (72) sentence8 -> . ID MEQ INTEGER
-    (73) sentence9 -> . ID EQUAL INTEGER
-    (74) sentence10 -> . ID DIFFERENT INTEGER
-    (75) sentence11 -> . ID MEQEQUAL INTEGER
-    (76) sentence12 -> . ID MAQEQUAL INTEGER
-    (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
-
-  ! shift/reduce conflict for NEW resolved as shift
-  ! shift/reduce conflict for VALUES resolved as shift
-  ! shift/reduce conflict for CASE resolved as shift
-  ! shift/reduce conflict for CALL resolved as shift
-  ! shift/reduce conflict for PRINTVALUES resolved as shift
-  ! shift/reduce conflict for ALTER resolved as shift
-  ! shift/reduce conflict for ALTERB resolved as shift
-  ! shift/reduce conflict for SIGNAL resolved as shift
-  ! shift/reduce conflict for VIEWSIGNAL resolved as shift
-  ! shift/reduce conflict for ID resolved as shift
-  ! shift/reduce conflict for ISTRUE resolved as shift
-  ! shift/reduce conflict for WHILE resolved as shift
-  ! reduce/reduce conflict for RPARENT resolved using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .)
-  ! shift/reduce conflict for NEW resolved as shift
-  ! shift/reduce conflict for VALUES resolved as shift
-  ! shift/reduce conflict for CASE resolved as shift
-  ! shift/reduce conflict for CALL resolved as shift
-  ! shift/reduce conflict for PRINTVALUES resolved as shift
-  ! shift/reduce conflict for ALTER resolved as shift
-  ! shift/reduce conflict for ALTERB resolved as shift
-  ! shift/reduce conflict for SIGNAL resolved as shift
-  ! shift/reduce conflict for VIEWSIGNAL resolved as shift
-  ! shift/reduce conflict for ID resolved as shift
-  ! shift/reduce conflict for ISTRUE resolved as shift
-  ! shift/reduce conflict for WHILE resolved as shift
-    RPARENT         reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .)
-    LPARENT         reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .)
-    NEW             shift and go to state 64
-    VALUES          shift and go to state 34
-    CASE            shift and go to state 35
-    CALL            shift and go to state 36
-    PRINTVALUES     shift and go to state 37
-    ALTER           shift and go to state 38
-    ALTERB          shift and go to state 39
-    SIGNAL          shift and go to state 40
-    VIEWSIGNAL      shift and go to state 41
-    ID              shift and go to state 33
-    ISTRUE          shift and go to state 42
-    WHILE           shift and go to state 43
-
-  ! NEW             [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! VALUES          [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! CASE            [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! CALL            [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! PRINTVALUES     [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! ALTER           [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! ALTERB          [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! SIGNAL          [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! VIEWSIGNAL      [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! ID              [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! ISTRUE          [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! WHILE           [ reduce using rule 78 (while -> WHILE sentences LPARENT recursive_whiles .) ]
-  ! RPARENT         [ reduce using rule 92 (empty -> .) ]
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
-
-    sentences                      shift and go to state 134
-    recursive_while                shift and go to state 160
-    sentence                       shift and go to state 45
-    local_variable                 shift and go to state 46
-    values                         shift and go to state 47
-    case                           shift and go to state 48
-    call                           shift and go to state 49
-    print_values                   shift and go to state 50
-    alter                          shift and go to state 51
-    alterB                         shift and go to state 52
-    signal                         shift and go to state 53
-    viewsignal                     shift and go to state 54
-    sentence7                      shift and go to state 55
-    sentence8                      shift and go to state 56
-    sentence9                      shift and go to state 57
-    sentence10                     shift and go to state 58
-    sentence11                     shift and go to state 59
-    sentence12                     shift and go to state 60
-    isTrue                         shift and go to state 61
-    while                          shift and go to state 62
-    empty                          shift and go to state 63
-
-state 136
-
-    (79) recursive_whiles -> recursive_while .
-
-    NEW             reduce using rule 79 (recursive_whiles -> recursive_while .)
-    VALUES          reduce using rule 79 (recursive_whiles -> recursive_while .)
-    CASE            reduce using rule 79 (recursive_whiles -> recursive_while .)
-    CALL            reduce using rule 79 (recursive_whiles -> recursive_while .)
-    PRINTVALUES     reduce using rule 79 (recursive_whiles -> recursive_while .)
-    ALTER           reduce using rule 79 (recursive_whiles -> recursive_while .)
-    ALTERB          reduce using rule 79 (recursive_whiles -> recursive_while .)
-    SIGNAL          reduce using rule 79 (recursive_whiles -> recursive_while .)
-    VIEWSIGNAL      reduce using rule 79 (recursive_whiles -> recursive_while .)
-    ID              reduce using rule 79 (recursive_whiles -> recursive_while .)
-    ISTRUE          reduce using rule 79 (recursive_whiles -> recursive_while .)
-    WHILE           reduce using rule 79 (recursive_whiles -> recursive_while .)
-    RPARENT         reduce using rule 79 (recursive_whiles -> recursive_while .)
-    LPARENT         reduce using rule 79 (recursive_whiles -> recursive_while .)
-
-
-state 137
-
     (50) local_variable -> NEW ID COMA LPARENT . TYPE COMA INTEGER RPARENT SEMICOLON
     (51) local_variable -> NEW ID COMA LPARENT . TYPE COMA BOOL RPARENT SEMICOLON
 
-    TYPE            shift and go to state 161
+    TYPE            shift and go to state 158
 
 
-state 138
+state 136
 
     (28) master_var -> NEW ID COMA LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
     (29) master_var -> NEW ID COMA LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
 
-    COMA            shift and go to state 162
+    COMA            shift and go to state 159
+
+
+state 137
+
+    (52) values -> VALUES LPARENT ID COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 160
+
+
+state 138
+
+    (53) values -> VALUES LPARENT ID COMA BOOL . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 161
 
 
 state 139
 
-    (52) values -> VALUES LPARENT ID COMA INTEGER . RPARENT SEMICOLON
-
-    RPARENT         shift and go to state 163
-
-
-state 140
-
-    (53) values -> VALUES LPARENT ID COMA BOOL . RPARENT SEMICOLON
-
-    RPARENT         shift and go to state 164
-
-
-state 141
-
-    (86) recursive_condition -> condition LPARENT sentences . RPARENT
+    (83) recursive_condition -> condition LPARENT sentences . RPARENT
     (31) sentences -> sentences . sentence
     (32) sentence -> . local_variable
     (33) sentence -> . values
@@ -2997,7 +2829,7 @@ state 141
     (51) local_variable -> . NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
     (52) values -> . VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
     (53) values -> . VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-    (82) case -> . CASE expression recursive_conditions SEMICOLON
+    (79) case -> . CASE expression recursive_conditions SEMICOLON
     (54) call -> . CALL LPARENT ID RPARENT SEMICOLON
     (55) print_values -> . PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON
     (66) alter -> . ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
@@ -3005,9 +2837,9 @@ state 141
     (68) alter -> . ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
     (69) alter -> . ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON
     (70) alterB -> . ALTERB LPARENT ID RPARENT SEMICOLON
-    (89) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
-    (90) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
-    (91) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+    (86) signal -> . SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+    (87) signal -> . SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON
+    (88) viewsignal -> . VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
     (71) sentence7 -> . ID MAQ INTEGER
     (72) sentence8 -> . ID MEQ INTEGER
     (73) sentence9 -> . ID EQUAL INTEGER
@@ -3015,8 +2847,8 @@ state 141
     (75) sentence11 -> . ID MEQEQUAL INTEGER
     (76) sentence12 -> . ID MAQEQUAL INTEGER
     (77) isTrue -> . ISTRUE LPARENT ID RPARENT SEMICOLON
-    (78) while -> . WHILE sentences LPARENT recursive_whiles
-    (92) empty -> .
+    (78) while -> . WHILE sentences LPARENT sentences RPARENT SEMICOLON
+    (89) empty -> .
 
   ! shift/reduce conflict for RPARENT resolved as shift
   ! shift/reduce conflict for NEW resolved as shift
@@ -3031,7 +2863,7 @@ state 141
   ! shift/reduce conflict for ID resolved as shift
   ! shift/reduce conflict for ISTRUE resolved as shift
   ! shift/reduce conflict for WHILE resolved as shift
-    RPARENT         shift and go to state 165
+    RPARENT         shift and go to state 162
     NEW             shift and go to state 64
     VALUES          shift and go to state 34
     CASE            shift and go to state 35
@@ -3045,19 +2877,19 @@ state 141
     ISTRUE          shift and go to state 42
     WHILE           shift and go to state 43
 
-  ! RPARENT         [ reduce using rule 92 (empty -> .) ]
-  ! NEW             [ reduce using rule 92 (empty -> .) ]
-  ! VALUES          [ reduce using rule 92 (empty -> .) ]
-  ! CASE            [ reduce using rule 92 (empty -> .) ]
-  ! CALL            [ reduce using rule 92 (empty -> .) ]
-  ! PRINTVALUES     [ reduce using rule 92 (empty -> .) ]
-  ! ALTER           [ reduce using rule 92 (empty -> .) ]
-  ! ALTERB          [ reduce using rule 92 (empty -> .) ]
-  ! SIGNAL          [ reduce using rule 92 (empty -> .) ]
-  ! VIEWSIGNAL      [ reduce using rule 92 (empty -> .) ]
-  ! ID              [ reduce using rule 92 (empty -> .) ]
-  ! ISTRUE          [ reduce using rule 92 (empty -> .) ]
-  ! WHILE           [ reduce using rule 92 (empty -> .) ]
+  ! RPARENT         [ reduce using rule 89 (empty -> .) ]
+  ! NEW             [ reduce using rule 89 (empty -> .) ]
+  ! VALUES          [ reduce using rule 89 (empty -> .) ]
+  ! CASE            [ reduce using rule 89 (empty -> .) ]
+  ! CALL            [ reduce using rule 89 (empty -> .) ]
+  ! PRINTVALUES     [ reduce using rule 89 (empty -> .) ]
+  ! ALTER           [ reduce using rule 89 (empty -> .) ]
+  ! ALTERB          [ reduce using rule 89 (empty -> .) ]
+  ! SIGNAL          [ reduce using rule 89 (empty -> .) ]
+  ! VIEWSIGNAL      [ reduce using rule 89 (empty -> .) ]
+  ! ID              [ reduce using rule 89 (empty -> .) ]
+  ! ISTRUE          [ reduce using rule 89 (empty -> .) ]
+  ! WHILE           [ reduce using rule 89 (empty -> .) ]
 
     sentence                       shift and go to state 86
     local_variable                 shift and go to state 46
@@ -3079,14 +2911,14 @@ state 141
     while                          shift and go to state 62
     empty                          shift and go to state 63
 
-state 142
+state 140
 
-    (88) condition -> WHEN INTEGER THEN .
+    (85) condition -> WHEN INTEGER THEN .
 
-    LPARENT         reduce using rule 88 (condition -> WHEN INTEGER THEN .)
+    LPARENT         reduce using rule 85 (condition -> WHEN INTEGER THEN .)
 
 
-state 143
+state 141
 
     (54) call -> CALL LPARENT ID RPARENT SEMICOLON .
 
@@ -3106,7 +2938,7 @@ state 143
     LPARENT         reduce using rule 54 (call -> CALL LPARENT ID RPARENT SEMICOLON .)
 
 
-state 144
+state 142
 
     (55) print_values -> PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON .
 
@@ -3126,7 +2958,7 @@ state 144
     LPARENT         reduce using rule 55 (print_values -> PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON .)
 
 
-state 145
+state 143
 
     (58) printable_sentences -> printable_sentence_var PLUS printable_sentence_var .
 
@@ -3134,7 +2966,7 @@ state 145
     PLUS            reduce using rule 58 (printable_sentences -> printable_sentence_var PLUS printable_sentence_var .)
 
 
-state 146
+state 144
 
     (60) printable_sentences -> printable_sentence_var PLUS printable_sentence_string .
 
@@ -3142,7 +2974,7 @@ state 146
     PLUS            reduce using rule 60 (printable_sentences -> printable_sentence_var PLUS printable_sentence_string .)
 
 
-state 147
+state 145
 
     (59) printable_sentences -> printable_sentence_string PLUS printable_sentence_string .
 
@@ -3150,7 +2982,7 @@ state 147
     PLUS            reduce using rule 59 (printable_sentences -> printable_sentence_string PLUS printable_sentence_string .)
 
 
-state 148
+state 146
 
     (61) printable_sentences -> printable_sentence_string PLUS printable_sentence_var .
 
@@ -3158,7 +2990,7 @@ state 148
     PLUS            reduce using rule 61 (printable_sentences -> printable_sentence_string PLUS printable_sentence_var .)
 
 
-state 149
+state 147
 
     (62) printable_sentences -> PLUS printable_sentences PLUS . printable_sentence_var
     (63) printable_sentences -> PLUS printable_sentences PLUS . printable_sentence_string
@@ -3168,38 +3000,38 @@ state 149
     ID              shift and go to state 106
     STRING          shift and go to state 107
 
-    printable_sentence_var         shift and go to state 166
-    printable_sentence_string      shift and go to state 167
+    printable_sentence_var         shift and go to state 163
+    printable_sentence_string      shift and go to state 164
 
-state 150
+state 148
 
     (66) alter -> ALTER LPARENT ID COMA ADD . COMA INTEGER RPARENT SEMICOLON
 
-    COMA            shift and go to state 168
+    COMA            shift and go to state 165
+
+
+state 149
+
+    (67) alter -> ALTER LPARENT ID COMA SUB . COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 166
+
+
+state 150
+
+    (68) alter -> ALTER LPARENT ID COMA MUL . COMA INTEGER RPARENT SEMICOLON
+
+    COMA            shift and go to state 167
 
 
 state 151
 
-    (67) alter -> ALTER LPARENT ID COMA SUB . COMA INTEGER RPARENT SEMICOLON
+    (69) alter -> ALTER LPARENT ID COMA DIV . COMA INTEGER RPARENT SEMICOLON
 
-    COMA            shift and go to state 169
+    COMA            shift and go to state 168
 
 
 state 152
-
-    (68) alter -> ALTER LPARENT ID COMA MUL . COMA INTEGER RPARENT SEMICOLON
-
-    COMA            shift and go to state 170
-
-
-state 153
-
-    (69) alter -> ALTER LPARENT ID COMA DIV . COMA INTEGER RPARENT SEMICOLON
-
-    COMA            shift and go to state 171
-
-
-state 154
 
     (70) alterB -> ALTERB LPARENT ID RPARENT SEMICOLON .
 
@@ -3219,41 +3051,41 @@ state 154
     LPARENT         reduce using rule 70 (alterB -> ALTERB LPARENT ID RPARENT SEMICOLON .)
 
 
+state 153
+
+    (86) signal -> SIGNAL LPARENT INTEGER COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 169
+
+
+state 154
+
+    (87) signal -> SIGNAL LPARENT ID COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 170
+
+
 state 155
 
-    (89) signal -> SIGNAL LPARENT INTEGER COMA INTEGER . RPARENT SEMICOLON
+    (88) viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .
 
-    RPARENT         shift and go to state 172
+    RPARENT         reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    CASE            reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    SIGNAL          reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    VIEWSIGNAL      reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    WHILE           reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
+    LPARENT         reduce using rule 88 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
 
 
 state 156
-
-    (90) signal -> SIGNAL LPARENT ID COMA INTEGER . RPARENT SEMICOLON
-
-    RPARENT         shift and go to state 173
-
-
-state 157
-
-    (91) viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .
-
-    RPARENT         reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    NEW             reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    VALUES          reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    CASE            reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    CALL            reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    PRINTVALUES     reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    ALTER           reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    ALTERB          reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    SIGNAL          reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    VIEWSIGNAL      reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    ID              reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    ISTRUE          reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    WHILE           reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-    LPARENT         reduce using rule 91 (viewsignal -> VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON .)
-
-
-state 158
 
     (77) isTrue -> ISTRUE LPARENT ID RPARENT SEMICOLON .
 
@@ -3273,73 +3105,53 @@ state 158
     LPARENT         reduce using rule 77 (isTrue -> ISTRUE LPARENT ID RPARENT SEMICOLON .)
 
 
-state 159
+state 157
 
-    (81) recursive_while -> sentences RPARENT . SEMICOLON
+    (78) while -> WHILE sentences LPARENT sentences RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 174
-
-
-state 160
-
-    (80) recursive_whiles -> recursive_whiles recursive_while .
-
-    NEW             reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    VALUES          reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    CASE            reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    CALL            reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    PRINTVALUES     reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    ALTER           reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    ALTERB          reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    SIGNAL          reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    VIEWSIGNAL      reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    ID              reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    ISTRUE          reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    WHILE           reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    RPARENT         reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
-    LPARENT         reduce using rule 80 (recursive_whiles -> recursive_whiles recursive_while .)
+    SEMICOLON       shift and go to state 171
 
 
-state 161
+state 158
 
     (50) local_variable -> NEW ID COMA LPARENT TYPE . COMA INTEGER RPARENT SEMICOLON
     (51) local_variable -> NEW ID COMA LPARENT TYPE . COMA BOOL RPARENT SEMICOLON
 
-    COMA            shift and go to state 175
+    COMA            shift and go to state 172
 
 
-state 162
+state 159
 
     (28) master_var -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
     (29) master_var -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
 
-    INTEGER         shift and go to state 176
-    BOOL            shift and go to state 177
+    INTEGER         shift and go to state 173
+    BOOL            shift and go to state 174
 
 
-state 163
+state 160
 
     (52) values -> VALUES LPARENT ID COMA INTEGER RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 178
+    SEMICOLON       shift and go to state 175
 
 
-state 164
+state 161
 
     (53) values -> VALUES LPARENT ID COMA BOOL RPARENT . SEMICOLON
 
-    SEMICOLON       shift and go to state 179
+    SEMICOLON       shift and go to state 176
 
 
-state 165
+state 162
 
-    (86) recursive_condition -> condition LPARENT sentences RPARENT .
+    (83) recursive_condition -> condition LPARENT sentences RPARENT .
 
-    SEMICOLON       reduce using rule 86 (recursive_condition -> condition LPARENT sentences RPARENT .)
-    WHEN            reduce using rule 86 (recursive_condition -> condition LPARENT sentences RPARENT .)
+    SEMICOLON       reduce using rule 83 (recursive_condition -> condition LPARENT sentences RPARENT .)
+    WHEN            reduce using rule 83 (recursive_condition -> condition LPARENT sentences RPARENT .)
 
 
-state 166
+state 163
 
     (62) printable_sentences -> PLUS printable_sentences PLUS printable_sentence_var .
 
@@ -3347,7 +3159,7 @@ state 166
     PLUS            reduce using rule 62 (printable_sentences -> PLUS printable_sentences PLUS printable_sentence_var .)
 
 
-state 167
+state 164
 
     (63) printable_sentences -> PLUS printable_sentences PLUS printable_sentence_string .
 
@@ -3355,92 +3167,92 @@ state 167
     PLUS            reduce using rule 63 (printable_sentences -> PLUS printable_sentences PLUS printable_sentence_string .)
 
 
-state 168
+state 165
 
     (66) alter -> ALTER LPARENT ID COMA ADD COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 177
+
+
+state 166
+
+    (67) alter -> ALTER LPARENT ID COMA SUB COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 178
+
+
+state 167
+
+    (68) alter -> ALTER LPARENT ID COMA MUL COMA . INTEGER RPARENT SEMICOLON
+
+    INTEGER         shift and go to state 179
+
+
+state 168
+
+    (69) alter -> ALTER LPARENT ID COMA DIV COMA . INTEGER RPARENT SEMICOLON
 
     INTEGER         shift and go to state 180
 
 
 state 169
 
-    (67) alter -> ALTER LPARENT ID COMA SUB COMA . INTEGER RPARENT SEMICOLON
+    (86) signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT . SEMICOLON
 
-    INTEGER         shift and go to state 181
+    SEMICOLON       shift and go to state 181
 
 
 state 170
 
-    (68) alter -> ALTER LPARENT ID COMA MUL COMA . INTEGER RPARENT SEMICOLON
+    (87) signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT . SEMICOLON
 
-    INTEGER         shift and go to state 182
+    SEMICOLON       shift and go to state 182
 
 
 state 171
 
-    (69) alter -> ALTER LPARENT ID COMA DIV COMA . INTEGER RPARENT SEMICOLON
+    (78) while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .
 
-    INTEGER         shift and go to state 183
+    RPARENT         reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    NEW             reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    VALUES          reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    CASE            reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    CALL            reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    ALTER           reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    SIGNAL          reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    VIEWSIGNAL      reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    ID              reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    WHILE           reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
+    LPARENT         reduce using rule 78 (while -> WHILE sentences LPARENT sentences RPARENT SEMICOLON .)
 
 
 state 172
 
-    (89) signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT . SEMICOLON
+    (50) local_variable -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
+    (51) local_variable -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
 
-    SEMICOLON       shift and go to state 184
+    INTEGER         shift and go to state 183
+    BOOL            shift and go to state 184
 
 
 state 173
 
-    (90) signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT . SEMICOLON
+    (28) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
 
-    SEMICOLON       shift and go to state 185
+    RPARENT         shift and go to state 185
 
 
 state 174
 
-    (81) recursive_while -> sentences RPARENT SEMICOLON .
+    (29) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
 
-    NEW             reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    VALUES          reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    CASE            reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    CALL            reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    PRINTVALUES     reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    ALTER           reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    ALTERB          reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    SIGNAL          reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    VIEWSIGNAL      reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    ID              reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    ISTRUE          reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    WHILE           reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    RPARENT         reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
-    LPARENT         reduce using rule 81 (recursive_while -> sentences RPARENT SEMICOLON .)
+    RPARENT         shift and go to state 186
 
 
 state 175
-
-    (50) local_variable -> NEW ID COMA LPARENT TYPE COMA . INTEGER RPARENT SEMICOLON
-    (51) local_variable -> NEW ID COMA LPARENT TYPE COMA . BOOL RPARENT SEMICOLON
-
-    INTEGER         shift and go to state 186
-    BOOL            shift and go to state 187
-
-
-state 176
-
-    (28) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
-
-    RPARENT         shift and go to state 188
-
-
-state 177
-
-    (29) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
-
-    RPARENT         shift and go to state 189
-
-
-state 178
 
     (52) values -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .
 
@@ -3460,7 +3272,7 @@ state 178
     LPARENT         reduce using rule 52 (values -> VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
 
 
-state 179
+state 176
 
     (53) values -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .
 
@@ -3480,145 +3292,145 @@ state 179
     LPARENT         reduce using rule 53 (values -> VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON .)
 
 
-state 180
+state 177
 
     (66) alter -> ALTER LPARENT ID COMA ADD COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 187
+
+
+state 178
+
+    (67) alter -> ALTER LPARENT ID COMA SUB COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 188
+
+
+state 179
+
+    (68) alter -> ALTER LPARENT ID COMA MUL COMA INTEGER . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 189
+
+
+state 180
+
+    (69) alter -> ALTER LPARENT ID COMA DIV COMA INTEGER . RPARENT SEMICOLON
 
     RPARENT         shift and go to state 190
 
 
 state 181
 
-    (67) alter -> ALTER LPARENT ID COMA SUB COMA INTEGER . RPARENT SEMICOLON
+    (86) signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .
 
-    RPARENT         shift and go to state 191
+    RPARENT         reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    CASE            reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    SIGNAL          reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    VIEWSIGNAL      reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    WHILE           reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    LPARENT         reduce using rule 86 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
 
 
 state 182
 
-    (68) alter -> ALTER LPARENT ID COMA MUL COMA INTEGER . RPARENT SEMICOLON
+    (87) signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .
 
-    RPARENT         shift and go to state 192
+    RPARENT         reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    NEW             reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    VALUES          reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    CASE            reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    CALL            reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    PRINTVALUES     reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ALTER           reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ALTERB          reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    SIGNAL          reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    VIEWSIGNAL      reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ID              reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    ISTRUE          reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    WHILE           reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    LPARENT         reduce using rule 87 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
 
 
 state 183
 
-    (69) alter -> ALTER LPARENT ID COMA DIV COMA INTEGER . RPARENT SEMICOLON
+    (50) local_variable -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
 
-    RPARENT         shift and go to state 193
+    RPARENT         shift and go to state 191
 
 
 state 184
 
-    (89) signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .
+    (51) local_variable -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
 
-    RPARENT         reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    NEW             reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    VALUES          reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    CASE            reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    CALL            reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    PRINTVALUES     reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    ALTER           reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    ALTERB          reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    SIGNAL          reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    VIEWSIGNAL      reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    ID              reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    ISTRUE          reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    WHILE           reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
-    LPARENT         reduce using rule 89 (signal -> SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON .)
+    RPARENT         shift and go to state 192
 
 
 state 185
 
-    (90) signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .
+    (28) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
 
-    RPARENT         reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    NEW             reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    VALUES          reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    CASE            reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    CALL            reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    PRINTVALUES     reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    ALTER           reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    ALTERB          reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    SIGNAL          reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    VIEWSIGNAL      reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    ID              reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    ISTRUE          reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    WHILE           reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
-    LPARENT         reduce using rule 90 (signal -> SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON .)
+    SEMICOLON       shift and go to state 193
 
 
 state 186
 
-    (50) local_variable -> NEW ID COMA LPARENT TYPE COMA INTEGER . RPARENT SEMICOLON
+    (29) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
 
-    RPARENT         shift and go to state 194
+    SEMICOLON       shift and go to state 194
 
 
 state 187
 
-    (51) local_variable -> NEW ID COMA LPARENT TYPE COMA BOOL . RPARENT SEMICOLON
+    (66) alter -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT . SEMICOLON
 
-    RPARENT         shift and go to state 195
+    SEMICOLON       shift and go to state 195
 
 
 state 188
 
-    (28) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
+    (67) alter -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT . SEMICOLON
 
     SEMICOLON       shift and go to state 196
 
 
 state 189
 
-    (29) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
+    (68) alter -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT . SEMICOLON
 
     SEMICOLON       shift and go to state 197
 
 
 state 190
 
-    (66) alter -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT . SEMICOLON
+    (69) alter -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT . SEMICOLON
 
     SEMICOLON       shift and go to state 198
 
 
 state 191
 
-    (67) alter -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT . SEMICOLON
+    (50) local_variable -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
 
     SEMICOLON       shift and go to state 199
 
 
 state 192
 
-    (68) alter -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT . SEMICOLON
+    (51) local_variable -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
 
     SEMICOLON       shift and go to state 200
 
 
 state 193
-
-    (69) alter -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT . SEMICOLON
-
-    SEMICOLON       shift and go to state 201
-
-
-state 194
-
-    (50) local_variable -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT . SEMICOLON
-
-    SEMICOLON       shift and go to state 202
-
-
-state 195
-
-    (51) local_variable -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT . SEMICOLON
-
-    SEMICOLON       shift and go to state 203
-
-
-state 196
 
     (28) master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
 
@@ -3637,7 +3449,7 @@ state 196
     WHILE           reduce using rule 28 (master_var -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
 
 
-state 197
+state 194
 
     (29) master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
 
@@ -3656,7 +3468,7 @@ state 197
     WHILE           reduce using rule 29 (master_var -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .)
 
 
-state 198
+state 195
 
     (66) alter -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .
 
@@ -3676,7 +3488,7 @@ state 198
     LPARENT         reduce using rule 66 (alter -> ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON .)
 
 
-state 199
+state 196
 
     (67) alter -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .
 
@@ -3696,7 +3508,7 @@ state 199
     LPARENT         reduce using rule 67 (alter -> ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON .)
 
 
-state 200
+state 197
 
     (68) alter -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .
 
@@ -3716,7 +3528,7 @@ state 200
     LPARENT         reduce using rule 68 (alter -> ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON .)
 
 
-state 201
+state 198
 
     (69) alter -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .
 
@@ -3736,7 +3548,7 @@ state 201
     LPARENT         reduce using rule 69 (alter -> ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON .)
 
 
-state 202
+state 199
 
     (50) local_variable -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .
 
@@ -3756,7 +3568,7 @@ state 202
     LPARENT         reduce using rule 50 (local_variable -> NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON .)
 
 
-state 203
+state 200
 
     (51) local_variable -> NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON .
 
@@ -3892,42 +3704,16 @@ WARNING: shift/reduce conflict for VIEWSIGNAL in state 134 resolved as shift
 WARNING: shift/reduce conflict for ID in state 134 resolved as shift
 WARNING: shift/reduce conflict for ISTRUE in state 134 resolved as shift
 WARNING: shift/reduce conflict for WHILE in state 134 resolved as shift
-WARNING: shift/reduce conflict for NEW in state 135 resolved as shift
-WARNING: shift/reduce conflict for VALUES in state 135 resolved as shift
-WARNING: shift/reduce conflict for CASE in state 135 resolved as shift
-WARNING: shift/reduce conflict for CALL in state 135 resolved as shift
-WARNING: shift/reduce conflict for PRINTVALUES in state 135 resolved as shift
-WARNING: shift/reduce conflict for ALTER in state 135 resolved as shift
-WARNING: shift/reduce conflict for ALTERB in state 135 resolved as shift
-WARNING: shift/reduce conflict for SIGNAL in state 135 resolved as shift
-WARNING: shift/reduce conflict for VIEWSIGNAL in state 135 resolved as shift
-WARNING: shift/reduce conflict for ID in state 135 resolved as shift
-WARNING: shift/reduce conflict for ISTRUE in state 135 resolved as shift
-WARNING: shift/reduce conflict for WHILE in state 135 resolved as shift
-WARNING: shift/reduce conflict for NEW in state 135 resolved as shift
-WARNING: shift/reduce conflict for VALUES in state 135 resolved as shift
-WARNING: shift/reduce conflict for CASE in state 135 resolved as shift
-WARNING: shift/reduce conflict for CALL in state 135 resolved as shift
-WARNING: shift/reduce conflict for PRINTVALUES in state 135 resolved as shift
-WARNING: shift/reduce conflict for ALTER in state 135 resolved as shift
-WARNING: shift/reduce conflict for ALTERB in state 135 resolved as shift
-WARNING: shift/reduce conflict for SIGNAL in state 135 resolved as shift
-WARNING: shift/reduce conflict for VIEWSIGNAL in state 135 resolved as shift
-WARNING: shift/reduce conflict for ID in state 135 resolved as shift
-WARNING: shift/reduce conflict for ISTRUE in state 135 resolved as shift
-WARNING: shift/reduce conflict for WHILE in state 135 resolved as shift
-WARNING: shift/reduce conflict for RPARENT in state 141 resolved as shift
-WARNING: shift/reduce conflict for NEW in state 141 resolved as shift
-WARNING: shift/reduce conflict for VALUES in state 141 resolved as shift
-WARNING: shift/reduce conflict for CASE in state 141 resolved as shift
-WARNING: shift/reduce conflict for CALL in state 141 resolved as shift
-WARNING: shift/reduce conflict for PRINTVALUES in state 141 resolved as shift
-WARNING: shift/reduce conflict for ALTER in state 141 resolved as shift
-WARNING: shift/reduce conflict for ALTERB in state 141 resolved as shift
-WARNING: shift/reduce conflict for SIGNAL in state 141 resolved as shift
-WARNING: shift/reduce conflict for VIEWSIGNAL in state 141 resolved as shift
-WARNING: shift/reduce conflict for ID in state 141 resolved as shift
-WARNING: shift/reduce conflict for ISTRUE in state 141 resolved as shift
-WARNING: shift/reduce conflict for WHILE in state 141 resolved as shift
-WARNING: reduce/reduce conflict in state 135 resolved using rule (while -> WHILE sentences LPARENT recursive_whiles)
-WARNING: rejected rule (empty -> <empty>) in state 135
+WARNING: shift/reduce conflict for RPARENT in state 139 resolved as shift
+WARNING: shift/reduce conflict for NEW in state 139 resolved as shift
+WARNING: shift/reduce conflict for VALUES in state 139 resolved as shift
+WARNING: shift/reduce conflict for CASE in state 139 resolved as shift
+WARNING: shift/reduce conflict for CALL in state 139 resolved as shift
+WARNING: shift/reduce conflict for PRINTVALUES in state 139 resolved as shift
+WARNING: shift/reduce conflict for ALTER in state 139 resolved as shift
+WARNING: shift/reduce conflict for ALTERB in state 139 resolved as shift
+WARNING: shift/reduce conflict for SIGNAL in state 139 resolved as shift
+WARNING: shift/reduce conflict for VIEWSIGNAL in state 139 resolved as shift
+WARNING: shift/reduce conflict for ID in state 139 resolved as shift
+WARNING: shift/reduce conflict for ISTRUE in state 139 resolved as shift
+WARNING: shift/reduce conflict for WHILE in state 139 resolved as shift
