@@ -137,9 +137,12 @@ variables_locales = {}
 variables_globales = {}
 syntax_errors = []
 master = 0
-proc_en_analisis = ''
+proc_en_analisis = None
+id_case = None
 condition_flag = True
 else_flag = False
+while_flag = True
+while_p = []
 
 precedence = (
     ('left', 'ADD', 'SUB'),
@@ -697,15 +700,27 @@ def p_isTrue(p):
 
 
 def p_while(p):
-    '''while : WHILE sentences LPARENT sentences RPARENT SEMICOLON'''
+    '''while : WHILE sentences LPARENT recursive_whiles'''
 
-    print("llegó a while")
-    while p[2]:
-        # Repeat the statements as long as the condition is met
-        p[4]
-        print("Sis")
-        time.sleep(5)
+    global condition_flag, while_flag, while_p
+    condition_flag = True
+    while_flag = True
 
+    print("pasó while")
+
+def p_recursive_whiles(p):
+    '''recursive_whiles : recursive_while
+                        | recursive_whiles recursive_while'''
+
+    global while_flag
+    while while_flag:
+        if len(p) == 2:
+            p[0] = [p[1]]  # Create a list with a single item
+        else:
+            p[0] = p[1] + [p[2]]  # Append the new item to the existing list
+def p_recursive_while(p):
+    'recursive_while : sentences RPARENT SEMICOLON'
+    pass
 
 def p_case(p):
     '''case : CASE expression recursive_conditions SEMICOLON'''
