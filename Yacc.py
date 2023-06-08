@@ -2,6 +2,7 @@ import ply.yacc as yacc
 import ply.lex as lex
 from collections import deque
 from arduino import manipulacion_arduino
+import time
 
 # Lex ---------------------
 lexical_errors = []
@@ -216,8 +217,7 @@ def p_master_sentence(p):
                        | sentence11
                        | sentence12
                        | isTrue
-                       | sentence14
-                       | sentence15
+                       | while
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
 
@@ -265,8 +265,7 @@ def p_sentence(p):
                 | sentence11
                 | sentence12
                 | isTrue
-                | sentence14
-                | sentence15
+                | while
                 | empty'''
     p[0] = p[1]
 
@@ -663,58 +662,56 @@ def p_sentence12(p):
 
 def p_isTrue(p):
     '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
+
+    global condition_flag
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_globales:
-            for clave, (dato1, dato2) in variables_globales.items():
-                if clave == p[3]:
-                    valor_actual = variables_globales[p[3]]
-                    if dato2:
-                        print("True")
-                        return True
-                    else:
-                        print("False")
-                        return False
-        elif p[3] in variables_locales:
-            for clave, (dato1, dato2, dato3) in variables_locales.items():
-                if clave == p[3]:
-                    if dato1 == proc_en_analisis:
-                        if dato3:
+            for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
+                if var_name == p[3]:
+                    if var_type == 'Bool':
+                        if var_value:
                             print("True")
+                            condition_flag = True
                             return True
                         else:
                             print("False")
+                            condition_flag = False
                             return False
-                    else:
+                    elif index == len(variables_globales) - 1:
                         syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
-                else:
-                    syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+        elif p[3] in variables_locales:
+            for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
+                if var_name == p[3]:
+                    if var_proc == proc_en_analisis:
+                        if var_value:
+                            print(True)
+                            return True
+                        else:
+                            print(False)
+                            return False
+                    elif index == len(variables_locales) - 1:
+                        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
 
-def p_sentence14(p):
-    '''sentence14 : REPEAT LPARENT sentences BREAK RPARENT SEMICOLON'''
+def p_while(p):
+    '''while : WHILE sentences LPARENT sentences RPARENT SEMICOLON'''
 
-
-def p_sentence15(p):
-    '''sentence15 : UNTIL LPARENT instructions RPARENT sentences SEMICOLON'''
-    if p[5] == True:
-        return 0
-
-
-def p_instructions(p):
-    '''instructions : sentence'''
-    p[0] = [p[1]]
-
-
-def p_instructions_recursive(p):
-    '''instructions : sentence sentences'''
-    p[0] = [p[1]] + p[3]
+    print("llegó a while")
+    while p[2]:
+        # Repeat the statements as long as the condition is met
+        p[4]
+        print("Sis")
+        time.sleep(5)
 
 
 def p_case(p):
-    '''case : CASE expression recursive_conditions '''
+    '''case : CASE expression recursive_conditions SEMICOLON'''
+
+    global condition_flag
+    condition_flag = True
     pass
 
 
@@ -736,7 +733,6 @@ def p_recursive_conditions(p):
 
 def p_recursive_condition(p):
     '''recursive_condition :  condition LPARENT sentences RPARENT'''
-    print("Entró conditions")
     pass
 
 
