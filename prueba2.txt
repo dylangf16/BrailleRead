@@ -2,7 +2,7 @@
     New @variable1,(Num, 2);
     New @variable2,(Num, 5);
     New @variable3,(Num, 1);
-    New @variable4,(Num, 3);
+    New @variable4,(Num, 1);
 
     Case @variable4
         When 1 Then
@@ -11,5 +11,8 @@
         (Signal(@variable2, 0); )
         When 3 Then
         (Signal(@variable3, 1); ) ;
+
+
+    Signal(@variable2, 0);
 
 );
