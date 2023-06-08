@@ -137,6 +137,8 @@ variables_globales = {}
 syntax_errors = []
 master = 0
 proc_en_analisis = ''
+condition_flag = True
+else_flag = False
 
 precedence = (
     ('left', 'ADD', 'SUB'),
@@ -200,8 +202,7 @@ def p_master_sentences(p):
 def p_master_sentence(p):
     '''master_sentence : master_var
                        | values
-                       | cases
-                       | conditions
+                       | case
                        | call
                        | print_values
                        | alter
@@ -250,8 +251,7 @@ def p_sentences(p):
 def p_sentence(p):
     '''sentence : local_variable
                 | values
-                | cases
-                | conditions
+                | case
                 | call
                 | print_values
                 | alter
@@ -714,50 +714,54 @@ def p_instructions_recursive(p):
 
 
 def p_case(p):
-    '''case : CASE expression NEWLINE conditions sentences
-            | CASE expression NEWLINE conditions LPARENT sentences RPARENT ELSE NEWLINE LPARENT sentences RPARENT '''
+    '''case : CASE expression recursive_conditions '''
     pass
 
-def p_cases(p):
-    '''cases : case
-             | cases case'''
-    if len(p) == 2:
-        p[0] = [p[1]]  # Create a list with a single item
-    else:
-        p[0] = p[1] + [p[2]]  # Append the new item to the existing list
+
+def p_else_condition(p):
+    '''else_condition : LPARENT sentences RPARENT'''
+
+    global condition_flag, else_flag
+    if not condition_flag:
+        else_flag = True
+
+    pass
+
+
+def p_recursive_conditions(p):
+    '''recursive_conditions : recursive_condition
+                            | recursive_conditions recursive_condition'''
+    pass
+
+
+def p_recursive_condition(p):
+    '''recursive_condition :  condition LPARENT sentences RPARENT'''
+    print("Entró conditions")
+    pass
 
 
 def p_expression(p):
     'expression : ID'
-    global id_case
+    global id_case, condition_flag, else_flag
     id_case = p[1]
-
-
-def p_conditions(p):
-    'conditions : conditions condition'
-    pass
-
-
-def p_conditions_single(p):
-    'conditions : condition'
-    pass
-
+    condition_flag = True
+    else_flag = False
 
 def p_condition(p):
-    'condition : WHEN INTEGER THEN NEWLINE'
+    'condition : WHEN INTEGER THEN '
 
-    global id_case
+    global id_case, condition_flag
     variable_name = id_case
     condition_value = p[2]
     if variable_name in variables_globales:
         if find_global_variable_value(variable_name) == condition_value:
-            # Execute the action for this condition
-            for sentences in p[5:]:
-                print(sentences)
-            return
+            # Set the condition flag to True to execute the following sentences
+            print("PASÓ RITEVE")
+            condition_flag = True
         else:
-            for sentences in p[8:]:
-                print(sentences)
+            # Set the condition flag to False to skip the following sentences
+            print("No coindició CASE")
+            condition_flag = False
 
 
 def p_signal(p):
@@ -765,13 +769,18 @@ def p_signal(p):
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
     position = p[3]
     estado = p[5]
-    if isinstance(position, int):
-        if position <= 6 and position >= 1:
-            signal_handler(position, estado)
 
+    global condition_flag
+    if condition_flag:
+        if isinstance(position, int):
+            if 6 >= position >= 1:
+                signal_handler(position, estado)
+
+        else:
+            position = find_global_variable_value(position)
+            signal_handler(position, estado)
     else:
-        position = find_global_variable_value(position)
-        signal_handler(position, estado)
+        pass
 
 
 def signal_handler(position, estado):
