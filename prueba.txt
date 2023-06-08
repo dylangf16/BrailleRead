@@ -1,15 +1,15 @@
 @Master(
     New @variable1,(Num, 15);
-    New @variable2,(Bool, True);
-    PrintValues(@variable2);
-    //CALL(@Procedure1);
-    CALL(@Procedure2);
+    CALL(@Procedure1);
+    Values(@variable1,
+    Alter(@variable1,SUB, 3););
+    PrintValues(@variable1);
 );
 
 Proc @Procedure1 (
     New @variable3,(Num, 18);
     Values(@variable3, 456789);
-    PrintValues(@variable3);
+    PrintValues(@variable3, "Hola mundo", @variable3);
 );
 
 Proc @Procedure2 (
