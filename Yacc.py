@@ -1,13 +1,14 @@
 import ply.yacc as yacc
 import ply.lex as lex
 from collections import deque
+from arduino import manipulacion_arduino
 
-
-#Lex ---------------------
+# Lex ---------------------
 lexical_errors = []
 
 # List of token names
-tokens = ['MASTER','ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
+tokens = ['MASTER', 'ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL',
+          'ARROBA',
           'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING', 'PLUS'
           ]
 
@@ -71,9 +72,11 @@ t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
 t_BREAK = r'break'
 
+
 def t_MASTER(t):
     r'@Master'
     return t
+
 
 def t_ID(t):
     r'[@][a-zA-Z0-9_#]+'
@@ -81,6 +84,7 @@ def t_ID(t):
         t.value = t.value.upper()
         t.type = t.value
     return t
+
 
 def t_STRING(t):
     r'"[^"]*"'
@@ -123,6 +127,7 @@ def t_error(t):
     lexical_errors.append(f"Invalid token at line {t.lexer.lineno}: {t.value[0]}")
     t.lexer.skip(1)
 
+
 # Dictionary of names
 processingMaster = True
 called_procs = []
@@ -138,6 +143,7 @@ precedence = (
     ('left', 'MUL', 'DIV'),
 )
 
+
 def p_start(p):
     '''start : master
             | master procedures
@@ -147,9 +153,9 @@ def p_start(p):
             | master_vars master master_vars procedures
             | master_vars master master_vars procedures master_vars
             | master_vars master procedures
-            | master_vars master procedures master_vars
-            | master_vars master procedures'''
+            | master_vars master procedures master_vars '''
     p[0] = p[1]
+
 
 def p_declare_procedure(p):
     '''declare_procedure : PROC ID'''
@@ -161,9 +167,12 @@ def p_declare_procedure(p):
     else:
         syntax_errors.append(f'Ya hay un procedure con este nombre, hay otra declaración en la línea: {p.lineno}')
 
+
 def p_procedures(p):
     '''procedures : procedure
                     | procedures procedure'''
+
+
 def p_procedure(p):
     '''procedure : declare_procedure LPARENT sentences RPARENT SEMICOLON'''
     # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico
@@ -172,6 +181,8 @@ def p_procedure(p):
         if element in called_procs:
             called_procs.remove(element)
     p[0] = ('procedure', p[2], p[4])
+
+
 def p_master(p):
     '''master : MASTER LPARENT master_sentences RPARENT SEMICOLON'''
     # Acción semántica: Realizar las aciones correspondientes al análisis sintáctico de @Master
@@ -182,6 +193,7 @@ def p_master(p):
         syntax_errors.append(f'Debe existir solamente un @Master, hay otra declaración en la línea: {p.lineno}')
     processingMaster = False
 
+
 # Esto es para lidiar con las variables globales
 def p_master_sentences(p):
     '''master_sentences : master_sentence
@@ -191,9 +203,11 @@ def p_master_sentences(p):
     else:
         p[0] = p[1] + [p[2]]  # Append the new item to the existing list
 
+
 def p_master_sentence(p):
     '''master_sentence : master_var
                        | values
+                       | case
                        | call
                        | print_values
                        | alter
@@ -205,23 +219,27 @@ def p_master_sentence(p):
                        | comparisson_meqequal
                        | comparisson_maqequal
                        | isTrue
-                       | sentence14
-                       | sentence15
+                       | signal
+                       | viewsignal
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
+
 
 def p_master_vars(p):
     '''master_vars : master_var
                     | master_vars master_var'''
+
+
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                     | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
-    print("Paso variable global")
     if len(p[2]) > 2 and len(p[2]) < 12:
         if p[5] == 'Num' and isinstance(p[7], int):
             variables_globales[p[2]] = [p[5], p[7]]
+            print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
         elif p[5] == 'Bool' and isinstance(p[7], bool):
             variables_globales[p[2]] = [p[5], p[7]]
+            print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
         else:
             syntax_errors.append(
                 f'Error en línea {p.lineno}, posición {p.lexpos}, valor dado no corresponde al tipado seleccionado')
@@ -241,6 +259,7 @@ def p_sentences(p):
 def p_sentence(p):
     '''sentence : local_variable
                 | values
+                | case
                 | call
                 | print_values
                 | alter
@@ -252,9 +271,11 @@ def p_sentence(p):
                 | comparisson_meqequal
                 | comparisson_maqequal
                 | isTrue
-                | sentence14
-                | sentence15 '''
+                | signal
+                | viewsignal
+                | empty'''
     p[0] = p[1]
+
 
 def p_return_statement(p):
     '''return_statement : isTrue
@@ -267,23 +288,26 @@ def p_return_statement(p):
                         | alterB
                         | alter'''
 
+
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
 def p_local_variable(p):
     '''local_variable : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
     if proc_en_analisis in called_procs:
-        print("Paso variable local")
-        if len(p[2]) > 2 and len(p[2]) < 12:
+        if 2 < len(p[2]) < 12:
             if p[5] == 'Num' and isinstance(p[7], int):
-                variables_locales[p[2]] = [proc_en_analisis,p[5], p[7]]
+                variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
+                print(f'Variable LOCAL en Proc: {proc_en_analisis} // Nombre: {p[2]} // Valor: {p[7]}')
             elif p[5] == 'Bool' and isinstance(p[7], bool):
-                variables_locales[p[2]] = [proc_en_analisis,p[5], p[7]]
+                variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
+                print(f'Variable LOCAL en Proc: {proc_en_analisis} // Nombre: {p[2]} // Valor: {p[7]}')
             else:
                 syntax_errors.append(
                     f'Error en línea {p.lineno}, posición {p.lexpos}, valor dado no corresponde al tipado seleccionado')
         else:
             syntax_errors.append(
                 f'Error en línea {p.lineno}, posición {p.lexpos}, tamaño de nombre de variable no cumple con el estándar')
+
 
 def p_values(p):
     '''values : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
@@ -313,19 +337,32 @@ def p_values(p):
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
+
 def p_call(p):
     '''call : CALL LPARENT ID RPARENT SEMICOLON'''
     if proc_en_analisis in called_procs or processingMaster:
         called_procs.append(p[3])
 
+
 def find_local_variable_value(variable_name):
-    for var_name, (var_proc,var_type, var_value) in variables_locales.items():
+    for var_name, (var_proc, var_type, var_value) in variables_locales.items():
         if var_name == variable_name:
             return var_value
     return None  # Variable not found
 
+
+def find_global_variable_value(variable_name):
+    for var_name, var_value in variables_globales.items():
+        if var_name == variable_name:
+            print(f'Variable GLOBAL buscada: {var_name} // Valor: {var_value}')
+            return var_value[1]
+    return None  # Variable not found
+
+
 def p_print_values(p):
     '''print_values : PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON'''
+
+
 # Recursividad para agarrar todas las sentencias
 
 def p_printable_sentences(p):
@@ -340,6 +377,7 @@ def p_printable_sentences(p):
                 | COMA printable_sentences COMA printable_sentence_var
                 | COMA printable_sentences COMA printable_sentence_string'''
 
+
 def p_printable_sentence_var(p):
     '''printable_sentence_var : ID '''
     if proc_en_analisis in called_procs or processingMaster:
@@ -350,10 +388,12 @@ def p_printable_sentence_var(p):
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
 
+
 def p_printable_sentence_string(p):
     '''printable_sentence_string : STRING '''
     if proc_en_analisis in called_procs or processingMaster:
         print(p[1])
+
 
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
 def p_alter(p):
@@ -382,7 +422,8 @@ def p_alter(p):
                                 variables_locales[p[3]] = nuevo_valor
                                 return variables_locales[p[3]][2]
                             elif index == len(variables_locales) - 1:
-                                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                syntax_errors.append(
+                                    f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
                             f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
@@ -408,7 +449,8 @@ def p_alter(p):
                                 variables_locales[p[3]] = nuevo_valor
                                 return variables_locales[p[3]][2]
                             elif index == len(variables_locales) - 1:
-                                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                syntax_errors.append(
+                                    f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
                             f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
@@ -434,7 +476,8 @@ def p_alter(p):
                                 variables_locales[p[3]] = nuevo_valor
                                 return variables_locales[p[3]][2]
                             elif index == len(variables_locales) - 1:
-                                syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                syntax_errors.append(
+                                    f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
                             f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
@@ -467,6 +510,8 @@ def p_alter(p):
                             f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado {p[3]}')
             else:
                 syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+
 def p_alterB(p):
     '''alterB : ALTERB LPARENT ID RPARENT SEMICOLON'''
     if proc_en_analisis in called_procs or processingMaster:
@@ -492,7 +537,7 @@ def p_alterB(p):
                     if var_type == 'Bool':
                         if var_proc == proc_en_analisis:
                             if var_value == True:
-                                valor_actual = variables_locales[p[2]]
+                                valor_actual = variables_locales[p[3]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], False)
                                 variables_locales[p[3]] = nuevo_valor
                                 return False
@@ -502,12 +547,14 @@ def p_alterB(p):
                                 variables_locales[p[3]] = nuevo_valor
                                 return True
                         elif index == len(variables_locales) - 1:
-                            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                            syntax_errors.append(
+                                f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
                             f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
 
 def p_comparisson_maq(p):
     '''comparisson_maq : ID MAQ INTEGER'''
@@ -537,12 +584,14 @@ def p_comparisson_maq(p):
                                 print(False)
                                 return False
                         elif index == len(variables_locales) - 1:
-                            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                            syntax_errors.append(
+                                f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+
 
 def p_comparisson_meq(p):
     '''comparisson_meq : ID MEQ INTEGER'''
@@ -616,6 +665,8 @@ def p_comparisson_equal(p):
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+
+
 def p_comparisson_dif(p):
     '''comparisson_dif : ID DIFFERENT INTEGER'''
     if proc_en_analisis in called_procs or processingMaster:
@@ -651,6 +702,7 @@ def p_comparisson_dif(p):
                         f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+
 
 def p_comparisson_meqequal(p):
     '''comparisson_meqequal : ID MEQEQUAL INTEGER'''
@@ -725,6 +777,7 @@ def p_comparisson_maqequal(p):
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
 
+
 def p_isTrue(p):
     '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
     if proc_en_analisis in called_procs or processingMaster:
@@ -752,30 +805,108 @@ def p_isTrue(p):
                             print(False)
                             return False
                     elif index == len(variables_locales) - 1:
-                        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                        syntax_errors.append(
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
-def p_sentence14(p):
-    '''sentence14 : REPEAT LPARENT sentences BREAK RPARENT SEMICOLON'''
 
-def p_sentence15(p):
-    '''sentence15 : UNTIL LPARENT instructions RPARENT sentences SEMICOLON'''
-    if p[5] == True:
-        return 0
+def p_case(p):
+    '''case : CASE expression recursive_conditions SEMICOLON'''
+    pass
 
-def p_instructions(p):
-    '''instructions : sentence'''
-    p[0] = [p[1]]
 
-def p_instructions_recursive(p):
-    '''instructions : sentence sentences'''
-    p[0] = [p[1]] + p[3]
+def p_else_condition(p):
+    '''else_condition : LPARENT sentences RPARENT'''
+
+    global condition_flag, else_flag
+    if not condition_flag:
+        else_flag = True
+
+    pass
+
+
+def p_recursive_conditions(p):
+    '''recursive_conditions : recursive_condition
+                            | recursive_conditions recursive_condition'''
+    pass
+
+
+def p_recursive_condition(p):
+    '''recursive_condition :  condition LPARENT sentences RPARENT'''
+    pass
+
+
+def p_expression(p):
+    'expression : ID'
+    global id_case, condition_flag, else_flag
+    id_case = p[1]
+    condition_flag = True
+    else_flag = False
+
+
+def p_condition(p):
+    'condition : WHEN INTEGER THEN '
+
+    global id_case, condition_flag
+    variable_name = id_case
+    condition_value = p[2]
+    if variable_name in variables_globales:
+        if find_global_variable_value(variable_name) == condition_value:
+            # Set the condition flag to True to execute the following sentences
+            print("PASÓ RITEVE")
+            condition_flag = True
+        else:
+            # Set the condition flag to False to skip the following sentences
+            print("No coindició CASE")
+            condition_flag = False
+
+
+def p_signal(p):
+    '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
+            | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
+    position = p[3]
+    estado = p[5]
+
+    global condition_flag
+    if condition_flag:
+        if isinstance(position, int):
+            if 6 >= position >= 1:
+                signal_handler(position, estado)
+
+        else:
+            position = find_global_variable_value(position)
+            signal_handler(position, estado)
+    else:
+        pass
+
+
+def signal_handler(position, estado):
+    if position == 1:
+        manipulacion_arduino("morado", estado)
+    if position == 2:
+        manipulacion_arduino("verde", estado)
+    if position == 3:
+        manipulacion_arduino("naranja", estado)
+    if position == 4:
+        manipulacion_arduino("blanco", estado)
+    if position == 5:
+        manipulacion_arduino("azul", estado)
+    if position == 6:
+        manipulacion_arduino("amarillo", estado)
+
+
+def p_viewsignal(p):
+    '''viewsignal : VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON'''
+    position = p[3]
+    print("Implementación con código Josepa")
+
 
 def p_empty(p):
     '''empty :'''
 
     p[0] = None
+
 
 # Error handling rule
 def p_error(p):
@@ -787,7 +918,6 @@ def p_error(p):
 
 with open('prueba.txt', 'r') as file:
     input_text = file.read()
-
 
 print("Ejecutando análisis")
 lexer = lex.lex()
@@ -803,7 +933,6 @@ if lexical_errors:
 # Build the parser
 parser = yacc.yacc()
 
-
 result = parser.parse(input_text)
 
 # Print the syntax errors
@@ -813,4 +942,3 @@ if syntax_errors:
         print(error)
 else:
     print(result)
-    
