@@ -383,7 +383,6 @@ def p_alter(p):
                 valor_actual = variables_globales[p[3]]
                 nuevo_valor = (valor_actual[0], valor_actual[1] + p[7])
                 variables_globales[p[3]] = nuevo_valor
-                print(variables_globales[p[3]][1])
             elif p[3] in variables_locales:
                 for var_name, (var_proc, var_type, var_value) in variables_locales.items():
                     if var_type == 'Num':
@@ -780,20 +779,22 @@ def p_signal(p):
         if isinstance(position, int):
             if 6 >= position >= 1:
                 signal_handler(position, estado)
-
         else:
-            position = find_global_variable_value(position)
-            signal_handler(position, estado)
+            pos = find_global_variable_value(position)
+            signal_handler(pos, estado)
 
-    if while_flag and partial(p_signal, p) not in while_list:
-        while_list.append(partial(p_signal, p))
-
+    if while_flag and (lambda: signal_handler not in while_list):
+        while_list.append(lambda: signal_handler(position, estado))
 
     else:
         pass
 
 
 def signal_handler(position, estado):
+    if isinstance(position, int):
+        pass
+    if not isinstance(position, int):
+        position = find_global_variable_value(position)
     if position == 1:
         manipulacion_arduino("morado", estado)
     if position == 2:
