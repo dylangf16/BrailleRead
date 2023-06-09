@@ -3,6 +3,7 @@ import ply.lex as lex
 from collections import deque
 from arduino import manipulacion_arduino
 import time
+from functools import partial
 
 # Lex ---------------------
 lexical_errors = []
@@ -140,6 +141,8 @@ master = 0
 proc_en_analisis = ''
 condition_flag = True
 else_flag = False
+while_flag = False
+while_list = []
 
 precedence = (
     ('left', 'ADD', 'SUB'),
@@ -324,6 +327,7 @@ def find_local_variable_value(variable_name):
         if var_name == variable_name:
             return var_value
     return None  # Variable not found
+
 
 def find_global_variable_value(variable_name):
     for var_name, var_value in variables_globales.items():
@@ -663,7 +667,7 @@ def p_sentence12(p):
 def p_isTrue(p):
     '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
 
-    global condition_flag
+    global condition_flag, while_flag
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -672,10 +676,12 @@ def p_isTrue(p):
                         if var_value:
                             print("True")
                             condition_flag = True
+                            while_flag = True
                             return True
                         else:
                             print("False")
                             condition_flag = False
+                            while_flag = False
                             return False
                     elif index == len(variables_globales) - 1:
                         syntax_errors.append(
@@ -691,7 +697,8 @@ def p_isTrue(p):
                             print(False)
                             return False
                     elif index == len(variables_locales) - 1:
-                        syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                        syntax_errors.append(
+                            f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
@@ -699,12 +706,12 @@ def p_isTrue(p):
 def p_while(p):
     '''while : WHILE sentences LPARENT sentences RPARENT SEMICOLON'''
 
+    global while_flag, while_list
     print("llegó a while")
-    while p[2]:
-        # Repeat the statements as long as the condition is met
-        p[4]
-        print("Sis")
-        time.sleep(5)
+    while while_flag:
+        for func in while_list:
+            func()
+            time.sleep(2)
 
 
 def p_case(p):
@@ -743,6 +750,7 @@ def p_expression(p):
     condition_flag = True
     else_flag = False
 
+
 def p_condition(p):
     'condition : WHEN INTEGER THEN '
 
@@ -763,10 +771,11 @@ def p_condition(p):
 def p_signal(p):
     '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
+
+    global condition_flag, while_flag, while_list
     position = p[3]
     estado = p[5]
 
-    global condition_flag
     if condition_flag:
         if isinstance(position, int):
             if 6 >= position >= 1:
@@ -775,6 +784,11 @@ def p_signal(p):
         else:
             position = find_global_variable_value(position)
             signal_handler(position, estado)
+
+    if while_flag and partial(p_signal, p) not in while_list:
+        while_list.append(partial(p_signal, p))
+
+
     else:
         pass
 
@@ -792,6 +806,7 @@ def signal_handler(position, estado):
         manipulacion_arduino("azul", estado)
     if position == 6:
         manipulacion_arduino("amarillo", estado)
+
 
 def p_viewsignal(p):
     '''viewsignal : VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON'''
