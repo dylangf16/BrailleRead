@@ -145,6 +145,7 @@ syntax_errors = []
 master = 0
 proc_en_analisis = ''
 condition_flag = True
+dentro_condition = False
 else_flag = False
 while_flag = False
 while_list = []
@@ -340,7 +341,7 @@ def p_call(p):
 def find_local_variable_value(variable_name):
     for var_name, (var_proc, var_type, var_value) in variables_locales.items():
         if var_name == variable_name:
-            print(f'Variable LOCAL buscada: {var_name} // Valor: {var_value} // Proc donde está: {var_proc}')
+            # print(f'Variable LOCAL buscada: {var_name} // Valor: {var_value} // Proc donde está: {var_proc}')
             return var_value
     return None  # Variable not found
 
@@ -348,7 +349,7 @@ def find_local_variable_value(variable_name):
 def find_global_variable_value(variable_name):
     for var_name, var_value in variables_globales.items():
         if var_name == variable_name:
-            print(f'Variable GLOBAL buscada: {var_name} // Valor: {var_value}')
+            # print(f'Variable GLOBAL buscada: {var_name} // Valor: {var_value}')
             return var_value[1]
     return None  # Variable not found
 
@@ -411,7 +412,7 @@ def alter_aux(operador, id, integer):
             valor_actual = variables_globales[id]
             nuevo_valor = (valor_actual[0], valor_actual[1] + integer)
             variables_globales[id] = nuevo_valor
-            print(f'Valor cambiado: {variables_globales[id]}')
+            # print(f'Valor cambiado: {variables_globales[id]}')
         elif id in variables_locales:
             for var_name, (var_proc, var_type, var_value) in variables_locales.items():
                 if var_type == 'Num':
@@ -773,19 +774,27 @@ def p_recursive_condition(p):
 
 def p_expression(p):
     'expression : ID'
-    global id_case, condition_flag, else_flag
+    global id_case, condition_flag, else_flag, dentro_condition
     id_case = p[1]
     condition_flag = True
     else_flag = False
+    dentro_condition = True
 
 
 def p_condition(p):
     '''condition : WHEN INTEGER THEN
                 | WHEN STRING THEN '''
 
-    global id_case, condition_flag
+    global id_case, condition_flag, while_flag, while_list
     variable_name = id_case
     condition_value = p[2]
+    if while_flag and (lambda: condition_handler not in while_list):
+        while_list.append(lambda: condition_handler(variable_name, condition_value))
+    condition_handler(variable_name, condition_value)
+
+
+def condition_handler(variable_name, condition_value):
+    global condition_flag
     if variable_name in variables_globales:
         if find_global_variable_value(variable_name) == condition_value:
             # Set the condition flag to True to execute the following sentences
@@ -801,7 +810,7 @@ def p_signal(p):
     '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
 
-    global condition_flag, while_flag, while_list
+    global condition_flag, while_flag, while_list, dentro_condition
     position = p[3]
     estado = p[5]
 
@@ -821,22 +830,24 @@ def p_signal(p):
 
 
 def signal_handler(position, estado):
-    if isinstance(position, int):
-        pass
-    if not isinstance(position, int):
-        position = find_global_variable_value(position)
-    if position == 1:
-        manipulacion_arduino("morado", estado)
-    if position == 2:
-        manipulacion_arduino("verde", estado)
-    if position == 3:
-        manipulacion_arduino("naranja", estado)
-    if position == 4:
-        manipulacion_arduino("blanco", estado)
-    if position == 5:
-        manipulacion_arduino("azul", estado)
-    if position == 6:
-        manipulacion_arduino("amarillo", estado)
+    global condition_flag
+    if condition_flag:
+        if isinstance(position, int):
+            pass
+        if not isinstance(position, int):
+            position = find_global_variable_value(position)
+        if position == 1:
+            manipulacion_arduino("morado", estado)
+        if position == 2:
+            manipulacion_arduino("verde", estado)
+        if position == 3:
+            manipulacion_arduino("naranja", estado)
+        if position == 4:
+            manipulacion_arduino("blanco", estado)
+        if position == 5:
+            manipulacion_arduino("azul", estado)
+        if position == 6:
+            manipulacion_arduino("amarillo", estado)
 
 
 def p_viewsignal(p):
@@ -855,7 +866,7 @@ def p_cut(p):
             if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
                 var_donde_guardar = p[3]
                 var_donde_cortar = p[5]
-                if while_flag:
+                if while_flag and (lambda: cut_handler not in while_list):
                     while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
                 cut_handler(var_donde_guardar, var_donde_cortar)
             else:
@@ -866,7 +877,7 @@ def p_cut(p):
             if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':
                 var_donde_guardar = p[3]
                 var_donde_cortar = p[5]
-                if while_flag:
+                if while_flag and (lambda: cut_handler not in while_list):
                     while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
                 cut_handler(var_donde_guardar, var_donde_cortar)
             else:
@@ -900,7 +911,7 @@ def p_recut(p):
         if p[3] in variables_locales:
             if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
                 var_donde_editar = p[3]
-                if while_flag:
+                if while_flag and (lambda: recut_handler not in while_list):
                     while_list.append(lambda: recut_handler(var_donde_editar))
                 recut_handler(var_donde_editar)
             else:
@@ -910,7 +921,7 @@ def p_recut(p):
         elif p[3] in variables_globales:
             if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':
                 var_donde_editar = p[3]
-                if while_flag:
+                if while_flag and (lambda: recut_handler not in while_list):
                     while_list.append(lambda: recut_handler(var_donde_editar))
                 recut_handler(var_donde_editar)
             else:
