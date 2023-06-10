@@ -32,7 +32,9 @@ reserved = [
     'ELSE',
     'PRINTVALUES',
     'CALL',
-    'BREAK'
+    'BREAK',
+    'CUT',
+    'RECUT'
 ]
 
 tokens = tokens + reserved
@@ -74,6 +76,9 @@ t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
 t_BREAK = r'break'
 
+t_CUT = 'Cut'
+t_RECUT = 'ReCut'
+
 
 def t_MASTER(t):
     r'@Master'
@@ -95,7 +100,7 @@ def t_STRING(t):
 
 
 def t_TYPE(t):
-    r'(Num|Bool)'
+    r'(Num|Bool|Str)'
     return t
 
 
@@ -221,18 +226,24 @@ def p_master_sentence(p):
                        | sentence12
                        | isTrue
                        | while
+                       | cut
+                       | recut
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
 
 
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-                    | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
+                    | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+                    | NEW ID COMA LPARENT TYPE COMA STRING RPARENT SEMICOLON'''
     if 2 < len(p[2]) < 12:
         if p[5] == 'Num' and isinstance(p[7], int):
             variables_globales[p[2]] = [p[5], p[7]]
             print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
         elif p[5] == 'Bool' and isinstance(p[7], bool):
+            variables_globales[p[2]] = [p[5], p[7]]
+            print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
+        elif p[5] == 'Str' and isinstance(p[7], str):
             variables_globales[p[2]] = [p[5], p[7]]
             print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
         else:
@@ -269,6 +280,8 @@ def p_sentence(p):
                 | sentence12
                 | isTrue
                 | while
+                | cut
+                | recut
                 | empty'''
     p[0] = p[1]
 
@@ -283,6 +296,8 @@ def p_local_variable(p):
             if p[5] == 'Num' and isinstance(p[7], int):
                 variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
             elif p[5] == 'Bool' and isinstance(p[7], bool):
+                variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
+            elif p[5] == 'Str' and isinstance(p[7], str):
                 variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
             else:
                 syntax_errors.append(
@@ -325,6 +340,7 @@ def p_call(p):
 def find_local_variable_value(variable_name):
     for var_name, (var_proc, var_type, var_value) in variables_locales.items():
         if var_name == variable_name:
+            print(f'Variable LOCAL buscada: {var_name} // Valor: {var_value} // Proc donde está: {var_proc}')
             return var_value
     return None  # Variable not found
 
@@ -764,7 +780,8 @@ def p_expression(p):
 
 
 def p_condition(p):
-    'condition : WHEN INTEGER THEN '
+    '''condition : WHEN INTEGER THEN
+                | WHEN STRING THEN '''
 
     global id_case, condition_flag
     variable_name = id_case
@@ -826,6 +843,91 @@ def p_viewsignal(p):
     '''viewsignal : VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON'''
     position = p[3]
     print("Implementación con código Josepa")
+
+
+def p_cut(p):
+    '''cut : CUT LPARENT ID COMA STRING RPARENT SEMICOLON
+            | CUT LPARENT ID COMA ID RPARENT SEMICOLON'''
+
+    global while_flag, while_list
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[3] in variables_locales:
+            if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
+                var_donde_guardar = p[3]
+                var_donde_cortar = p[5]
+                if while_flag:
+                    while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                cut_handler(var_donde_guardar, var_donde_cortar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+
+        elif p[3] in variables_globales:
+            if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':
+                var_donde_guardar = p[3]
+                var_donde_cortar = p[5]
+                if while_flag:
+                    while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                cut_handler(var_donde_guardar, var_donde_cortar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+        else:
+            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+
+def cut_handler(var_donde_guardar, var_donde_cortar):
+    if var_donde_cortar in variables_locales:
+        string_a_cortar = find_local_variable_value(var_donde_cortar)
+
+    if var_donde_cortar in variables_globales:
+        string_a_cortar = find_global_variable_value(var_donde_cortar)
+
+    if var_donde_guardar in variables_locales:
+        variables_locales[var_donde_guardar][2] = string_a_cortar[0]
+        print(f'Nuevos valores en {var_donde_guardar}: {variables_locales[var_donde_guardar]}')
+
+    if var_donde_guardar in variables_globales:
+        variables_globales[var_donde_guardar][1] = string_a_cortar[0]
+        print(f'Nuevos valores en {var_donde_guardar}: {variables_globales[var_donde_guardar]}')
+
+
+def p_recut(p):
+    '''recut : RECUT LPARENT ID RPARENT SEMICOLON'''
+
+    global while_flag, while_list
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[3] in variables_locales:
+            if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
+                var_donde_editar = p[3]
+                if while_flag:
+                    while_list.append(lambda: recut_handler(var_donde_editar))
+                recut_handler(var_donde_editar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+
+        elif p[3] in variables_globales:
+            if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':
+                var_donde_editar = p[3]
+                if while_flag:
+                    while_list.append(lambda: recut_handler(var_donde_editar))
+                recut_handler(var_donde_editar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+        else:
+            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+
+def recut_handler(var):
+    if var in variables_locales:
+        variables_locales[var][2] = find_local_variable_value(var)[1:]
+        print(f'Nuevos valores en {var}: {variables_locales[var]}')
+
+    if var in variables_globales:
+        variables_globales[var][1] = find_global_variable_value(var)[1:]
+        print(f'Nuevos valores en {var}: {variables_globales[var]}')
 
 
 def p_empty(p):

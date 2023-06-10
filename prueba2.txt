@@ -1,22 +1,24 @@
 @Master(
-    New @variable1,(Bool, True);
-    New @variable2,(Num, 5);
-    New @variable3,(Num, 1);
-    New @variable4,(Num, 3);
+    New @variable1,(Str, "Hola");
+    New @variable2,(Str, "Pepe2331321");
+    New @variable3,(Bool, True);
 
-    While IsTrue(@variable1);
+    New @motor1,(Num,1);
+    New @motor2,(Num,2);
+    New @motor3,(Num,3);
+
+    While IsTrue(@variable3);
     (
-        Signal(@variable3, 1);
-        Alter(@variable3, ADD, 2);
-    );
+        Cut(@variable1 , @variable2);
+        ReCut(@variable2);
 
-    Alter(@variable3, ADD, 2);
-    Case @variable4
-        When 1 Then
-        (Signal(@variable1, 1); )
-        When 2 Then
-        (Signal(@variable2, 0); )
-        When 3 Then
-        (Signal(@variable3, 1); ) ;
+        Case @variable1
+            When "P" Then
+            (Signal(@motor1, 1); )
+            When "e" Then
+            (Signal(@motor2, 0); )
+            When "p" Then
+            (Signal(@motor3, 1); ) ;
+    );
 
 );
