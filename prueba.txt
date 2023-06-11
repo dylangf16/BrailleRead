@@ -15,6 +15,6 @@ Proc @Procedure1 (
 Proc @Procedure2 (
     New @variable4,(Num, 10);
     PrintValues(@variable4);
-    Alter(@variable4, ADD, 10);
+    Alter(@variable3, ADD, 10);
     PrintValues(@variable4);
 );
