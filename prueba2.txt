@@ -11,19 +11,19 @@ Proc @Procedure1 (
     New @motor2,(Num,2);
     New @motor3,(Num,3);
 
-    While IsTrue(@variable3);
-        (
-            Cut(@variable1 , @variable2);
-            ReCut(@variable2);
+    Repeat
+    (
+    Cut(@variable1 , @variable2);
+    ReCut(@variable2);
 
-            Case @variable1
-                When "P" Then
-                (Signal(@motor1, 1); Signal(@motor2, 1); )
-                When "e" Then
-                (AlterB(@variable3); )
-                When "p" Then
-                (Signal(@motor3, 1); Signal(@motor3, 1); ) ;
-        );
+    Case @variable1
+        When "P" Then
+        (Signal(@motor1, 1); Signal(@motor2, 1); )
+        When "e" Then
+        (Break; )
+        When "p" Then
+        (Signal(@motor3, 1); Signal(@motor3, 1); ) ;
+    );
 
     PrintValues("Yujuuuuuuuuu");
 );

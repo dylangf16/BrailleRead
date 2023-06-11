@@ -73,7 +73,7 @@ t_THEN = r'Then'
 t_ELSE = r'Else'
 t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
-t_BREAK = r'break'
+t_BREAK = r'Break'
 t_CUT = 'Cut'
 t_RECUT = 'ReCut'
 
@@ -146,12 +146,14 @@ proc_en_analisis = ''
 while_flag = False
 while_list = []
 first_pasada = False
+var_queValida_while = None
 
 id_case = None
 condition_flag = True
 else_flag = False
 
-var_queValida_while = None
+repeat_flag = False
+repeat_list = []
 
 precedence = (
     ('left', 'ADD', 'SUB'),
@@ -241,6 +243,8 @@ def p_master_sentence(p):
                        | recut
                        | case
                        | while
+                       | repeat
+                       | break
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
 
@@ -298,6 +302,8 @@ def p_sentence(p):
                 | recut
                 | case
                 | while
+                | repeat
+                | break
                 | empty'''
     p[0] = p[1]
 
@@ -344,13 +350,17 @@ def p_local_variable(p):
     '''local_variable : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA STRING RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
     id = p[2]
     type = p[5]
     value = p[7]
+
     if first_pasada:
         if while_flag and (lambda: local_variable_aux not in while_list):
             while_list.append(lambda: local_variable_aux(id, type, value))
+        if repeat_flag and (lambda: local_variable_aux not in repeat_list):
+            repeat_list.append(lambda: local_variable_aux(id, type, value))
+
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             local_variable_aux(id, type, value)
@@ -389,12 +399,16 @@ def p_values(p):
     '''values : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
                  | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
                  | VALUES LPARENT ID COMA return_statement RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
     id = p[3]
     new_value = p[5]
     if first_pasada:
         if while_flag and (lambda: values_aux not in while_list):
             while_list.append(lambda: values_aux(id, new_value))
+
+        if repeat_flag and (lambda: values_aux not in repeat_list):
+            repeat_list.append(lambda: values_aux(id, repeat_list))
+
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             values_aux(id, new_value)
@@ -452,10 +466,14 @@ def printable_sentence_var_aux(id):
 
 def p_printable_sentence_var(p):
     '''printable_sentence_var : ID '''
-    global condition_flag, while_flag, while_list, first_pasada
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
     if first_pasada:
         if while_flag and (lambda: printable_sentence_var_aux not in while_list):
             while_list.append(lambda: printable_sentence_var_aux(p[1]))
+
+        if repeat_flag and (lambda: printable_sentence_var_aux not in repeat_list):
+            repeat_list.append(lambda: printable_sentence_var_aux(p[1]))
+
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             printable_sentence_var_aux(p[1])
@@ -468,10 +486,13 @@ def printable_sentence_string_aux(id):
 
 def p_printable_sentence_string(p):
     '''printable_sentence_string : STRING '''
-    global condition_flag, while_flag, while_list, first_pasada
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
     if first_pasada:
         if while_flag and (lambda: printable_sentence_string_aux not in while_list):
             while_list.append(lambda: printable_sentence_string_aux(p[1]))
+        if repeat_flag and (lambda: printable_sentence_string_aux not in repeat_list):
+            repeat_list.append(lambda: printable_sentence_string_aux(p[1]))
+
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             printable_sentence_string_aux(p[1])
@@ -594,10 +615,13 @@ def p_alter(p):
                 | ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
                 | ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
                 | ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
     if first_pasada:
         if while_flag and (lambda: alter_aux not in while_list):
             while_list.append(lambda: alter_aux(p[3], p[5], p[7]))
+
+        if repeat_flag and (lambda: alter_aux not in repeat_list):
+            repeat_list.append(lambda: alter_aux(p[3], p[5], p[7]))
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             alter_aux(p[3], p[5], p[7])
@@ -654,11 +678,15 @@ def alterB_aux(id):
 
 def p_alterB(p):
     '''alterB : ALTERB LPARENT ID RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
     var = p[3]
     if first_pasada:
         if while_flag and (lambda: alterB_aux not in while_list):
             while_list.append(lambda: alterB_aux(var))
+
+        if repeat_flag and (lambda: alterB_aux not in repeat_list):
+            repeat_list.append(lambda: alterB_aux(var))
+
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             alterB_aux(var)
@@ -933,12 +961,15 @@ def p_isTrue(p):
 def p_signal(p):
     '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada, proc_en_analisis
+    global condition_flag, while_flag, while_list, first_pasada, proc_en_analisis, repeat_list, repeat_flag
     position = p[3]
     estado = p[5]
     if first_pasada:
         if while_flag and (lambda: signal_handler not in while_list):
             while_list.append(lambda: signal_handler(position, estado))
+
+        if repeat_flag and (lambda: signal_handler not in repeat_list):
+            repeat_list.append(lambda: signal_handler(position, estado))
 
     elif condition_flag:
         if position in variables_globales:
@@ -1026,6 +1057,48 @@ def p_while_handler(p):
     first_pasada = True
 
 
+def p_repeat(p):
+    '''repeat : repeat_handler LPARENT sentences RPARENT SEMICOLON'''
+
+    global repeat_flag, repeat_list, first_pasada, condition_flag
+    print("llegó a repeat")
+    first_pasada = False
+    condition_flag = True
+    print(repeat_list)
+    while repeat_flag:
+        for func in repeat_list:
+            func()
+            time.sleep(2)
+
+    repeat_list = []
+    condition_flag = True
+
+
+def p_repeat_handler(p):
+    '''repeat_handler : REPEAT'''
+    global repeat_flag, condition_flag, first_pasada
+    repeat_flag = True
+    condition_flag = False
+    first_pasada = True
+
+def p_break(p):
+    '''break : BREAK SEMICOLON'''
+    global repeat_flag, first_pasada, repeat_list, condition_flag
+    if first_pasada:
+        if repeat_flag and (lambda: repeat_func not in repeat_list):
+            repeat_list.append(lambda: repeat_func())
+    elif condition_flag:
+        repeat_func()
+
+
+def repeat_func():
+    global repeat_flag, condition_flag
+    if condition_flag:
+        repeat_flag = False
+
+
+
+
 def p_case(p):
     '''case : CASE expression recursive_conditions SEMICOLON'''
 
@@ -1065,49 +1138,52 @@ def p_condition(p):
     '''condition : WHEN INTEGER THEN
                 | WHEN STRING THEN '''
 
-    global id_case, condition_flag, while_flag, while_list, condition_flag
+    global id_case, condition_flag, while_flag, while_list, condition_flag, repeat_flag, repeat_list
     condition_flag = True
     variable_name = id_case
     condition_value = p[2]
     if while_flag and (lambda: condition_handler not in while_list):
         while_list.append(lambda: condition_handler(variable_name, condition_value))
+
+    if repeat_flag and (lambda: condition_handler not in repeat_list):
+        repeat_list.append(lambda: condition_handler(variable_name, condition_value))
+
     elif condition_flag:
         condition_handler(variable_name, condition_value)
 
 
 def condition_handler(variable_name, condition_value):
     global condition_flag, while_flag, first_pasada, proc_en_analisis
-    if condition_flag:
-        if variable_name in variables_globales:
-            if find_global_variable_value(variable_name) == condition_value:
-                # Set the condition flag to True to execute the following sentences
-                print("PASÓ RITEVE")
-                condition_flag = True
-            else:
-                # Set the condition flag to False to skip the following sentences
-                print("No coindició CASE")
-                condition_flag = False
+    if variable_name in variables_globales:
+        if find_global_variable_value(variable_name) == condition_value:
+            # Set the condition flag to True to execute the following sentences
+            print("PASÓ RITEVE")
+            condition_flag = True
+        else:
+            # Set the condition flag to False to skip the following sentences
+            print("No coindició CASE")
+            condition_flag = False
 
-        elif variable_name in variables_locales:
-            for var_name, (var_proc, var_type, var_value) in variables_locales.items():
-                if var_type == 'Num':
-                    if var_name == variable_name:
-                        if var_proc == proc_en_analisis:
-                            if find_global_variable_value(variable_name) == condition_value:
-                                # Set the condition flag to True to execute the following sentences
-                                print("PASÓ RITEVE")
-                                condition_flag = True
-                            else:
-                                # Set the condition flag to False to skip the following sentences
-                                print("No coindició CASE")
-                                condition_flag = False
+    elif variable_name in variables_locales:
+        for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+            if var_type == 'Num':
+                if var_name == variable_name:
+                    if var_proc == proc_en_analisis:
+                        if find_global_variable_value(variable_name) == condition_value:
+                            # Set the condition flag to True to execute the following sentences
+                            print("PASÓ RITEVE")
+                            condition_flag = True
+                        else:
+                            # Set the condition flag to False to skip the following sentences
+                            print("No coindició CASE")
+                            condition_flag = False
 
 
 def p_cut(p):
     '''cut : CUT LPARENT ID COMA STRING RPARENT SEMICOLON
             | CUT LPARENT ID COMA ID RPARENT SEMICOLON'''
 
-    global while_flag, while_list, first_pasada, condition_flag
+    global while_flag, while_list, first_pasada, condition_flag, repeat_flag, repeat_list
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
             for var_name, (var_proc, var_type, var_value) in variables_locales.items():
@@ -1120,6 +1196,10 @@ def p_cut(p):
                                 if first_pasada:
                                     if while_flag and (lambda: cut_handler not in while_list):
                                         while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+
+                                        if repeat_flag and (lambda: cut_handler not in repeat_list):
+                                            repeat_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+
                                 elif condition_flag:
                                     cut_handler(var_donde_guardar, var_donde_cortar)
                             else:
@@ -1133,6 +1213,9 @@ def p_cut(p):
                 if first_pasada:
                     if while_flag and (lambda: cut_handler not in while_list):
                         while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+
+                    if repeat_flag and (lambda: cut_handler not in repeat_list):
+                        repeat_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
                 elif condition_flag:
                     cut_handler(var_donde_guardar, var_donde_cortar)
             else:
@@ -1161,7 +1244,7 @@ def cut_handler(var_donde_guardar, var_donde_cortar):
 def p_recut(p):
     '''recut : RECUT LPARENT ID RPARENT SEMICOLON'''
 
-    global while_flag, while_list
+    global while_flag, while_list, repeat_flag, repeat_list
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
             if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
@@ -1169,6 +1252,9 @@ def p_recut(p):
                 if first_pasada:
                     if while_flag and (lambda: recut_handler not in while_list):
                         while_list.append(lambda: recut_handler(var_donde_editar))
+
+                    if repeat_flag and (lambda: recut_handler not in repeat_list):
+                        repeat_list.append(lambda: recut_handler(var_donde_editar))
                 elif condition_flag:
                     recut_handler(var_donde_editar)
             else:
@@ -1181,6 +1267,10 @@ def p_recut(p):
                 if first_pasada:
                     if while_flag and (lambda: recut_handler not in while_list):
                         while_list.append(lambda: recut_handler(var_donde_editar))
+
+                    if repeat_flag and (lambda: recut_handler not in repeat_list):
+                        repeat_list.append(lambda: recut_handler(var_donde_editar))
+
                 elif condition_flag:
                     recut_handler(var_donde_editar)
             else:
