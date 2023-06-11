@@ -94,7 +94,7 @@ def t_STRING(t):
 
 
 def t_TYPE(t):
-    r'(Num|Bool)'
+    r'(Num|Bool|Str)'
     return t
 
 
@@ -247,12 +247,16 @@ def p_master_vars(p):
 
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-                    | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
-    if len(p[2]) > 2 and len(p[2]) < 12:
+                    | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+                    | NEW ID COMA LPARENT TYPE COMA STRING RPARENT SEMICOLON'''
+    if 2 < len(p[2]) < 12:
         if p[5] == 'Num' and isinstance(p[7], int):
             variables_globales[p[2]] = [p[5], p[7]]
             print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
         elif p[5] == 'Bool' and isinstance(p[7], bool):
+            variables_globales[p[2]] = [p[5], p[7]]
+            print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
+        elif p[5] == 'Str' and isinstance(p[7], str):
             variables_globales[p[2]] = [p[5], p[7]]
             print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
         else:
@@ -261,7 +265,6 @@ def p_master_var(p):
     else:
         syntax_errors.append(
             f'Error en línea {p.lineno}, posición {p.lexpos}, tamaño de nombre de variable no cumple con el estándar')
-
 
 # Recursividad para agarrar todas las sentencias
 def p_sentences(p):
@@ -309,15 +312,17 @@ def p_return_statement(p):
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
 def p_local_variable(p):
     '''local_variable : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
-                | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON'''
+                | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
+                | NEW ID COMA LPARENT TYPE COMA STRING RPARENT SEMICOLON'''
     if proc_en_analisis in called_procs:
+        print("Paso variable local")
         if 2 < len(p[2]) < 12:
             if p[5] == 'Num' and isinstance(p[7], int):
                 variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
-                print(f'Variable LOCAL en Proc: {proc_en_analisis} // Nombre: {p[2]} // Valor: {p[7]}')
             elif p[5] == 'Bool' and isinstance(p[7], bool):
                 variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
-                print(f'Variable LOCAL en Proc: {proc_en_analisis} // Nombre: {p[2]} // Valor: {p[7]}')
+            elif p[5] == 'Str' and isinstance(p[7], str):
+                variables_locales[p[2]] = [proc_en_analisis, p[5], p[7]]
             else:
                 syntax_errors.append(
                     f'Error en línea {p.lineno}, posición {p.lexpos}, valor dado no corresponde al tipado seleccionado')
