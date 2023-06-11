@@ -1016,6 +1016,7 @@ def p_while(p):
     while_list = []
     condition_flag = True
 
+
 def p_while_handler(p):
     '''while_handler : WHILE'''
 
@@ -1075,16 +1076,31 @@ def p_condition(p):
 
 
 def condition_handler(variable_name, condition_value):
-    global condition_flag
-    if variable_name in variables_globales:
-        if find_global_variable_value(variable_name) == condition_value:
-            # Set the condition flag to True to execute the following sentences
-            print("PASÓ RITEVE")
-            condition_flag = True
-        else:
-            # Set the condition flag to False to skip the following sentences
-            print("No coindició CASE")
-            condition_flag = False
+    global condition_flag, while_flag, first_pasada, proc_en_analisis
+    if condition_flag:
+        if variable_name in variables_globales:
+            if find_global_variable_value(variable_name) == condition_value:
+                # Set the condition flag to True to execute the following sentences
+                print("PASÓ RITEVE")
+                condition_flag = True
+            else:
+                # Set the condition flag to False to skip the following sentences
+                print("No coindició CASE")
+                condition_flag = False
+
+        elif variable_name in variables_locales:
+            for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+                if var_type == 'Num':
+                    if var_name == variable_name:
+                        if var_proc == proc_en_analisis:
+                            if find_global_variable_value(variable_name) == condition_value:
+                                # Set the condition flag to True to execute the following sentences
+                                print("PASÓ RITEVE")
+                                condition_flag = True
+                            else:
+                                # Set the condition flag to False to skip the following sentences
+                                print("No coindició CASE")
+                                condition_flag = False
 
 
 def p_cut(p):
@@ -1094,17 +1110,21 @@ def p_cut(p):
     global while_flag, while_list, first_pasada, condition_flag
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
-            if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
-                var_donde_guardar = p[3]
-                var_donde_cortar = p[5]
-                if first_pasada:
-                    if while_flag and (lambda: cut_handler not in while_list):
-                        while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
-                elif condition_flag:
-                    cut_handler(var_donde_guardar, var_donde_cortar)
-            else:
-                syntax_errors.append(
-                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+            for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+                if var_type == 'Str':
+                    if var_name == p[3]:
+                        if var_proc == proc_en_analisis:
+                            if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
+                                var_donde_guardar = p[3]
+                                var_donde_cortar = p[5]
+                                if first_pasada:
+                                    if while_flag and (lambda: cut_handler not in while_list):
+                                        while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                                elif condition_flag:
+                                    cut_handler(var_donde_guardar, var_donde_cortar)
+                            else:
+                                syntax_errors.append(
+                                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
 
         elif p[3] in variables_globales:
             if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':

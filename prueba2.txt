@@ -1,7 +1,7 @@
 @Master(
     New @variable1,(Str, "Hola");
     New @variable2,(Str, "Pepe2331321");
-    New @variable3,(Bool, True);
+    New @variable3,(Bool, False);
     CALL(@Procedure1);
 
 );
@@ -11,7 +11,8 @@ Proc @Procedure1 (
     New @motor2,(Num,2);
     New @motor3,(Num,3);
 
-
+    While IsTrue(@variable3);
+        (
             Cut(@variable1 , @variable2);
             ReCut(@variable2);
 
@@ -22,7 +23,7 @@ Proc @Procedure1 (
                 (AlterB(@variable3); )
                 When "p" Then
                 (Signal(@motor3, 1); Signal(@motor3, 1); ) ;
-
+        );
 
     PrintValues("Yujuuuuuuuuu");
 );
