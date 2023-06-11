@@ -897,17 +897,17 @@ def p_isTrue(p):
                     if var_type == 'Bool':
                         if var_value:
                             print("True")
-                            condition_flag = True
-                            while_flag = True
-                            first_pasada = True
-                            var_queValida_while = var_name
-                            print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+                            if while_flag:
+                                first_pasada = True
+                                var_queValida_while = var_name
+                                print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
                             return True
                         else:
                             print("False")
-                            condition_flag = False
-                            while_flag = False
-                            first_pasada = False
+                            if while_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                while_flag = False
                             return False
                     elif index == len(variables_globales) - 1:
                         syntax_errors.append(
@@ -1001,11 +1001,12 @@ def p_viewsignal(p):
 
 
 def p_while(p):
-    '''while : WHILE sentences LPARENT sentences RPARENT SEMICOLON'''
+    '''while : while_handler sentences LPARENT sentences RPARENT SEMICOLON'''
 
     global while_flag, while_list, first_pasada, condition_flag
     print("llegó a while")
     first_pasada = False
+    condition_flag = True
     print(while_list)
     while while_flag:
         for func in while_list:
@@ -1014,6 +1015,14 @@ def p_while(p):
 
     while_list = []
     condition_flag = True
+
+def p_while_handler(p):
+    '''while_handler : WHILE'''
+
+    global while_flag, condition_flag, first_pasada
+    while_flag = True
+    condition_flag = False
+    first_pasada = True
 
 
 def p_case(p):
@@ -1049,20 +1058,20 @@ def p_expression(p):
     'expression : ID'
     global id_case, condition_flag, else_flag, first_pasada
     id_case = p[1]
-    condition_flag = True
-    else_flag = False
 
 
 def p_condition(p):
     '''condition : WHEN INTEGER THEN
                 | WHEN STRING THEN '''
 
-    global id_case, condition_flag, while_flag, while_list
+    global id_case, condition_flag, while_flag, while_list, condition_flag
+    condition_flag = True
     variable_name = id_case
     condition_value = p[2]
     if while_flag and (lambda: condition_handler not in while_list):
         while_list.append(lambda: condition_handler(variable_name, condition_value))
-    condition_handler(variable_name, condition_value)
+    elif condition_flag:
+        condition_handler(variable_name, condition_value)
 
 
 def condition_handler(variable_name, condition_value):
@@ -1082,7 +1091,7 @@ def p_cut(p):
     '''cut : CUT LPARENT ID COMA STRING RPARENT SEMICOLON
             | CUT LPARENT ID COMA ID RPARENT SEMICOLON'''
 
-    global while_flag, while_list, first_pasada
+    global while_flag, while_list, first_pasada, condition_flag
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
             if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
@@ -1091,7 +1100,7 @@ def p_cut(p):
                 if first_pasada:
                     if while_flag and (lambda: cut_handler not in while_list):
                         while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
-                else:
+                elif condition_flag:
                     cut_handler(var_donde_guardar, var_donde_cortar)
             else:
                 syntax_errors.append(
@@ -1104,7 +1113,7 @@ def p_cut(p):
                 if first_pasada:
                     if while_flag and (lambda: cut_handler not in while_list):
                         while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
-                else:
+                elif condition_flag:
                     cut_handler(var_donde_guardar, var_donde_cortar)
             else:
                 syntax_errors.append(
@@ -1140,7 +1149,7 @@ def p_recut(p):
                 if first_pasada:
                     if while_flag and (lambda: recut_handler not in while_list):
                         while_list.append(lambda: recut_handler(var_donde_editar))
-                else:
+                elif condition_flag:
                     recut_handler(var_donde_editar)
             else:
                 syntax_errors.append(
@@ -1152,7 +1161,7 @@ def p_recut(p):
                 if first_pasada:
                     if while_flag and (lambda: recut_handler not in while_list):
                         while_list.append(lambda: recut_handler(var_donde_editar))
-                else:
+                elif condition_flag:
                     recut_handler(var_donde_editar)
             else:
                 syntax_errors.append(
