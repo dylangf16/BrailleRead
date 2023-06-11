@@ -1,7 +1,6 @@
 @Master(
     New @variable1,(Num, 15);
     PrintValues(@variable1);
-    New @variable2,(Bool, True);
     //CALL(@Procedure1);
     CALL(@Procedure2);
 );
