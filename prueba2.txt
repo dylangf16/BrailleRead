@@ -1,18 +1,29 @@
 @Master(
-    New @variable1,(Num, 2);
-    New @variable2,(Num, 5);
-    New @variable3,(Num, 1);
-    New @variable4,(Num, 1);
+    New @variable1,(Str, "Hola");
+    New @variable2,(Str, "Pepe2331321");
+    New @variable3,(Bool, True);
+    CALL(@Procedure1);
 
-    Case @variable4
-        When 1 Then
-        (Signal(@variable1, 1); )
-        When 2 Then
-        (Signal(@variable2, 0); )
-        When 3 Then
-        (Signal(@variable3, 1); ) ;
+);
 
+Proc @Procedure1 (
+    New @motor1,(Num,1);
+    New @motor2,(Num,2);
+    New @motor3,(Num,3);
 
-    Signal(@variable2, 0);
+    While IsTrue(@variable3);
+        (
+            Cut(@variable1 , @variable2);
+            ReCut(@variable2);
 
+            Case @variable1
+                When "P" Then
+                (Signal(@motor1, 1); Signal(@motor2, 1); )
+                When "e" Then
+                (AlterB(@variable3); )
+                When "p" Then
+                (Signal(@motor3, 1); Signal(@motor3, 1); ) ;
+        );
+
+    PrintValues("Yujuuuuuuuuu");
 );

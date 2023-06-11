@@ -2,6 +2,7 @@ import ply.yacc as yacc
 import ply.lex as lex
 from collections import deque
 from arduino import manipulacion_arduino
+import time
 
 # Lex ---------------------
 lexical_errors = []
@@ -138,6 +139,16 @@ syntax_errors = []
 master = 0
 proc_en_analisis = ''
 
+while_flag = False
+while_list = []
+first_pasada = False
+
+id_case = None
+condition_flag = True
+else_flag = False
+
+var_queValida_while = None
+
 precedence = (
     ('left', 'ADD', 'SUB'),
     ('left', 'MUL', 'DIV'),
@@ -221,6 +232,10 @@ def p_master_sentence(p):
                        | isTrue
                        | signal
                        | viewsignal
+                       | cut
+                       | recut
+                       | case
+                       | while
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
 
@@ -254,8 +269,6 @@ def p_sentences(p):
                  | sentences sentence'''
 
 
-# Aquí se van agregando todas las sentencias, así como vamos
-# TODO toda sentence que se agregue aquí, se tiene que agregar a master_sentence
 def p_sentence(p):
     '''sentence : local_variable
                 | values
@@ -273,6 +286,10 @@ def p_sentence(p):
                 | isTrue
                 | signal
                 | viewsignal
+                | cut
+                | recut
+                | case
+                | while
                 | empty'''
     p[0] = p[1]
 
@@ -514,15 +531,19 @@ def p_alter(p):
 
 def p_alterB(p):
     '''alterB : ALTERB LPARENT ID RPARENT SEMICOLON'''
+
+    global var_queValida_while, while_flag
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
                 if var_type == 'Bool':
                     if var_name == p[3]:
                         valor_actual = variables_globales[p[3]]
-                        if var_value == True:
+                        if var_value:
                             nuevo_valor = (valor_actual[0], False)
                             variables_globales[p[3]] = nuevo_valor
+                            if var_queValida_while == var_name:
+                                while_flag = False
                             return False
                         else:
                             nuevo_valor = (valor_actual[0], True)
@@ -536,10 +557,12 @@ def p_alterB(p):
                 if var_name == p[3]:
                     if var_type == 'Bool':
                         if var_proc == proc_en_analisis:
-                            if var_value == True:
+                            if var_value:
                                 valor_actual = variables_locales[p[3]]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], False)
                                 variables_locales[p[3]] = nuevo_valor
+                                if var_queValida_while == var_name:
+                                    while_flag = False
                                 return False
                             else:
                                 valor_actual = variables_locales[p[2]]
@@ -780,6 +803,7 @@ def p_comparisson_maqequal(p):
 
 def p_isTrue(p):
     '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
+    global var_queValida_while
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -787,6 +811,7 @@ def p_isTrue(p):
                     if var_type == 'Bool':
                         if var_value:
                             print("True")
+                            var_queValida_while == var_name
                             return True
                         else:
                             print("False")
@@ -800,6 +825,7 @@ def p_isTrue(p):
                     if var_proc == proc_en_analisis:
                         if var_value:
                             print(True)
+                            var_queValida_while == var_name
                             return True
                         else:
                             print(False)
@@ -865,41 +891,218 @@ def p_condition(p):
 def p_signal(p):
     '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
+    global condition_flag, while_flag, while_list, first_pasada
     position = p[3]
     estado = p[5]
+    if first_pasada:
+        if while_flag and (lambda: signal_handler not in while_list):
+            while_list.append(lambda: signal_handler(position, estado))
 
-    global condition_flag
-    if condition_flag:
+    elif condition_flag:
         if isinstance(position, int):
             if 6 >= position >= 1:
                 signal_handler(position, estado)
-
         else:
-            position = find_global_variable_value(position)
-            signal_handler(position, estado)
+            pos = find_global_variable_value(position)
+            signal_handler(pos, estado)
     else:
         pass
 
 
 def signal_handler(position, estado):
-    if position == 1:
-        manipulacion_arduino("morado", estado)
-    if position == 2:
-        manipulacion_arduino("verde", estado)
-    if position == 3:
-        manipulacion_arduino("naranja", estado)
-    if position == 4:
-        manipulacion_arduino("blanco", estado)
-    if position == 5:
-        manipulacion_arduino("azul", estado)
-    if position == 6:
-        manipulacion_arduino("amarillo", estado)
+    global condition_flag
+    if condition_flag:
+        if isinstance(position, int):
+            pass
+        if not isinstance(position, int):
+            position = find_global_variable_value(position)
+        if position == 1:
+            manipulacion_arduino("morado", estado)
+        if position == 2:
+            manipulacion_arduino("verde", estado)
+        if position == 3:
+            manipulacion_arduino("naranja", estado)
+        if position == 4:
+            manipulacion_arduino("blanco", estado)
+        if position == 5:
+            manipulacion_arduino("azul", estado)
+        if position == 6:
+            manipulacion_arduino("amarillo", estado)
 
 
 def p_viewsignal(p):
     '''viewsignal : VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON'''
     position = p[3]
     print("Implementación con código Josepa")
+
+
+def p_while(p):
+    '''while : WHILE sentences LPARENT sentences RPARENT SEMICOLON'''
+
+    global while_flag, while_list, first_pasada
+    print("llegó a while")
+    first_pasada = False
+    while while_flag:
+        for func in while_list:
+            func()
+            time.sleep(2)
+
+    while_list = []
+
+
+def p_case(p):
+    '''case : CASE expression recursive_conditions SEMICOLON'''
+
+    global condition_flag
+    condition_flag = True
+    pass
+
+
+def p_else_condition(p):
+    '''else_condition : LPARENT sentences RPARENT'''
+
+    global condition_flag, else_flag
+    if not condition_flag:
+        else_flag = True
+
+    pass
+
+
+def p_recursive_conditions(p):
+    '''recursive_conditions : recursive_condition
+                            | recursive_conditions recursive_condition'''
+    pass
+
+
+def p_recursive_condition(p):
+    '''recursive_condition :  condition LPARENT sentences RPARENT'''
+    pass
+
+
+def p_expression(p):
+    'expression : ID'
+    global id_case, condition_flag, else_flag, first_pasada
+    id_case = p[1]
+    condition_flag = True
+    else_flag = False
+
+
+def p_condition(p):
+    '''condition : WHEN INTEGER THEN
+                | WHEN STRING THEN '''
+
+    global id_case, condition_flag, while_flag, while_list
+    variable_name = id_case
+    condition_value = p[2]
+    if while_flag and (lambda: condition_handler not in while_list):
+        while_list.append(lambda: condition_handler(variable_name, condition_value))
+    condition_handler(variable_name, condition_value)
+
+
+def condition_handler(variable_name, condition_value):
+    global condition_flag
+    if variable_name in variables_globales:
+        if find_global_variable_value(variable_name) == condition_value:
+            # Set the condition flag to True to execute the following sentences
+            print("PASÓ RITEVE")
+            condition_flag = True
+        else:
+            # Set the condition flag to False to skip the following sentences
+            print("No coindició CASE")
+            condition_flag = False
+
+
+def p_cut(p):
+    '''cut : CUT LPARENT ID COMA STRING RPARENT SEMICOLON
+            | CUT LPARENT ID COMA ID RPARENT SEMICOLON'''
+
+    global while_flag, while_list, first_pasada
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[3] in variables_locales:
+            if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
+                var_donde_guardar = p[3]
+                var_donde_cortar = p[5]
+                if first_pasada:
+                    if while_flag and (lambda: cut_handler not in while_list):
+                        while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                else:
+                    cut_handler(var_donde_guardar, var_donde_cortar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+
+        elif p[3] in variables_globales:
+            if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':
+                var_donde_guardar = p[3]
+                var_donde_cortar = p[5]
+                if first_pasada:
+                    if while_flag and (lambda: cut_handler not in while_list):
+                        while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                else:
+                    cut_handler(var_donde_guardar, var_donde_cortar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+        else:
+            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+
+def cut_handler(var_donde_guardar, var_donde_cortar):
+    if var_donde_cortar in variables_locales:
+        string_a_cortar = find_local_variable_value(var_donde_cortar)
+
+    if var_donde_cortar in variables_globales:
+        string_a_cortar = find_global_variable_value(var_donde_cortar)
+
+    if var_donde_guardar in variables_locales:
+        variables_locales[var_donde_guardar][2] = string_a_cortar[0]
+        print(f'Nuevos valores en {var_donde_guardar}: {variables_locales[var_donde_guardar]}')
+
+    if var_donde_guardar in variables_globales:
+        variables_globales[var_donde_guardar][1] = string_a_cortar[0]
+        print(f'Nuevos valores en {var_donde_guardar}: {variables_globales[var_donde_guardar]}')
+
+
+def p_recut(p):
+    '''recut : RECUT LPARENT ID RPARENT SEMICOLON'''
+
+    global while_flag, while_list
+    if proc_en_analisis in called_procs or processingMaster:
+        if p[3] in variables_locales:
+            if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
+                var_donde_editar = p[3]
+                if first_pasada:
+                    if while_flag and (lambda: recut_handler not in while_list):
+                        while_list.append(lambda: recut_handler(var_donde_editar))
+                else:
+                    recut_handler(var_donde_editar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+
+        elif p[3] in variables_globales:
+            if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':
+                var_donde_editar = p[3]
+                if first_pasada:
+                    if while_flag and (lambda: recut_handler not in while_list):
+                        while_list.append(lambda: recut_handler(var_donde_editar))
+                else:
+                    recut_handler(var_donde_editar)
+            else:
+                syntax_errors.append(
+                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+        else:
+            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+
+
+def recut_handler(var):
+    if var in variables_locales:
+        variables_locales[var][2] = find_local_variable_value(var)[1:]
+        print(f'Nuevos valores en {var}: {variables_locales[var]}')
+
+    if var in variables_globales:
+        variables_globales[var][1] = find_global_variable_value(var)[1:]
+        print(f'Nuevos valores en {var}: {variables_globales[var]}')
 
 
 def p_empty(p):
