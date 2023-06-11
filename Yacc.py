@@ -844,57 +844,6 @@ def p_isTrue(p):
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
 
-def p_case(p):
-    '''case : CASE expression recursive_conditions SEMICOLON'''
-    pass
-
-
-def p_else_condition(p):
-    '''else_condition : LPARENT sentences RPARENT'''
-
-    global condition_flag, else_flag
-    if not condition_flag:
-        else_flag = True
-
-    pass
-
-
-def p_recursive_conditions(p):
-    '''recursive_conditions : recursive_condition
-                            | recursive_conditions recursive_condition'''
-    pass
-
-
-def p_recursive_condition(p):
-    '''recursive_condition :  condition LPARENT sentences RPARENT'''
-    pass
-
-
-def p_expression(p):
-    'expression : ID'
-    global id_case, condition_flag, else_flag
-    id_case = p[1]
-    condition_flag = True
-    else_flag = False
-
-
-def p_condition(p):
-    'condition : WHEN INTEGER THEN '
-
-    global id_case, condition_flag
-    variable_name = id_case
-    condition_value = p[2]
-    if variable_name in variables_globales:
-        if find_global_variable_value(variable_name) == condition_value:
-            # Set the condition flag to True to execute the following sentences
-            print("PASÓ RITEVE")
-            condition_flag = True
-        else:
-            # Set the condition flag to False to skip the following sentences
-            print("No coindició CASE")
-            condition_flag = False
-
-
 def p_signal(p):
     '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
