@@ -31,7 +31,9 @@ reserved = [
     'ELSE',
     'PRINTVALUES',
     'CALL',
-    'BREAK'
+    'BREAK',
+    'CUT',
+    'RECUT'
 ]
 
 tokens = tokens + reserved
@@ -72,6 +74,8 @@ t_ELSE = r'Else'
 t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
 t_BREAK = r'break'
+t_CUT = 'Cut'
+t_RECUT = 'ReCut'
 
 
 def t_MASTER(t):
@@ -218,7 +222,6 @@ def p_master_sentences(p):
 def p_master_sentence(p):
     '''master_sentence : master_var
                        | values
-                       | case
                        | call
                        | print_values
                        | alter
@@ -275,7 +278,6 @@ def p_sentences(p):
 def p_sentence(p):
     '''sentence : local_variable
                 | values
-                | case
                 | call
                 | print_values
                 | alter
