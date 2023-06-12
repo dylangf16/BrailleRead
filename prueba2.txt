@@ -1,7 +1,7 @@
 @Master(
     New @variable1,(Str, "Hola");
     New @variable2,(Str, "Pepe2331321");
-    New @variable3,(Bool, False);
+    New @variable3,(Bool, True);
     CALL(@Procedure1);
 
 );

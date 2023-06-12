@@ -155,6 +155,10 @@ else_flag = False
 repeat_flag = False
 repeat_list = []
 
+until_flag = False
+until_list = []
+var_queValida_until = None
+
 precedence = (
     ('left', 'ADD', 'SUB'),
     ('left', 'MUL', 'DIV'),
@@ -244,6 +248,7 @@ def p_master_sentence(p):
                        | case
                        | while
                        | repeat
+                       | until
                        | break
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
@@ -302,6 +307,7 @@ def p_sentence(p):
                 | recut
                 | case
                 | while
+                | until
                 | repeat
                 | break
                 | empty'''
@@ -350,7 +356,7 @@ def p_local_variable(p):
     '''local_variable : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA STRING RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
     id = p[2]
     type = p[5]
     value = p[7]
@@ -360,6 +366,9 @@ def p_local_variable(p):
             while_list.append(lambda: local_variable_aux(id, type, value))
         if repeat_flag and (lambda: local_variable_aux not in repeat_list):
             repeat_list.append(lambda: local_variable_aux(id, type, value))
+        if until_flag and (lambda: local_variable_aux not in until_list):
+            until_list.append(lambda: local_variable_aux(id, type, value))
+            local_variable_aux(id, type, value)
 
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
@@ -399,7 +408,7 @@ def p_values(p):
     '''values : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
                  | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
                  | VALUES LPARENT ID COMA return_statement RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
     id = p[3]
     new_value = p[5]
     if first_pasada:
@@ -408,6 +417,12 @@ def p_values(p):
 
         if repeat_flag and (lambda: values_aux not in repeat_list):
             repeat_list.append(lambda: values_aux(id, repeat_list))
+
+        if until_flag and (lambda: values_aux not in until_list):
+            until_list.append(lambda: values_aux(id, until_list))
+            values_aux(id, until_list)
+
+
 
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
@@ -466,13 +481,18 @@ def printable_sentence_var_aux(id):
 
 def p_printable_sentence_var(p):
     '''printable_sentence_var : ID '''
-    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
+    id = p[1]
     if first_pasada:
         if while_flag and (lambda: printable_sentence_var_aux not in while_list):
-            while_list.append(lambda: printable_sentence_var_aux(p[1]))
+            while_list.append(lambda: printable_sentence_var_aux(id))
 
         if repeat_flag and (lambda: printable_sentence_var_aux not in repeat_list):
-            repeat_list.append(lambda: printable_sentence_var_aux(p[1]))
+            repeat_list.append(lambda: printable_sentence_var_aux(id))
+
+        if until_flag and (lambda: printable_sentence_var_aux not in until_list):
+            until_list.append(lambda: printable_sentence_var_aux(id))
+            printable_sentence_var_aux(id)
 
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
@@ -486,12 +506,16 @@ def printable_sentence_string_aux(id):
 
 def p_printable_sentence_string(p):
     '''printable_sentence_string : STRING '''
-    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
+    string = p[1]
     if first_pasada:
         if while_flag and (lambda: printable_sentence_string_aux not in while_list):
-            while_list.append(lambda: printable_sentence_string_aux(p[1]))
+            while_list.append(lambda: printable_sentence_string_aux(string))
         if repeat_flag and (lambda: printable_sentence_string_aux not in repeat_list):
-            repeat_list.append(lambda: printable_sentence_string_aux(p[1]))
+            repeat_list.append(lambda: printable_sentence_string_aux(string))
+        if until_flag and (lambda: printable_sentence_string_aux not in until_list):
+            until_list.append(lambda: printable_sentence_string_aux(string))
+            printable_sentence_string_aux(string)
 
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
@@ -615,20 +639,28 @@ def p_alter(p):
                 | ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
                 | ALTER LPARENT ID COMA MUL COMA INTEGER RPARENT SEMICOLON
                 | ALTER LPARENT ID COMA DIV COMA INTEGER RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
+    id = p[3]
+    action = p[5]
+    integer = p[7]
     if first_pasada:
         if while_flag and (lambda: alter_aux not in while_list):
-            while_list.append(lambda: alter_aux(p[3], p[5], p[7]))
+            while_list.append(lambda: alter_aux(id, action, integer))
 
         if repeat_flag and (lambda: alter_aux not in repeat_list):
-            repeat_list.append(lambda: alter_aux(p[3], p[5], p[7]))
+            repeat_list.append(lambda: alter_aux(id, action, integer))
+
+        if until_flag and (lambda: alter_aux not in until_list):
+            until_list.append(lambda: alter_aux(id, action, integer))
+            alter_aux(id, action, integer)
+
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
-            alter_aux(p[3], p[5], p[7])
+            alter_aux(id, action, integer)
 
 
 def alterB_aux(id):
-    global while_flag, var_queValida_while
+    global while_flag, var_queValida_while, until_flag, var_queValida_until
     if condition_flag:
         if id in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -641,6 +673,10 @@ def alterB_aux(id):
                             if var_queValida_while == var_name:
                                 print(f'Reinicio de while, variable que valida: {var_name}')
                                 while_flag = False
+                            elif var_queValida_until == var_name:
+                                print(f'Reinicio de until, variable que valida: {var_name}')
+                                until_flag = False
+
                             return False
                         else:
                             nuevo_valor = (valor_actual[0], True)
@@ -660,6 +696,9 @@ def alterB_aux(id):
                                 variables_locales[id] = nuevo_valor
                                 if var_queValida_while == var_name:
                                     while_flag = False
+                                elif var_queValida_until == var_name:
+                                    print(f'Reinicio de until, variable que valida: {var_name}')
+                                    until_flag = False
                                 return False
                             else:
                                 valor_actual = variables_locales[id]
@@ -678,7 +717,7 @@ def alterB_aux(id):
 
 def p_alterB(p):
     '''alterB : ALTERB LPARENT ID RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list
+    global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
     var = p[3]
     if first_pasada:
         if while_flag and (lambda: alterB_aux not in while_list):
@@ -687,6 +726,10 @@ def p_alterB(p):
         if repeat_flag and (lambda: alterB_aux not in repeat_list):
             repeat_list.append(lambda: alterB_aux(var))
 
+        if until_flag and (lambda: alterB_aux not in until_list):
+            until_list.append(lambda: alterB_aux(var))
+            alterB_aux(var)
+
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             alterB_aux(var)
@@ -694,6 +737,8 @@ def p_alterB(p):
 
 def p_comparisson_maq(p):
     '''comparisson_maq : ID MAQ INTEGER'''
+
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -701,9 +746,27 @@ def p_comparisson_maq(p):
                     if var_name == p[1]:
                         if var_value > p[3]:
                             print(True)
+                            if while_flag:
+                                first_pasada = True
+                                var_queValida_while = var_name
+                                print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                            if until_flag:
+                                first_pasada = True
+                                var_queValida_until = var_name
+                                print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                             return True
                         else:
                             print(False)
+                            if while_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                while_flag = False
+
+                            if until_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                until_flag = False
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
@@ -715,9 +778,27 @@ def p_comparisson_maq(p):
                         if var_proc == proc_en_analisis:
                             if var_value > p[3]:
                                 print(True)
+                                if while_flag:
+                                    first_pasada = True
+                                    var_queValida_while = var_name
+                                    print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                                if until_flag:
+                                    first_pasada = True
+                                    var_queValida_until = var_name
+                                    print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                                 return True
                             else:
                                 print(False)
+                                if while_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    while_flag = False
+
+                                if until_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    until_flag = False
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
@@ -731,6 +812,8 @@ def p_comparisson_maq(p):
 
 def p_comparisson_meq(p):
     '''comparisson_meq : ID MEQ INTEGER'''
+
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -738,9 +821,27 @@ def p_comparisson_meq(p):
                     if var_name == p[1]:
                         if var_value < p[3]:
                             print(True)
+                            if while_flag:
+                                first_pasada = True
+                                var_queValida_while = var_name
+                                print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                            if until_flag:
+                                first_pasada = True
+                                var_queValida_until = var_name
+                                print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                             return True
                         else:
                             print(False)
+                            if while_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                while_flag = False
+
+                            if until_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                until_flag = False
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
@@ -752,9 +853,27 @@ def p_comparisson_meq(p):
                         if var_proc == proc_en_analisis:
                             if var_value < p[3]:
                                 print(True)
+                                if while_flag:
+                                    first_pasada = True
+                                    var_queValida_while = var_name
+                                    print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                                if until_flag:
+                                    first_pasada = True
+                                    var_queValida_until = var_name
+                                    print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                                 return True
                             else:
                                 print(False)
+                                if while_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    while_flag = False
+
+                                if until_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    until_flag = False
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
@@ -768,6 +887,8 @@ def p_comparisson_meq(p):
 
 def p_comparisson_equal(p):
     '''comparisson_equal : ID EQUAL INTEGER'''
+
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -775,9 +896,27 @@ def p_comparisson_equal(p):
                     if var_name == p[1]:
                         if var_value == p[3]:
                             print(True)
+                            if while_flag:
+                                first_pasada = True
+                                var_queValida_while = var_name
+                                print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                            if until_flag:
+                                first_pasada = True
+                                var_queValida_until = var_name
+                                print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                             return True
                         else:
                             print(False)
+                            if while_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                while_flag = False
+
+                            if until_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                until_flag = False
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
@@ -789,9 +928,27 @@ def p_comparisson_equal(p):
                         if var_proc == proc_en_analisis:
                             if var_value == p[3]:
                                 print(True)
+                                if while_flag:
+                                    first_pasada = True
+                                    var_queValida_while = var_name
+                                    print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                                if until_flag:
+                                    first_pasada = True
+                                    var_queValida_until = var_name
+                                    print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                                 return True
                             else:
                                 print(False)
+                                if while_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    while_flag = False
+
+                                if until_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    until_flag = False
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
@@ -805,6 +962,8 @@ def p_comparisson_equal(p):
 
 def p_comparisson_dif(p):
     '''comparisson_dif : ID DIFFERENT INTEGER'''
+
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -812,9 +971,27 @@ def p_comparisson_dif(p):
                     if var_name == p[1]:
                         if var_value != p[3]:
                             print(True)
+                            if while_flag:
+                                first_pasada = True
+                                var_queValida_while = var_name
+                                print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                            if until_flag:
+                                first_pasada = True
+                                var_queValida_until = var_name
+                                print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                             return True
                         else:
                             print(False)
+                            if while_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                while_flag = False
+
+                            if until_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                until_flag = False
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
@@ -826,9 +1003,27 @@ def p_comparisson_dif(p):
                         if var_proc == proc_en_analisis:
                             if var_value != p[3]:
                                 print(True)
+                                if while_flag:
+                                    first_pasada = True
+                                    var_queValida_while = var_name
+                                    print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                                if until_flag:
+                                    first_pasada = True
+                                    var_queValida_until = var_name
+                                    print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                                 return True
                             else:
                                 print(False)
+                                if while_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    while_flag = False
+
+                                if until_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    until_flag = False
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
@@ -842,6 +1037,8 @@ def p_comparisson_dif(p):
 
 def p_comparisson_meqequal(p):
     '''comparisson_meqequal : ID MEQEQUAL INTEGER'''
+
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -849,9 +1046,27 @@ def p_comparisson_meqequal(p):
                     if var_name == p[1]:
                         if var_value <= p[3]:
                             print(True)
+                            if while_flag:
+                                first_pasada = True
+                                var_queValida_while = var_name
+                                print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                            if until_flag:
+                                first_pasada = True
+                                var_queValida_until = var_name
+                                print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                             return True
                         else:
                             print(False)
+                            if while_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                while_flag = False
+
+                            if until_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                until_flag = False
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
@@ -863,9 +1078,27 @@ def p_comparisson_meqequal(p):
                         if var_proc == proc_en_analisis:
                             if var_value <= p[3]:
                                 print(True)
+                                if while_flag:
+                                    first_pasada = True
+                                    var_queValida_while = var_name
+                                    print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                                if until_flag:
+                                    first_pasada = True
+                                    var_queValida_until = var_name
+                                    print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                                 return True
                             else:
                                 print(False)
+                                if while_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    while_flag = False
+
+                                if until_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    until_flag = False
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
@@ -879,6 +1112,8 @@ def p_comparisson_meqequal(p):
 
 def p_comparisson_maqequal(p):
     '''comparisson_maqequal : ID MAQEQUAL INTEGER'''
+
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -886,9 +1121,27 @@ def p_comparisson_maqequal(p):
                     if var_name == p[1]:
                         if var_value >= p[3]:
                             print(True)
+                            if while_flag:
+                                first_pasada = True
+                                var_queValida_while = var_name
+                                print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                            if until_flag:
+                                first_pasada = True
+                                var_queValida_until = var_name
+                                print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                             return True
                         else:
                             print(False)
+                            if while_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                while_flag = False
+
+                            if until_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                until_flag = False
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
@@ -900,9 +1153,27 @@ def p_comparisson_maqequal(p):
                         if var_proc == proc_en_analisis:
                             if var_value >= p[3]:
                                 print(True)
+                                if while_flag:
+                                    first_pasada = True
+                                    var_queValida_while = var_name
+                                    print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                                if until_flag:
+                                    first_pasada = True
+                                    var_queValida_until = var_name
+                                    print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                                 return True
                             else:
                                 print(False)
+                                if while_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    while_flag = False
+
+                                if until_flag:
+                                    condition_flag = False
+                                    first_pasada = False
+                                    until_flag = False
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
@@ -917,7 +1188,7 @@ def p_comparisson_maqequal(p):
 def p_isTrue(p):
     '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
 
-    global condition_flag, while_flag, first_pasada, var_queValida_while
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -929,6 +1200,11 @@ def p_isTrue(p):
                                 first_pasada = True
                                 var_queValida_while = var_name
                                 print(f'Inicio primera pasada // Var que valida while: {var_queValida_while}')
+
+                            if until_flag:
+                                first_pasada = True
+                                var_queValida_until = var_name
+                                print(f'Inicio primera pasada // Var que valida Until: {var_queValida_until}')
                             return True
                         else:
                             print("False")
@@ -936,6 +1212,11 @@ def p_isTrue(p):
                                 condition_flag = False
                                 first_pasada = False
                                 while_flag = False
+
+                            if until_flag:
+                                condition_flag = False
+                                first_pasada = False
+                                until_flag = False
                             return False
                     elif index == len(variables_globales) - 1:
                         syntax_errors.append(
@@ -961,7 +1242,7 @@ def p_isTrue(p):
 def p_signal(p):
     '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
-    global condition_flag, while_flag, while_list, first_pasada, proc_en_analisis, repeat_list, repeat_flag
+    global condition_flag, while_flag, while_list, first_pasada, proc_en_analisis, repeat_list, repeat_flag, until_flag, until_list
     position = p[3]
     estado = p[5]
     if first_pasada:
@@ -970,6 +1251,10 @@ def p_signal(p):
 
         if repeat_flag and (lambda: signal_handler not in repeat_list):
             repeat_list.append(lambda: signal_handler(position, estado))
+
+        if until_flag and (lambda: signal_handler not in until_list):
+            until_list.append(lambda: signal_handler(position, estado))
+            signal_handler(position, estado)
 
     elif condition_flag:
         if position in variables_globales:
@@ -1032,7 +1317,7 @@ def p_viewsignal(p):
 
 
 def p_while(p):
-    '''while : while_handler sentences LPARENT sentences RPARENT SEMICOLON'''
+    '''while : while_handler sentence LPARENT sentences RPARENT SEMICOLON'''
 
     global while_flag, while_list, first_pasada, condition_flag
     print("llegó a while")
@@ -1055,6 +1340,31 @@ def p_while_handler(p):
     while_flag = True
     condition_flag = False
     first_pasada = True
+
+def p_until(p):
+    '''until : until_handler LPARENT sentences RPARENT sentence SEMICOLON'''
+
+    global until_flag, until_list, first_pasada, condition_flag
+    print("llegó a UNTIL")
+    first_pasada = False
+    condition_flag = True
+    print(until_list)
+    while until_flag:
+        for func in until_list:
+            func()
+            time.sleep(2)
+
+    until_list = []
+    condition_flag = True
+
+def p_until_handler(p):
+    '''until_handler : UNTIL'''
+
+    global until_flag, condition_flag, first_pasada
+    until_flag = True
+    condition_flag = False
+    first_pasada = True
+
 
 
 def p_repeat(p):
@@ -1138,7 +1448,7 @@ def p_condition(p):
     '''condition : WHEN INTEGER THEN
                 | WHEN STRING THEN '''
 
-    global id_case, condition_flag, while_flag, while_list, condition_flag, repeat_flag, repeat_list
+    global id_case, condition_flag, while_flag, while_list, condition_flag, repeat_flag, repeat_list, until_flag, until_list
     condition_flag = True
     variable_name = id_case
     condition_value = p[2]
@@ -1148,12 +1458,16 @@ def p_condition(p):
     if repeat_flag and (lambda: condition_handler not in repeat_list):
         repeat_list.append(lambda: condition_handler(variable_name, condition_value))
 
+    if until_flag and (lambda: condition_handler not in until_list):
+        until_list.append(lambda: condition_handler(variable_name, condition_value))
+        condition_handler(variable_name, condition_value)
+
     elif condition_flag:
         condition_handler(variable_name, condition_value)
 
 
 def condition_handler(variable_name, condition_value):
-    global condition_flag, while_flag, first_pasada, proc_en_analisis
+    global condition_flag, proc_en_analisis
     if variable_name in variables_globales:
         if find_global_variable_value(variable_name) == condition_value:
             # Set the condition flag to True to execute the following sentences
@@ -1183,7 +1497,7 @@ def p_cut(p):
     '''cut : CUT LPARENT ID COMA STRING RPARENT SEMICOLON
             | CUT LPARENT ID COMA ID RPARENT SEMICOLON'''
 
-    global while_flag, while_list, first_pasada, condition_flag, repeat_flag, repeat_list
+    global while_flag, while_list, first_pasada, condition_flag, repeat_flag, repeat_list, until_flag, until_list
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
             for var_name, (var_proc, var_type, var_value) in variables_locales.items():
@@ -1197,8 +1511,12 @@ def p_cut(p):
                                     if while_flag and (lambda: cut_handler not in while_list):
                                         while_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
 
-                                        if repeat_flag and (lambda: cut_handler not in repeat_list):
-                                            repeat_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                                    if repeat_flag and (lambda: cut_handler not in repeat_list):
+                                        repeat_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+
+                                    if until_flag and (lambda: cut_handler not in until_list):
+                                        until_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                                        cut_handler(var_donde_guardar, var_donde_cortar)
 
                                 elif condition_flag:
                                     cut_handler(var_donde_guardar, var_donde_cortar)
@@ -1216,6 +1534,11 @@ def p_cut(p):
 
                     if repeat_flag and (lambda: cut_handler not in repeat_list):
                         repeat_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+
+                    if until_flag and (lambda: cut_handler not in until_list):
+                        until_list.append(lambda: cut_handler(var_donde_guardar, var_donde_cortar))
+                        cut_handler(var_donde_guardar, var_donde_cortar)
+
                 elif condition_flag:
                     cut_handler(var_donde_guardar, var_donde_cortar)
             else:
@@ -1244,7 +1567,7 @@ def cut_handler(var_donde_guardar, var_donde_cortar):
 def p_recut(p):
     '''recut : RECUT LPARENT ID RPARENT SEMICOLON'''
 
-    global while_flag, while_list, repeat_flag, repeat_list
+    global while_flag, while_list, repeat_flag, repeat_list, until_flag, until_list
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
             if isinstance(p[5], str) and variables_locales[p[3]][1] == 'Str':
@@ -1255,6 +1578,11 @@ def p_recut(p):
 
                     if repeat_flag and (lambda: recut_handler not in repeat_list):
                         repeat_list.append(lambda: recut_handler(var_donde_editar))
+
+                    if until_flag and (lambda: recut_handler not in until_list):
+                        until_list.append(lambda: recut_handler(var_donde_editar))
+                        recut_handler(var_donde_editar)
+
                 elif condition_flag:
                     recut_handler(var_donde_editar)
             else:
@@ -1270,6 +1598,10 @@ def p_recut(p):
 
                     if repeat_flag and (lambda: recut_handler not in repeat_list):
                         repeat_list.append(lambda: recut_handler(var_donde_editar))
+
+                    if until_flag and (lambda: recut_handler not in until_list):
+                        until_list.append(lambda: recut_handler(var_donde_editar))
+                        recut_handler(var_donde_editar)
 
                 elif condition_flag:
                     recut_handler(var_donde_editar)
@@ -1304,7 +1636,7 @@ def p_error(p):
         syntax_errors.append("Error sintáctico: Fin de archivo inesperado")
 
 
-with open('prueba2.txt', 'r') as file:
+with open('prueba3.txt', 'r') as file:
     input_text = file.read()
 
 print("Ejecutando análisis")
