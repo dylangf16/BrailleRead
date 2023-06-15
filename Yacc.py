@@ -1,137 +1,7 @@
 import ply.yacc as yacc
-import ply.lex as lex
-from collections import deque
+from Lex import tokens, lexer, lexical_errors
 from arduino import manipulacion_arduino
 import time
-
-# Lex ---------------------
-lexical_errors = []
-
-# List of token names
-tokens = ['MASTER', 'ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL',
-          'ARROBA',
-          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING', 'PLUS'
-          ]
-
-reserved = [
-    'PROC',
-    'NEW',
-    'VALUES',
-    'ALTER',
-    'ALTERB',
-    'SIGNAL',
-    'VIEWSIGNAL',
-    'ISTRUE',
-    'REPEAT',
-    'UNTIL',
-    'WHILE',
-    'CASE',
-    'WHEN',
-    'THEN',
-    'ELSE',
-    'PRINTVALUES',
-    'CALL',
-    'BREAK',
-    'CUT',
-    'RECUT'
-]
-
-tokens = tokens + reserved
-
-t_ignore = r'[ \t]|\n'
-t_MAQ = r'>'
-t_MEQ = r'<'
-t_EQUAL = r'=='
-t_DIFFERENT = r'<>'
-t_MEQEQUAL = r'<='
-t_MAQEQUAL = r'>='
-t_ARROBA = r'@'
-t_COMA = r','
-t_SEMICOLON = r';'
-t_LPARENT = r'\('
-t_RPARENT = r'\)'
-t_ADD = r'ADD'
-t_SUB = r'SUB'
-t_MUL = r'MUL'
-t_DIV = r'DIV'
-t_PLUS = r'\+'
-
-t_PROC = r'Proc'
-t_NEW = r'New'
-t_VALUES = r'Values'
-t_ALTER = r'Alter'
-t_ALTERB = r'AlterB'
-t_SIGNAL = r'Signal'
-t_VIEWSIGNAL = r'ViewSignal'
-t_ISTRUE = r'IsTrue'
-t_REPEAT = r'Repeat'
-t_UNTIL = r'Until'
-t_WHILE = r'While'
-t_CASE = r'Case'
-t_WHEN = r'When'
-t_THEN = r'Then'
-t_ELSE = r'Else'
-t_PRINTVALUES = r'PrintValues'
-t_CALL = r'CALL'
-t_BREAK = r'Break'
-t_CUT = 'Cut'
-t_RECUT = 'ReCut'
-
-
-def t_MASTER(t):
-    r'@Master'
-    return t
-
-
-def t_ID(t):
-    r'[@][a-zA-Z0-9_#]+'
-    if t.value.upper() in reserved:
-        t.value = t.value.upper()
-        t.type = t.value
-    return t
-
-
-def t_STRING(t):
-    r'"[^"]*"'
-    t.value = t.value[1:-1]
-    return t
-
-
-def t_TYPE(t):
-    r'(Num|Bool|Str)'
-    return t
-
-
-def t_newline(t):
-    r'\n+'
-    t.lexer.lineno += len(t.value)
-
-
-def t_COMMENT(t):
-    r'//.*'
-    pass
-
-
-def t_INTEGER(t):
-    r'\d+'
-    t.value = int(t.value)
-    return t
-
-
-def t_BOOL(t):
-    r'(True|False)'
-    if t.value == "True":
-        t.value = True
-    elif t.value == "False":
-        t.value = False
-    return t
-
-
-# Error handling rule
-def t_error(t):
-    lexical_errors.append(f"Invalid token at line {t.lexer.lineno}: {t.value[0]}")
-    t.lexer.skip(1)
-
 
 # Dictionary of names
 processingMaster = True
@@ -1327,7 +1197,7 @@ def p_while(p):
     while while_flag:
         for func in while_list:
             func()
-            time.sleep(2)
+            time.sleep(0.5)
 
     while_list = []
     condition_flag = True
@@ -1352,7 +1222,7 @@ def p_until(p):
     while until_flag:
         for func in until_list:
             func()
-            time.sleep(2)
+            time.sleep(0.5)
 
     until_list = []
     condition_flag = True
@@ -1378,7 +1248,7 @@ def p_repeat(p):
     while repeat_flag:
         for func in repeat_list:
             func()
-            time.sleep(2)
+            time.sleep(0.5)
 
     repeat_list = []
     condition_flag = True
@@ -1452,15 +1322,16 @@ def p_condition(p):
     condition_flag = True
     variable_name = id_case
     condition_value = p[2]
-    if while_flag and (lambda: condition_handler not in while_list):
-        while_list.append(lambda: condition_handler(variable_name, condition_value))
+    if first_pasada:
+        if while_flag and (lambda: condition_handler not in while_list):
+            while_list.append(lambda: condition_handler(variable_name, condition_value))
 
-    if repeat_flag and (lambda: condition_handler not in repeat_list):
-        repeat_list.append(lambda: condition_handler(variable_name, condition_value))
+        if repeat_flag and (lambda: condition_handler not in repeat_list):
+            repeat_list.append(lambda: condition_handler(variable_name, condition_value))
 
-    if until_flag and (lambda: condition_handler not in until_list):
-        until_list.append(lambda: condition_handler(variable_name, condition_value))
-        condition_handler(variable_name, condition_value)
+        if until_flag and (lambda: condition_handler not in until_list):
+            until_list.append(lambda: condition_handler(variable_name, condition_value))
+            condition_handler(variable_name, condition_value)
 
     elif condition_flag:
         condition_handler(variable_name, condition_value)
@@ -1636,11 +1507,10 @@ def p_error(p):
         syntax_errors.append("Error sintáctico: Fin de archivo inesperado")
 
 
-with open('prueba3.txt', 'r') as file:
+with open('prueba.txt', 'r') as file:
     input_text = file.read()
 
 print("Ejecutando análisis")
-lexer = lex.lex()
 lexer.input(input_text)
 for token in lexer:
     print(token)

@@ -17,7 +17,7 @@ Proc @Procedure1 (
             ReCut(@variable2);
 
             Case @variable1
-                When "P" Then
+                When "Hola" Then
                 (Signal(@motor1, 1); Signal(@motor2, 1); )
                 When "e" Then
                 (AlterB(@variable3); )

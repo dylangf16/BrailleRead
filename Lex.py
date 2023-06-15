@@ -1,11 +1,13 @@
 import ply.lex as lex
 import ply.yacc as yacc
 
+# Lex ---------------------
 lexical_errors = []
 
 # List of token names
-tokens = ['MASTER','ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL', 'ARROBA',
-          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING'
+tokens = ['MASTER', 'ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL',
+          'ARROBA',
+          'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING', 'PLUS'
           ]
 
 reserved = [
@@ -26,7 +28,9 @@ reserved = [
     'ELSE',
     'PRINTVALUES',
     'CALL',
-    'BREAK'
+    'BREAK',
+    'CUT',
+    'RECUT'
 ]
 
 tokens = tokens + reserved
@@ -47,6 +51,7 @@ t_ADD = r'ADD'
 t_SUB = r'SUB'
 t_MUL = r'MUL'
 t_DIV = r'DIV'
+t_PLUS = r'\+'
 
 t_PROC = r'Proc'
 t_NEW = r'New'
@@ -65,11 +70,15 @@ t_THEN = r'Then'
 t_ELSE = r'Else'
 t_PRINTVALUES = r'PrintValues'
 t_CALL = r'CALL'
-t_BREAK = r'break'
+t_BREAK = r'Break'
+t_CUT = 'Cut'
+t_RECUT = 'ReCut'
+
 
 def t_MASTER(t):
     r'@Master'
     return t
+
 
 def t_ID(t):
     r'[@][a-zA-Z0-9_#]+'
@@ -78,6 +87,7 @@ def t_ID(t):
         t.type = t.value
     return t
 
+
 def t_STRING(t):
     r'"[^"]*"'
     t.value = t.value[1:-1]
@@ -85,7 +95,7 @@ def t_STRING(t):
 
 
 def t_TYPE(t):
-    r'(Num|Bool)'
+    r'(Num|Bool|Str)'
     return t
 
 
@@ -118,6 +128,7 @@ def t_BOOL(t):
 def t_error(t):
     lexical_errors.append(f"Invalid token at line {t.lexer.lineno}: {t.value[0]}")
     t.lexer.skip(1)
+
 
 
 lexer = lex.lex()
