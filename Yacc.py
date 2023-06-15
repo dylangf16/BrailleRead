@@ -1,4 +1,6 @@
 import ply.yacc as yacc
+
+import arduino
 from Lex import tokens, lexer, lexical_errors
 from arduino import manipulacion_arduino
 import time
@@ -138,7 +140,7 @@ def p_master_vars(p):
     '''master_vars : master_var
                     | master_vars master_var'''
 
-
+#TODO revisar validación de int y bool, porque acepta sentencia     New @motor1,(Num,True); isinstance no funcionando
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                     | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
@@ -146,11 +148,8 @@ def p_master_var(p):
 
     global sentencia_en_analisis
     sentencia_en_analisis = 'Variable Global'
-    print(type(p[7]))
-    print(isinstance(p[7], int))
     if 2 < len(p[2]) < 12:
         if p[5] == 'Num' and isinstance(p[7], int):
-            print(p[7])
             variables_globales[p[2]] = [p[5], p[7]]
             print(f'Variable Global Creada: Nombre: {p[2]} // Valor: {p[7]}')
 
@@ -284,7 +283,7 @@ def values_aux(id, value):
             variables_locales[id][2] = value
         else:
             syntax_errors.append(
-                f'- Error en procedure: {proc_en_analisis} // variable: {id} // valor dado no corresponde al tipado')
+                f'- Error en procedure: {proc_en_analisis} // Sentencia Values // variable: {id} // valor dado no corresponde al tipado')
             raise SyntaxError()
         return variables_locales[id][2]
 
@@ -297,11 +296,11 @@ def values_aux(id, value):
             variables_globales[id][1] = value
         else:
             syntax_errors.append(
-                f'- Error en procedure: {proc_en_analisis} // variable: {id} // valor dado no corresponde al tipado')
+                f'- Error en procedure: {proc_en_analisis} // Sentencia Values // variable: {id} // valor dado no corresponde al tipado')
             raise SyntaxError()
         return variables_globales[id][1]
     else:
-        syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Variable: {id} no existe')
+        syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Values // Variable: {id} no existe')
         raise SyntaxError()
 
 
@@ -377,7 +376,7 @@ def printable_sentence_var_aux(id):
     elif id in variables_globales:
         print(variables_globales[id][1])
     else:
-        syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // variable: {id} no existe')
+        syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia PrintValues // variable: {id} no existe')
         raise SyntaxError()
 
 
@@ -437,7 +436,7 @@ def alter_aux(id, action, integer):
                 return variables_globales[id][1]
             else:
                 syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
         elif id in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_type == 'Num':
@@ -449,14 +448,14 @@ def alter_aux(id, action, integer):
                             return variables_locales[id][2]
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // variable local: {id} no existe')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
                             raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                        f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                     raise SyntaxError()
         else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // variable: {id} no existe')
+            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
             raise SyntaxError()
 
     elif action == "SUB":
@@ -468,7 +467,7 @@ def alter_aux(id, action, integer):
                 return variables_globales[id][1]
             else:
                 syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                 raise SyntaxError()
         elif id in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
@@ -481,14 +480,14 @@ def alter_aux(id, action, integer):
                             return variables_locales[id][2]
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // variable local: {id} no existe')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
                             raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                        f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                     raise SyntaxError()
         else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // variable: {id} no existe')
+            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
             raise SyntaxError()
 
     elif action == 'MUL':
@@ -500,7 +499,7 @@ def alter_aux(id, action, integer):
                 return variables_globales[id][1]
             else:
                 syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                 raise SyntaxError()
         elif id in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
@@ -513,14 +512,14 @@ def alter_aux(id, action, integer):
                             return variables_locales[id][2]
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // variable local: {id} no existe')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
                             raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                        f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                     raise SyntaxError()
         else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // variable: {id} no existe')
+            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
             raise SyntaxError()
 
     elif action == 'DIV':
@@ -532,7 +531,7 @@ def alter_aux(id, action, integer):
                 return variables_globales[id][1]
             else:
                 syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                 raise SyntaxError()
         elif id in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
@@ -545,14 +544,14 @@ def alter_aux(id, action, integer):
                             return variables_locales[id][2]
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // variable local: {id} no existe')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
                             raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'- Error en procedure {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                        f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                     raise SyntaxError()
         else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // variable: {id} no existe')
+            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
             raise SyntaxError()
 
 
@@ -608,7 +607,7 @@ def alterB_aux(id):
                             return True
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
-                        f'- Error en procedure: {proc_en_analisis} // valor dado no corresponde al tipado {id}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia AlterB // valor dado no corresponde al tipado {id}')
                     raise SyntaxError()
 
         elif id in variables_locales:
@@ -633,14 +632,14 @@ def alterB_aux(id):
                                 return True
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // variable local no existe en proc')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia AlterB // variable local no existe en proc')
                             raise SyntaxError()
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
-                            f'- Error en procedure: {proc_en_analisis} // valor dado no corresponde al tipado seleccionado {id}')
+                            f'- Error en procedure: {proc_en_analisis} // Sentencia AlterB // valor dado no corresponde al tipado seleccionado {id}')
                         raise SyntaxError()
         else:
-            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Variable: {id} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia AlterB // Variable: {id} no existe')
             raise SyntaxError()
 
 
@@ -699,7 +698,7 @@ def p_comparisson_maq(p):
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
-                        f'- Error en procedure: {proc_en_analisis} // valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQ // valor dado no corresponde al tipado seleccionado {p[1]}')
                     raise SyntaxError()
         elif p[1] in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
@@ -732,14 +731,14 @@ def p_comparisson_maq(p):
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // variable local no existe en proc')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQ // variable local no existe en proc')
                             raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'- Error en procedure: {proc_en_analisis} // valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQ // valor dado no corresponde al tipado seleccionado {p[1]}')
                     raise SyntaxError()
         else:
-            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Variable: {p[1]} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQ // Variable: {p[1]} no existe')
             raise SyntaxError()
 
 
@@ -778,7 +777,8 @@ def p_comparisson_meq(p):
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQ // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         elif p[1] in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_type == 'Num':
@@ -810,12 +810,15 @@ def p_comparisson_meq(p):
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQ // variable local no existe')
+                            raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQ // valor dado no corresponde al tipado seleccionado')
+                    raise SyntaxError()
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQ // Variable: {p[1]} no existe')
+            raise SyntaxError()
 
 
 def p_comparisson_equal(p):
@@ -853,7 +856,8 @@ def p_comparisson_equal(p):
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson EQUAL // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         elif p[1] in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_type == 'Num':
@@ -885,12 +889,15 @@ def p_comparisson_equal(p):
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson EQUAL // variable local no existe')
+                            raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson EQUAL // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson EQUAL // Variable: {p[1]} no existe')
+            raise SyntaxError()
 
 
 def p_comparisson_dif(p):
@@ -928,7 +935,8 @@ def p_comparisson_dif(p):
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson DIF // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         elif p[1] in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_type == 'Num':
@@ -960,12 +968,15 @@ def p_comparisson_dif(p):
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson DIF // variable local no existe')
+                            raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson DIF // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson DIF // Variable: {p[1]} no existe')
+            raise SyntaxError()
 
 
 def p_comparisson_meqequal(p):
@@ -1003,7 +1014,8 @@ def p_comparisson_meqequal(p):
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQEQUAL // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         elif p[1] in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_type == 'Num':
@@ -1035,12 +1047,15 @@ def p_comparisson_meqequal(p):
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQEQUAL // variable local no existe')
+                            raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQEQUAL // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQEQUAL //: Variable: {p[1]} no existe')
+            raise SyntaxError()
 
 
 def p_comparisson_maqequal(p):
@@ -1078,7 +1093,8 @@ def p_comparisson_maqequal(p):
                             return False
                 elif index == len(variables_globales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQEQUAL // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         elif p[1] in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_type == 'Num':
@@ -1110,12 +1126,15 @@ def p_comparisson_maqequal(p):
                                 return False
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
-                                f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                                f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQEQUAL // variable local no existe')
+                            raise SyntaxError()
                 elif index == len(variables_locales) - 1:
                     syntax_errors.append(
-                        f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[1]}')
+                        f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQEQUAL // valor dado no corresponde al tipado seleccionado {p[1]}')
+                    raise SyntaxError()
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[1]} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQEQUAL // Variable: {p[1]} no existe')
+            raise SyntaxError()
 
 
 def p_isTrue(p):
@@ -1153,8 +1172,8 @@ def p_isTrue(p):
                             return False
                     elif index == len(variables_globales) - 1:
                         syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado '
-                            f'seleccionado {p[3]}')
+                            f'- Error en procedure: {proc_en_analisis} // Sentencia IsTrue // valor dado no corresponde al tipado seleccionado {p[3]}')
+                        raise SyntaxError()
         elif p[3] in variables_locales:
             for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
                 if var_name == p[3]:
@@ -1167,9 +1186,11 @@ def p_isTrue(p):
                             return False
                     elif index == len(variables_locales) - 1:
                         syntax_errors.append(
-                            f'Error en línea {p.lineno}, posición {p.lexpos}: variable local no existe en proc {proc_en_analisis}')
+                            f'- Error en procedure: {proc_en_analisis} // Sentencia IsTrue // variable local no existe en proc {proc_en_analisis}')
+                        raise SyntaxError()
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia IsTrue // Variable: {p[3]} no existe')
+            raise SyntaxError()
 
 
 def p_signal(p):
@@ -1190,10 +1211,18 @@ def p_signal(p):
             signal_handler(position, estado)
 
     elif condition_flag:
+        if isinstance(position, int):
+            if 6 >= position >= 1:
+                signal_handler(position, estado)
+            else:
+                syntax_errors.append(f'Error en procedure: {proc_en_analisis} // Sentencia Signal // ')
+
         if position in variables_globales:
             if isinstance(position, int):
                 if 6 >= position >= 1:
                     signal_handler(position, estado)
+                else:
+                    syntax_errors.append(f'Error en procedure: {proc_en_analisis} // Sentencia Signal // ')
             else:
                 pos = find_global_variable_value(position)
                 signal_handler(pos, estado)
@@ -1209,9 +1238,8 @@ def p_signal(p):
                             else:
                                 pos = find_local_variable_value(position)
                                 signal_handler(pos, estado)
-
-    else:
-        pass
+        else:
+            syntax_errors.append(f'Error en procedure: {proc_en_analisis} // Sentencia Signal // Variable no existe')
 
 
 def signal_handler(position, estado):
@@ -1222,12 +1250,15 @@ def signal_handler(position, estado):
         if not isinstance(position, int):
             if position in variables_globales:
                 position = find_global_variable_value(position)
-            else:
+            elif position in variables_locales:
                 for var_name, (var_proc, var_type, var_value) in variables_locales.items():
                     if var_type == 'Num':
                         if var_name == position:
                             if var_proc == proc_en_analisis:
                                 position = find_local_variable_value(position)
+            else:
+                syntax_errors.append(
+                    f'Error en procedure: {proc_en_analisis} // Sentencia Signal // Variable: {position} no existe')
 
         if position == 1:
             manipulacion_arduino("morado", estado)
@@ -1242,11 +1273,60 @@ def signal_handler(position, estado):
         if position == 6:
             manipulacion_arduino("amarillo", estado)
 
-
 def p_viewsignal(p):
-    '''viewsignal : VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON'''
+    '''viewsignal : VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
+                    | VIEWSIGNAL LPARENT ID RPARENT SEMICOLON'''
+
+    global condition_flag, while_flag, while_list, first_pasada, proc_en_analisis, repeat_list, repeat_flag, until_flag, until_list
     position = p[3]
-    print("Implementación con código Josepa")
+    if first_pasada:
+        if while_flag and (lambda: signal_handler not in while_list):
+            while_list.append(lambda: viewsignal_handler(position))
+
+        if repeat_flag and (lambda: signal_handler not in repeat_list):
+            repeat_list.append(lambda: viewsignal_handler(position))
+
+        if until_flag and (lambda: signal_handler not in until_list):
+            until_list.append(lambda: viewsignal_handler(position))
+            return viewsignal_handler(position)
+
+    elif condition_flag:
+        if isinstance(position, int):
+            if 6 >= position >= 1:
+                return viewsignal_handler(position)
+            else:
+                syntax_errors.append(f'Error en procedure: {proc_en_analisis} // Sentencia Signal // ')
+
+        if position in variables_globales:
+            if isinstance(position, int):
+                if 6 >= position >= 1:
+                    return viewsignal_handler(position)
+                else:
+                    syntax_errors.append(f'Error en procedure: {proc_en_analisis} // Sentencia Signal // ')
+            else:
+                pos = find_global_variable_value(position)
+                return viewsignal_handler(pos)
+
+        elif position in variables_locales:
+            for var_name, (var_proc, var_type, var_value) in variables_locales.items():
+                if var_type == 'Num':
+                    if var_name == position:
+                        if var_proc == proc_en_analisis:
+                            if isinstance(position, int):
+                                if 6 >= position >= 1:
+                                    return viewsignal_handler(position)
+                            else:
+                                pos = find_local_variable_value(position)
+                                return viewsignal_handler(pos)
+        else:
+            syntax_errors.append(f'Error en procedure: {proc_en_analisis} // Sentencia Signal // Variable no existe')
+
+
+def viewsignal_handler(motor):
+    global condition_flag
+    if condition_flag:
+        estado = arduino.estado_motores(motor)
+        return estado
 
 
 def p_while(p):
@@ -1425,6 +1505,8 @@ def condition_handler(variable_name, condition_value):
                             # Set the condition flag to False to skip the following sentences
                             print("No coindició CASE")
                             condition_flag = False
+    else:
+        syntax_errors.append(f'Error en procedure: {proc_en_analisis} // Sentencia Case // Variable {variable_name} no existe')
 
 
 def p_cut(p):
