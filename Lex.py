@@ -30,7 +30,8 @@ reserved = [
     'CALL',
     'BREAK',
     'CUT',
-    'RECUT'
+    'RECUT',
+    'SLEEP'
 ]
 
 tokens = tokens + reserved
@@ -73,6 +74,7 @@ t_CALL = r'CALL'
 t_BREAK = r'Break'
 t_CUT = 'Cut'
 t_RECUT = 'ReCut'
+t_SLEEP = 'Sleep'
 
 
 def t_MASTER(t):
