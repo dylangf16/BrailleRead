@@ -1,0 +1,390 @@
+@Master(
+    New @variable1,(Str, "Hola");
+    New @variable2,(Str, "abcda2\");
+    New @variable3,(Bool, True);
+    CALL(@Procedure1);
+
+);
+
+Proc @Procedure1 (
+    New @motor1,(Num,1);
+    New @motor2,(Num,2);
+    New @motor3,(Num,3);
+    New @motor4,(Num,4);
+    New @motor5,(Num,5);
+    New @motor6,(Num,6);
+
+    //Al final del ultimo case, tiene que haber un ;
+
+    Until
+    (
+        Cut(@variable1 , @variable2);
+        ReCut(@variable2);
+
+        Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0);
+
+        Case @variable1
+
+        When "a" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); )
+        When "b" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); )
+        When "c" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0); )
+        When "d" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0); )
+        When "e" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When "f" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0); )
+        When "g" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0); )
+        When "h" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When "i" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0); )
+        When "j" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0); )
+        When "k" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); )
+        When "l" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); )
+        When "m" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0); )
+        When "n" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0); )
+        When "ñ" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1); )
+        When "o" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When "p" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0); )
+        When "q" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0); )
+        When "r" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When "s" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0); )
+        When "t" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0); )
+        When "u" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1); )
+        When "v" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1); )
+        When "w" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1); )
+        When "x" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1); )
+        When "y" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1); )
+        When "z" Then
+        ( Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,1); )
+
+
+        When "á" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,1); )
+        When "é" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1); )
+        When "í" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0); )
+        When "ó" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1); )
+        When "ú" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1); )
+
+
+        When "+" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When "-" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1); )
+        When "/" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,1); )
+        When "*" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When "=" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,1); )
+        When "." Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); )
+        When "," Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); )
+        When ";" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); )
+        When "(" Then
+        ( Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1); )
+        When ")" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0); )
+        When "¿" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1); )
+         When "?" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1); )
+        When "¡" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When "!" Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0); )
+        When """ Then
+        ( Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1); )
+
+
+
+        When "1" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "2" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "3" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "4" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "5" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "6" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "7" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "8" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "9" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "0" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "A" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "B" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "C" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "D" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "E" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "F" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "G" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "H" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "I" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "J" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "K" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "L" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "M" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "N" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "Ñ" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+        )
+
+        When "O" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "P" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "Q" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "R" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "S" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "T" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,0);
+        )
+
+        When "U" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1);
+        )
+
+        When "V" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,1);
+        )
+
+        When "W" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+        )
+
+        When "X" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+        )
+
+        When "Y" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+        )
+
+        When "Z" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,1);
+        )
+
+        When "Á" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,1); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,0); Signal(@motor5,1); Signal(@motor6,1);
+        )
+
+        When "É" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+        )
+
+        When "Í" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,0);
+        )
+
+        When "Ó" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+        )
+
+        When "Ú" Then
+        ( Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,1); Signal(@motor5,0); Signal(@motor6,1);
+          Sleep(1);
+          Signal(@motor1,0); Signal(@motor2,1); Signal(@motor3,1); Signal(@motor4,1); Signal(@motor5,1); Signal(@motor6,1);
+        )
+
+
+        When "\" Then
+        ( AlterB(@variable3); Signal(@motor1,0); Signal(@motor2,0); Signal(@motor3,0); Signal(@motor4,0); Signal(@motor5,0); Signal(@motor6,0); ) ;
+
+    ) IsTrue(@variable3); ;
+
+
+
+    PrintValues("Hola mundo!");
+);

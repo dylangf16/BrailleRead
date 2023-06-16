@@ -45,6 +45,29 @@ def compilar():
         resultado.delete("1.0", "end")
         resultado.insert("1.0", resultado_parser)
 
+def ejecutar_arduino():
+    with open('codigo_arduino.txt', 'r') as file:
+        input_text = file.read()
+
+    print("Ejecutando análisis")
+    lexer.input(input_text)
+    for token in lexer:
+        print(token)
+
+    result = parser.parse(input_text)
+
+    if lexical_errors:
+        resultado.insert("1.0", "Errores léxicos:\n")
+        for error in lexical_errors:
+            resultado.insert("end", error + "\n")
+    elif syntax_errors:
+        resultado.insert("1.0", "Errores sintácticos:\n")
+        for error in syntax_errors:
+            resultado.insert("end", error + "\n")
+    else:
+        resultado.delete("1.0", "end")
+        resultado.insert("1.0", result)
+
 # Configuración del área de código base
 codigo_frame = tk.Frame(root, bg="#333333")
 codigo_label = tk.Label(codigo_frame, text="Código", bg="#333333", fg="white", font=("Arial", 12, "bold"))
@@ -56,6 +79,9 @@ codigo_base.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
 boton_compilar = tk.Button(root, text="Compilar", command=compilar, bg="#333333", fg="white", font=("Arial", 12, "bold"))
 boton_compilar.pack(pady=10)
 
+boton_arduino = tk.Button(root, text="Ejecutar", command=compilar, bg="#333333", fg="white", font=("Arial", 12, "bold"))
+boton_arduino.pack(pady=10)
+
 # Configuración del área de resultados
 resultado_frame = tk.Frame(root, bg="#333333")
 resultado_label = tk.Label(resultado_frame, text="Resultados", bg="#333333", fg="white", font=("Arial", 12, "bold"))
@@ -66,10 +92,12 @@ resultado.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
 
 codigo_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
 boton_compilar.pack(pady=10)
+boton_arduino.pack(pady=10)
 resultado_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
 
 codigo_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
 boton_compilar.pack(pady=10)
+boton_arduino.pack(pady=10)
 resultado_frame.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
 
 

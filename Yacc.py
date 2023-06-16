@@ -1894,7 +1894,7 @@ def p_error(p):
         syntax_errors.append("- Fin de archivo inesperado")
 
 
-with open('prueba3.txt', 'r') as file:
+with open('prueba3.txt', 'r', encoding='utf-8') as file:
     input_text = file.read()
 
 print("Ejecutando análisis")
