@@ -106,11 +106,11 @@ Proc @Procedure4 (
                 When "6" Then
                 (Signal(@motor1, 1); Sleep(5); Signal(@motor2, 1); )
                 When "7" Then
-                (PrintValues("valor de motor2: ", @motor2); Values(@motor2, Alter(@motor3, MUL, 5); ); PrintValues("nuevo valor de motor2: ", @motor2); )
+                (PrintValues("valor de motor2: ", @motor2); Values(@motor2, Alter(@motor2, MUL, 5); ); PrintValues("nuevo valor de motor2: ", @motor2); )
                 When "8" Then
                 (Alter(@motor3, ADD, 1); ) ;
 
-        ) @variable3 < 5 ;
+        ) @motor3 < 5 ;
 
 
     PrintValues("Yujuuuuuuuuu");
