@@ -1,6 +1,6 @@
 import tkinter as tk
 from Lex import lexer, lexical_errors
-from Yacc import parser, syntax_errors
+from Yacc import parser, syntax_errors, print_resultados
 
 # Configuración de la ventana principal
 root = tk.Tk()
@@ -42,8 +42,8 @@ def compilar():
         for error in syntax_errors:
             resultado.insert("end", error + "\n")
     else:
-        resultado.delete("1.0", "end")
-        resultado.insert("1.0", resultado_parser)
+        for prints in print_resultados:
+            resultado.insert("end", prints + "\n")
 
 def ejecutar_arduino():
     with open('codigo_arduino.txt', 'r') as file:
@@ -65,8 +65,8 @@ def ejecutar_arduino():
         for error in syntax_errors:
             resultado.insert("end", error + "\n")
     else:
-        resultado.delete("1.0", "end")
-        resultado.insert("1.0", result)
+        for prints in print_resultados:
+            resultado.insert("end", prints + "\n")
 
 # Configuración del área de código base
 codigo_frame = tk.Frame(root, bg="#333333")

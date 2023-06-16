@@ -12,6 +12,7 @@ procs = []
 variables_locales = {}
 variables_globales = {}
 syntax_errors = []
+print_resultados = []
 master = 0
 proc_en_analisis = ''
 
@@ -464,8 +465,10 @@ def printable_sentence_var_aux(id):
     if condition_flag:
         if id in variables_locales:
             print(find_local_variable_value(id))
+            print_resultados.append(str(find_local_variable_value(id)))
         elif id in variables_globales:
-            print(variables_globales[id][1])
+            print(find_global_variable_value(id))
+            print_resultados.append(str(find_global_variable_value(id)))
         else:
             syntax_errors.append(
                 f'- Error en procedure: {proc_en_analisis} // Sentencia PrintValues // variable: {id} no existe')
@@ -497,6 +500,7 @@ def printable_sentence_string_aux(id):
     if condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             print(id)
+            print_resultados.append(str(id))
 
 
 def p_printable_sentence_string(p):
@@ -1545,7 +1549,7 @@ def p_while(p):
         while while_flag:
             for func in while_list:
                 func()
-                time.sleep(0.1)
+                #time.sleep(0.1)
 
     while_list = []
     condition_flag = True
@@ -1573,7 +1577,7 @@ def p_until(p):
         while until_flag:
             for func in until_list:
                 func()
-                time.sleep(0.1)
+                #time.sleep(0.1)
 
     until_list = []
     condition_flag = True
@@ -1601,7 +1605,7 @@ def p_repeat(p):
         while repeat_flag:
             for func in repeat_list:
                 func()
-                time.sleep(0.1)
+                #time.sleep(0.1)
 
     repeat_list = []
     condition_flag = True
@@ -1890,11 +1894,12 @@ def p_error(p):
     if p:
         syntax_errors.append(
             f"- Token inesperado '{p.value}' en sentencia: {sentencia_en_analisis} // en Proc: {proc_en_analisis}")
-    else:
-        syntax_errors.append("- Fin de archivo inesperado")
 
+# Build the parser
+parser = yacc.yacc()
 
-with open('prueba3.txt', 'r', encoding='utf-8') as file:
+'''
+with open('codigo_arduino.txt', 'r', encoding='utf-8') as file:
     input_text = file.read()
 
 print("Ejecutando análisis")
@@ -1907,9 +1912,6 @@ if lexical_errors:
     for error in lexical_errors:
         print(error)
 
-# Build the parser
-parser = yacc.yacc()
-
 result = parser.parse(input_text)
 
 # Print the syntax errors
@@ -1919,3 +1921,6 @@ if syntax_errors:
         print(error)
 else:
     print(result)
+
+'''
+
