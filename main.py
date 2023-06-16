@@ -46,7 +46,7 @@ def compilar():
             resultado.insert("end", prints + "\n")
 
 def ejecutar_arduino():
-    with open('codigo_arduino.txt', 'r') as file:
+    with open('codigo_arduino.txt', 'r', encoding='utf-8') as file:
         input_text = file.read()
 
     print("Ejecutando análisis")
@@ -79,7 +79,7 @@ codigo_base.pack(side=tk.LEFT, padx=10, pady=10, fill=tk.BOTH, expand=True)
 boton_compilar = tk.Button(root, text="Compilar", command=compilar, bg="#333333", fg="white", font=("Arial", 12, "bold"))
 boton_compilar.pack(pady=10)
 
-boton_arduino = tk.Button(root, text="Ejecutar", command=compilar, bg="#333333", fg="white", font=("Arial", 12, "bold"))
+boton_arduino = tk.Button(root, text="Ejecutar", command=ejecutar_arduino, bg="#333333", fg="white", font=("Arial", 12, "bold"))
 boton_arduino.pack(pady=10)
 
 # Configuración del área de resultados
