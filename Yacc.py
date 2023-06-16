@@ -2,7 +2,7 @@ import ply.yacc as yacc
 
 import arduino
 from Lex import tokens, lexer, lexical_errors
-from arduino import manipulacion_arduino
+from arduino import manipulacion_arduino, consultar_motor
 import time
 
 # Dictionary of names
@@ -32,6 +32,9 @@ until_list = []
 var_queValida_until = None
 
 sentencia_en_analisis = None
+
+values_flag = False
+values_valor = None
 
 precedence = (
     ('left', 'ADD', 'SUB'),
@@ -215,7 +218,8 @@ def p_return_statement(p):
                         | comparisson_meq
                         | comparisson_maq
                         | alterB
-                        | alter'''
+                        | alter
+                        | viewsignal'''
 
 
 def local_variable_aux(id, type, value):
@@ -272,42 +276,60 @@ def p_local_variable(p):
 
 
 def values_aux(id, value):
-    global sentencia_en_analisis
+    global sentencia_en_analisis, condition_flag, values_flag, values_valor
     sentencia_en_analisis = 'Values'
-    if id in variables_locales:
-        if type(value) is int and not isinstance(value, bool) and variables_locales[id][1] == 'Num':
-            variables_locales[id][2] = value
-        elif type(value) is bool and not isinstance(value, int) and variables_locales[id][1] == 'Bool':
-            variables_locales[id][2] = value
-        elif isinstance(value, str) and variables_locales[id][1] == 'Str':
-            variables_locales[id][2] = value
-        else:
-            syntax_errors.append(
-                f'- Error en procedure: {proc_en_analisis} // Sentencia Values // variable: {id} // valor dado no corresponde al tipado')
-            raise SyntaxError()
-        return variables_locales[id][2]
+    if isinstance(values_valor, int) or isinstance(values_valor, bool):
+        value = values_valor
 
-    elif id in variables_globales:
-        if isinstance(value, int) and variables_globales[id][0] == 'Num':
-            variables_globales[id][1] = value
-        elif isinstance(value, bool) and variables_globales[id][0] == 'Bool':
-            variables_globales[id][1] = value
-        elif isinstance(value, str) and variables_globales[id][0] == 'Str':
-            variables_globales[id][1] = value
+    print(f'Id evaluada: {id}')
+    print(f'Valor valorado: {value}')
+    if condition_flag:
+        if id in variables_locales:
+            if isinstance(value, int) and variables_locales[id][1] == 'Num':
+                variables_locales[id][2] = value
+                values_valor = None
+                values_flag = False
+            elif isinstance(value, bool) and variables_locales[id][1] == 'Bool':
+                variables_locales[id][2] = value
+                values_valor = None
+                values_flag = False
+            elif isinstance(value, str) and variables_locales[id][1] == 'Str':
+                variables_locales[id][2] = value
+                values_valor = None
+                values_flag = False
+            else:
+                syntax_errors.append(
+                    f'- Error en procedure: {proc_en_analisis} // Sentencia Values // variable local: {id} // valor dado no corresponde al tipado')
+                raise SyntaxError()
+            return variables_locales[id][2]
+
+        elif id in variables_globales:
+            if isinstance(value, int) and variables_globales[id][0] == 'Num':
+                variables_globales[id][1] = value
+                values_valor = None
+                values_flag = False
+            elif isinstance(value, bool) and variables_globales[id][0] == 'Bool':
+                variables_globales[id][1] = value
+                values_valor = None
+                values_flag = False
+            elif isinstance(value, str) and variables_globales[id][0] == 'Str':
+                variables_globales[id][1] = value
+                values_valor = None
+                values_flag = False
+            else:
+                syntax_errors.append(
+                    f'- Error en procedure: {proc_en_analisis} // Sentencia Values // variable global: {id} // valor dado no corresponde al tipado')
+                raise SyntaxError()
+            return variables_globales[id][1]
         else:
-            syntax_errors.append(
-                f'- Error en procedure: {proc_en_analisis} // Sentencia Values // variable: {id} // valor dado no corresponde al tipado')
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Values // Variable: {id} no existe')
             raise SyntaxError()
-        return variables_globales[id][1]
-    else:
-        syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia Values // Variable: {id} no existe')
-        raise SyntaxError()
 
 
 def p_values(p):
-    '''values : VALUES LPARENT ID COMA INTEGER RPARENT SEMICOLON
-                 | VALUES LPARENT ID COMA BOOL RPARENT SEMICOLON
-                 | VALUES LPARENT ID COMA return_statement RPARENT SEMICOLON'''
+    '''values : value LPARENT ID COMA INTEGER RPARENT SEMICOLON
+                 | value LPARENT ID COMA BOOL RPARENT SEMICOLON
+                 | value LPARENT ID COMA return_statement RPARENT SEMICOLON'''
     global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
     id = p[3]
     new_value = p[5]
@@ -326,6 +348,12 @@ def p_values(p):
         if proc_en_analisis in called_procs or processingMaster:
             values_aux(id, new_value)
 
+def p_values_handler(p):
+    '''value : VALUES'''
+
+    global values_flag
+    values_flag = True
+
 
 def p_call(p):
     '''call : CALL LPARENT ID RPARENT SEMICOLON'''
@@ -336,7 +364,7 @@ def p_call(p):
 def find_local_variable_value(variable_name):
     for var_name, (var_proc, var_type, var_value) in variables_locales.items():
         if var_name == variable_name:
-            print(f'Variable LOCAL buscada: {var_name} // Valor: {var_value} // Proc donde está: {var_proc}')
+            #print(f'Variable LOCAL buscada: {var_name} // Valor: {var_value} // Proc donde está: {var_proc}')
             return var_value
     return None  # Variable not found
 
@@ -344,7 +372,7 @@ def find_local_variable_value(variable_name):
 def find_global_variable_value(variable_name):
     for var_name, var_value in variables_globales.items():
         if var_name == variable_name:
-            print(f'Variable GLOBAL buscada: {var_name} // Valor: {var_value}')
+            #print(f'Variable GLOBAL buscada: {var_name} // Valor: {var_value}')
             return var_value[1]
     return None  # Variable not found
 
@@ -369,15 +397,16 @@ def p_printable_sentences(p):
 
 
 def printable_sentence_var_aux(id):
-    global sentencia_en_analisis
+    global sentencia_en_analisis, condition_flag
     sentencia_en_analisis = 'PrintValues'
-    if id in variables_locales:
-        print(find_local_variable_value(id))
-    elif id in variables_globales:
-        print(variables_globales[id][1])
-    else:
-        syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia PrintValues // variable: {id} no existe')
-        raise SyntaxError()
+    if condition_flag:
+        if id in variables_locales:
+            print(find_local_variable_value(id))
+        elif id in variables_globales:
+            print(variables_globales[id][1])
+        else:
+            syntax_errors.append(f'- Error en procedure: {proc_en_analisis} // Sentencia PrintValues // variable: {id} no existe')
+            raise SyntaxError()
 
 
 def p_printable_sentence_var(p):
@@ -401,8 +430,10 @@ def p_printable_sentence_var(p):
 
 
 def printable_sentence_string_aux(id):
-    if proc_en_analisis in called_procs or processingMaster:
-        print(id)
+    global condition_flag
+    if condition_flag:
+        if proc_en_analisis in called_procs or processingMaster:
+            print(id)
 
 
 def p_printable_sentence_string(p):
@@ -424,135 +455,151 @@ def p_printable_sentence_string(p):
 
 
 def alter_aux(id, action, integer):
-    global sentencia_en_analisis
+    global sentencia_en_analisis, condition_flag, values_flag, values_valor
     sentencia_en_analisis = 'Alter'
-
-    if action == "ADD":
-        if id in variables_globales:
-            if variables_globales[id][0] == 'Num':
-                valor_actual = variables_globales[id]
-                nuevo_valor = (valor_actual[0], valor_actual[1] + integer)
-                variables_globales[id] = nuevo_valor
-                return variables_globales[id][1]
-            else:
-                syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
-        elif id in variables_locales:
-            for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
-                if var_type == 'Num':
-                    if var_name == id:
-                        if var_proc == proc_en_analisis:
-                            valor_actual = variables_locales[id]
-                            nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] + integer)
-                            variables_locales[id] = nuevo_valor
-                            return variables_locales[id][2]
-                        elif index == len(variables_locales) - 1:
-                            syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
-                            raise SyntaxError()
-                elif index == len(variables_locales) - 1:
+    if condition_flag:
+        if action == "ADD":
+            if id in variables_globales:
+                if variables_globales[id][0] == 'Num':
+                    valor_actual = variables_globales[id]
+                    nuevo_valor = (valor_actual[0], valor_actual[1] + integer)
+                    variables_globales[id] = nuevo_valor
+                    if values_flag:
+                        values_valor = variables_globales[id][1]
+                    return variables_globales[id][1]
+                else:
                     syntax_errors.append(
                         f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
-                    raise SyntaxError()
-        else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
-            raise SyntaxError()
-
-    elif action == "SUB":
-        if id in variables_globales:
-            if variables_globales[id][0] == 'Num':
-                valor_actual = variables_globales[id]
-                nuevo_valor = (valor_actual[0], valor_actual[1] - integer)
-                variables_globales[id] = nuevo_valor
-                return variables_globales[id][1]
+            elif id in variables_locales:
+                for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
+                    if var_type == 'Num':
+                        if var_name == id:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[id]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] + integer)
+                                variables_locales[id] = nuevo_valor
+                                if values_flag:
+                                    values_valor = variables_locales[id][2]
+                                return variables_locales[id][2]
+                            elif index == len(variables_locales) - 1:
+                                syntax_errors.append(
+                                    f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
+                                raise SyntaxError()
+                    elif index == len(variables_locales) - 1:
+                        syntax_errors.append(
+                            f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
+                        raise SyntaxError()
             else:
-                syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
+                syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
                 raise SyntaxError()
-        elif id in variables_locales:
-            for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
-                if var_type == 'Num':
-                    if var_name == id:
-                        if var_proc == proc_en_analisis:
-                            valor_actual = variables_locales[id]
-                            nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] - integer)
-                            variables_locales[id] = nuevo_valor
-                            return variables_locales[id][2]
-                        elif index == len(variables_locales) - 1:
-                            syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
-                            raise SyntaxError()
-                elif index == len(variables_locales) - 1:
-                    syntax_errors.append(
-                        f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
-                    raise SyntaxError()
-        else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
-            raise SyntaxError()
 
-    elif action == 'MUL':
-        if id in variables_globales:
-            if variables_globales[id][0] == 'Num':
-                valor_actual = variables_globales[id]
-                nuevo_valor = (valor_actual[0], valor_actual[1] * integer)
-                variables_globales[id] = nuevo_valor
-                return variables_globales[id][1]
-            else:
-                syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
-                raise SyntaxError()
-        elif id in variables_locales:
-            for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
-                if var_type == 'Num':
-                    if var_name == id:
-                        if var_proc == proc_en_analisis:
-                            valor_actual = variables_locales[id]
-                            nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] * integer)
-                            variables_locales[id] = nuevo_valor
-                            return variables_locales[id][2]
-                        elif index == len(variables_locales) - 1:
-                            syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
-                            raise SyntaxError()
-                elif index == len(variables_locales) - 1:
+        elif action == "SUB":
+            if id in variables_globales:
+                if variables_globales[id][0] == 'Num':
+                    valor_actual = variables_globales[id]
+                    nuevo_valor = (valor_actual[0], valor_actual[1] - integer)
+                    variables_globales[id] = nuevo_valor
+                    if values_flag:
+                        values_valor = variables_globales[id][1]
+                    return variables_globales[id][1]
+                else:
                     syntax_errors.append(
                         f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                     raise SyntaxError()
-        else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
-            raise SyntaxError()
+            elif id in variables_locales:
+                for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
+                    if var_type == 'Num':
+                        if var_name == id:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[id]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] - integer)
+                                variables_locales[id] = nuevo_valor
+                                if values_flag:
+                                    values_valor = variables_locales[id][2]
+                                return variables_locales[id][2]
+                            elif index == len(variables_locales) - 1:
+                                syntax_errors.append(
+                                    f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
+                                raise SyntaxError()
+                    elif index == len(variables_locales) - 1:
+                        syntax_errors.append(
+                            f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
+                        raise SyntaxError()
+            else:
+                syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
+                raise SyntaxError()
 
-    elif action == 'DIV':
-        if id in variables_globales:
-            if variables_globales[id][0] == 'Num':
-                valor_actual = variables_globales[id]
-                nuevo_valor = (valor_actual[0], valor_actual[1] / integer)
-                variables_globales[id] = nuevo_valor
-                return variables_globales[id][1]
-            else:
-                syntax_errors.append(
-                    f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
-                raise SyntaxError()
-        elif id in variables_locales:
-            for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
-                if var_type == 'Num':
-                    if var_name == id:
-                        if var_proc == proc_en_analisis:
-                            valor_actual = variables_locales[id]
-                            nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] / integer)
-                            variables_locales[id] = nuevo_valor
-                            return variables_locales[id][2]
-                        elif index == len(variables_locales) - 1:
-                            syntax_errors.append(
-                                f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
-                            raise SyntaxError()
-                elif index == len(variables_locales) - 1:
+        elif action == 'MUL':
+            if id in variables_globales:
+                if variables_globales[id][0] == 'Num':
+                    valor_actual = variables_globales[id]
+                    nuevo_valor = (valor_actual[0], valor_actual[1] * integer)
+                    variables_globales[id] = nuevo_valor
+                    if values_flag:
+                        values_valor = variables_globales[id][1]
+                    return variables_globales[id][1]
+                else:
                     syntax_errors.append(
                         f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
                     raise SyntaxError()
-        else:
-            syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
-            raise SyntaxError()
+            elif id in variables_locales:
+                for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
+                    if var_type == 'Num':
+                        if var_name == id:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[id]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] * integer)
+                                variables_locales[id] = nuevo_valor
+                                if values_flag:
+                                    values_valor = variables_locales[id][2]
+                                return variables_locales[id][2]
+                            elif index == len(variables_locales) - 1:
+                                syntax_errors.append(
+                                    f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
+                                raise SyntaxError()
+                    elif index == len(variables_locales) - 1:
+                        syntax_errors.append(
+                            f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
+                        raise SyntaxError()
+            else:
+                syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
+                raise SyntaxError()
+
+        elif action == 'DIV':
+            if id in variables_globales:
+                if variables_globales[id][0] == 'Num':
+                    valor_actual = variables_globales[id]
+                    nuevo_valor = (valor_actual[0], valor_actual[1] / integer)
+                    variables_globales[id] = nuevo_valor
+                    if values_flag:
+                        values_valor = variables_globales[id][1]
+                    return variables_globales[id][1]
+                else:
+                    syntax_errors.append(
+                        f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
+                    raise SyntaxError()
+            elif id in variables_locales:
+                for index, (var_name, (var_proc, var_type, var_value)) in enumerate(variables_locales.items()):
+                    if var_type == 'Num':
+                        if var_name == id:
+                            if var_proc == proc_en_analisis:
+                                valor_actual = variables_locales[id]
+                                nuevo_valor = (valor_actual[0], valor_actual[1], valor_actual[2] / integer)
+                                variables_locales[id] = nuevo_valor
+                                if values_flag:
+                                    values_valor = variables_locales[id][2]
+                                return variables_locales[id][2]
+                            elif index == len(variables_locales) - 1:
+                                syntax_errors.append(
+                                    f'- Error en procedure: {proc_en_analisis} // Sentencia Alter // variable local: {id} no existe')
+                                raise SyntaxError()
+                    elif index == len(variables_locales) - 1:
+                        syntax_errors.append(
+                            f'- Error en procedure {proc_en_analisis} // Sentencia Alter // valor dado no corresponde al tipado {id}')
+                        raise SyntaxError()
+            else:
+                syntax_errors.append(f'- Error en procedure {proc_en_analisis} // Sentencia Alter // variable: {id} no existe')
+                raise SyntaxError()
 
 
 # Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
@@ -582,7 +629,7 @@ def p_alter(p):
 
 
 def alterB_aux(id):
-    global while_flag, var_queValida_while, until_flag, var_queValida_until, sentencia_en_analisis
+    global while_flag, var_queValida_while, until_flag, var_queValida_until, sentencia_en_analisis, values_flag, values_valor
     sentencia_en_analisis = 'AlterB'
     if condition_flag:
         if id in variables_globales:
@@ -593,16 +640,19 @@ def alterB_aux(id):
                         if var_value:
                             nuevo_valor = (valor_actual[0], False)
                             variables_globales[id] = nuevo_valor
+                            if values_flag:
+                                values_valor = False
                             if var_queValida_while == var_name:
                                 print(f'Reinicio de while, variable que valida: {var_name}')
                                 while_flag = False
                             elif var_queValida_until == var_name:
                                 print(f'Reinicio de until, variable que valida: {var_name}')
                                 until_flag = False
-
                             return False
                         else:
                             nuevo_valor = (valor_actual[0], True)
+                            if values_flag:
+                                values_valor = True
                             variables_globales[id] = nuevo_valor
                             return True
                 elif index == len(variables_globales) - 1:
@@ -619,6 +669,8 @@ def alterB_aux(id):
                                 valor_actual = variables_locales[id]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], False)
                                 variables_locales[id] = nuevo_valor
+                                if values_flag:
+                                    values_valor = False
                                 if var_queValida_while == var_name:
                                     while_flag = False
                                 elif var_queValida_until == var_name:
@@ -629,6 +681,8 @@ def alterB_aux(id):
                                 valor_actual = variables_locales[id]
                                 nuevo_valor = (valor_actual[0], valor_actual[1], True)
                                 variables_locales[id] = nuevo_valor
+                                if values_flag:
+                                    values_valor = True
                                 return True
                         elif index == len(variables_locales) - 1:
                             syntax_errors.append(
@@ -666,7 +720,7 @@ def p_alterB(p):
 def p_comparisson_maq(p):
     '''comparisson_maq : ID MAQ INTEGER'''
 
-    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -674,6 +728,9 @@ def p_comparisson_maq(p):
                     if var_name == p[1]:
                         if var_value > p[3]:
                             print(True)
+                            if values_flag:
+                                values_valor = True
+
                             if while_flag:
                                 first_pasada = True
                                 var_queValida_while = var_name
@@ -686,6 +743,9 @@ def p_comparisson_maq(p):
                             return True
                         else:
                             print(False)
+                            if values_flag:
+                                values_valor = False
+
                             if while_flag:
                                 condition_flag = False
                                 first_pasada = False
@@ -707,6 +767,9 @@ def p_comparisson_maq(p):
                         if var_proc == proc_en_analisis:
                             if var_value > p[3]:
                                 print(True)
+                                if values_flag:
+                                    values_valor = True
+
                                 if while_flag:
                                     first_pasada = True
                                     var_queValida_while = var_name
@@ -719,6 +782,9 @@ def p_comparisson_maq(p):
                                 return True
                             else:
                                 print(False)
+                                if values_flag:
+                                    values_valor = False
+
                                 if while_flag:
                                     condition_flag = False
                                     first_pasada = False
@@ -745,7 +811,7 @@ def p_comparisson_maq(p):
 def p_comparisson_meq(p):
     '''comparisson_meq : ID MEQ INTEGER'''
 
-    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -753,6 +819,8 @@ def p_comparisson_meq(p):
                     if var_name == p[1]:
                         if var_value < p[3]:
                             print(True)
+                            if values_flag:
+                                values_valor = True
                             if while_flag:
                                 first_pasada = True
                                 var_queValida_while = var_name
@@ -765,6 +833,8 @@ def p_comparisson_meq(p):
                             return True
                         else:
                             print(False)
+                            if values_flag:
+                                values_valor = False
                             if while_flag:
                                 condition_flag = False
                                 first_pasada = False
@@ -786,6 +856,8 @@ def p_comparisson_meq(p):
                         if var_proc == proc_en_analisis:
                             if var_value < p[3]:
                                 print(True)
+                                if values_flag:
+                                    values_valor = True
                                 if while_flag:
                                     first_pasada = True
                                     var_queValida_while = var_name
@@ -798,6 +870,8 @@ def p_comparisson_meq(p):
                                 return True
                             else:
                                 print(False)
+                                if values_flag:
+                                    values_valor = False
                                 if while_flag:
                                     condition_flag = False
                                     first_pasada = False
@@ -824,7 +898,7 @@ def p_comparisson_meq(p):
 def p_comparisson_equal(p):
     '''comparisson_equal : ID EQUAL INTEGER'''
 
-    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -832,6 +906,8 @@ def p_comparisson_equal(p):
                     if var_name == p[1]:
                         if var_value == p[3]:
                             print(True)
+                            if values_flag:
+                                values_valor = True
                             if while_flag:
                                 first_pasada = True
                                 var_queValida_while = var_name
@@ -844,6 +920,9 @@ def p_comparisson_equal(p):
                             return True
                         else:
                             print(False)
+                            if values_flag:
+                                values_valor = False
+
                             if while_flag:
                                 condition_flag = False
                                 first_pasada = False
@@ -865,6 +944,8 @@ def p_comparisson_equal(p):
                         if var_proc == proc_en_analisis:
                             if var_value == p[3]:
                                 print(True)
+                                if values_flag:
+                                    values_valor = True
                                 if while_flag:
                                     first_pasada = True
                                     var_queValida_while = var_name
@@ -877,6 +958,8 @@ def p_comparisson_equal(p):
                                 return True
                             else:
                                 print(False)
+                                if values_flag:
+                                    values_valor = False
                                 if while_flag:
                                     condition_flag = False
                                     first_pasada = False
@@ -903,7 +986,7 @@ def p_comparisson_equal(p):
 def p_comparisson_dif(p):
     '''comparisson_dif : ID DIFFERENT INTEGER'''
 
-    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -911,6 +994,8 @@ def p_comparisson_dif(p):
                     if var_name == p[1]:
                         if var_value != p[3]:
                             print(True)
+                            if values_flag:
+                                values_valor = True
                             if while_flag:
                                 first_pasada = True
                                 var_queValida_while = var_name
@@ -923,6 +1008,8 @@ def p_comparisson_dif(p):
                             return True
                         else:
                             print(False)
+                            if values_flag:
+                                values_valor = False
                             if while_flag:
                                 condition_flag = False
                                 first_pasada = False
@@ -944,6 +1031,8 @@ def p_comparisson_dif(p):
                         if var_proc == proc_en_analisis:
                             if var_value != p[3]:
                                 print(True)
+                                if values_flag:
+                                    values_valor = True
                                 if while_flag:
                                     first_pasada = True
                                     var_queValida_while = var_name
@@ -956,6 +1045,8 @@ def p_comparisson_dif(p):
                                 return True
                             else:
                                 print(False)
+                                if values_flag:
+                                    values_valor = False
                                 if while_flag:
                                     condition_flag = False
                                     first_pasada = False
@@ -982,7 +1073,7 @@ def p_comparisson_dif(p):
 def p_comparisson_meqequal(p):
     '''comparisson_meqequal : ID MEQEQUAL INTEGER'''
 
-    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -990,6 +1081,8 @@ def p_comparisson_meqequal(p):
                     if var_name == p[1]:
                         if var_value <= p[3]:
                             print(True)
+                            if values_flag:
+                                values_valor = True
                             if while_flag:
                                 first_pasada = True
                                 var_queValida_while = var_name
@@ -1002,6 +1095,8 @@ def p_comparisson_meqequal(p):
                             return True
                         else:
                             print(False)
+                            if values_flag:
+                                values_valor = False
                             if while_flag:
                                 condition_flag = False
                                 first_pasada = False
@@ -1023,6 +1118,8 @@ def p_comparisson_meqequal(p):
                         if var_proc == proc_en_analisis:
                             if var_value <= p[3]:
                                 print(True)
+                                if values_flag:
+                                    values_valor = True
                                 if while_flag:
                                     first_pasada = True
                                     var_queValida_while = var_name
@@ -1035,6 +1132,8 @@ def p_comparisson_meqequal(p):
                                 return True
                             else:
                                 print(False)
+                                if values_flag:
+                                    values_valor = False
                                 if while_flag:
                                     condition_flag = False
                                     first_pasada = False
@@ -1061,7 +1160,7 @@ def p_comparisson_meqequal(p):
 def p_comparisson_maqequal(p):
     '''comparisson_maqequal : ID MAQEQUAL INTEGER'''
 
-    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until
+    global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor
     if proc_en_analisis in called_procs or processingMaster:
         if p[1] in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -1069,6 +1168,8 @@ def p_comparisson_maqequal(p):
                     if var_name == p[1]:
                         if var_value >= p[3]:
                             print(True)
+                            if values_flag:
+                                values_valor = True
                             if while_flag:
                                 first_pasada = True
                                 var_queValida_while = var_name
@@ -1081,6 +1182,8 @@ def p_comparisson_maqequal(p):
                             return True
                         else:
                             print(False)
+                            if values_flag:
+                                values_valor = False
                             if while_flag:
                                 condition_flag = False
                                 first_pasada = False
@@ -1102,6 +1205,8 @@ def p_comparisson_maqequal(p):
                         if var_proc == proc_en_analisis:
                             if var_value >= p[3]:
                                 print(True)
+                                if values_flag:
+                                    values_valor = True
                                 if while_flag:
                                     first_pasada = True
                                     var_queValida_while = var_name
@@ -1114,6 +1219,8 @@ def p_comparisson_maqequal(p):
                                 return True
                             else:
                                 print(False)
+                                if values_flag:
+                                    values_valor = False
                                 if while_flag:
                                     condition_flag = False
                                     first_pasada = False
@@ -1323,9 +1430,11 @@ def p_viewsignal(p):
 
 
 def viewsignal_handler(motor):
-    global condition_flag
+    global condition_flag, values_flag, values_valor
     if condition_flag:
-        estado = arduino.estado_motores(motor)
+        estado = consultar_motor(motor)
+        if values_flag:
+            values_valor = estado
         return estado
 
 
