@@ -4,7 +4,7 @@ import ply.yacc as yacc
 # Lex ---------------------
 lexical_errors = []
 
-# List of token names
+# Lista de nombres de tokens
 tokens = ['MASTER', 'ID', 'SEMICOLON', 'INTEGER', 'BOOL', 'MAQ', 'MEQ', 'EQUAL', 'DIFFERENT', 'MEQEQUAL', 'MAQEQUAL',
           'ARROBA',
           'COMA', 'LPARENT', 'RPARENT', 'ADD', 'SUB', 'MUL', 'DIV', 'COMMENT', 'TYPE', 'STRING', 'PLUS'
@@ -76,12 +76,13 @@ t_CUT = 'Cut'
 t_RECUT = 'ReCut'
 t_SLEEP = 'Sleep'
 
-
+#Token reservado para la funcion master
 def t_MASTER(t):
     r'@Master'
     return t
 
-
+# Tokens id
+# Cualquier combinacion de caracteres que inicien con @
 def t_ID(t):
     r'[@][a-zA-Z0-9_#]+'
     if t.value.upper() in reserved:
@@ -89,34 +90,37 @@ def t_ID(t):
         t.type = t.value
     return t
 
-
+# Token de string
+# Cualquier combinacion de caracteres que se encuentren entre " "
 def t_STRING(t):
     r'"[^"]*"'
     t.value = t.value[1:-1]
     return t
 
-
+# Token de tipo de variables
+# Puede ser token Num, Bool y String
 def t_TYPE(t):
     r'(Num|Bool|Str)'
     return t
 
-
+# Token para reconocer new line
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
 
-
+# Token de comentarios
+# Siempre que la linea empiece con //
 def t_COMMENT(t):
     r'//.*'
     pass
 
-
+# Token para integers
 def t_INTEGER(t):
     r'\d+'
     t.value = int(t.value)
     return t
 
-
+# Token para bools
 def t_BOOL(t):
     r'(True|False)'
     if t.value == "True":
@@ -126,7 +130,7 @@ def t_BOOL(t):
     return t
 
 
-# Error handling rule
+# Token para administrar errores lexicos
 def t_error(t):
     lexical_errors.append(f"Invalid token at line {t.lexer.lineno}: {t.value[0]}")
     t.lexer.skip(1)

@@ -16,6 +16,7 @@ print_resultados = []
 master = 0
 proc_en_analisis = ''
 
+#Flags
 while_flag = False
 while_list = []
 first_pasada = False
@@ -32,8 +33,6 @@ until_flag = False
 until_list = []
 var_queValida_until = None
 
-sentencia_en_analisis = None
-
 values_flag = False
 values_valor = None
 
@@ -45,7 +44,7 @@ precedence = (
     ('left', 'MUL', 'DIV'),
 )
 
-
+#Token inicial
 def p_start(p):
     '''start : master
             | master procedures
@@ -57,12 +56,14 @@ def p_start(p):
             | master_vars master procedures
             | master_vars master procedures master_vars '''
     p[0] = p[1]
+    for call in called_procs:
+        syntax_errors.append(
+            f'Error: procedure no encontrado: {call}')
 
-
+#Estado con token terminal para definir procedure actual
 def p_declare_procedure(p):
     '''declare_procedure : PROC ID'''
-    global procs, proc_en_analisis, sentencia_en_analisis
-    sentencia_en_analisis = 'Proc'
+    global procs, proc_en_analisis
     if p[2] not in procs:
         procs.append(p[2])
         print(str(p[2]) + " agregado a la lista de procs")
@@ -71,30 +72,26 @@ def p_declare_procedure(p):
         syntax_errors.append(f'- Proc con el nombre {p[2]} ya existe')
         raise SyntaxError()
 
-
+#Recursividad para tener varios procedures
 def p_procedures(p):
     '''procedures : procedure
                     | procedures procedure'''
 
-
+#Formato declaracion de procedures con tokens no terminales
 def p_procedure(p):
     '''procedure : declare_procedure LPARENT sentences RPARENT SEMICOLON'''
     # Acción semántica: Realizar las acciones correspondientes al análisis sintáctico
     # de un procedimiento
     if proc_en_analisis in called_procs:
         called_procs.remove(proc_en_analisis)
-    # for element in procs:
-    #   if element in called_procs:
-    #      called_procs.remove(element)
     p[0] = ('procedure', p[2], p[4])
 
-
+#Formato para la funcion master
 def p_master(p):
     '''master : MASTER LPARENT master_sentences RPARENT SEMICOLON'''
     # Acción semántica: Realizar las aciones correspondientes al análisis sintáctico de @Master
 
-    global sentencia_en_analisis, proc_en_analisis
-    sentencia_en_analisis = 'Master'
+    global proc_en_analisis
     proc_en_analisis = '@Master'
     print("pasó master")
     global master, processingMaster
@@ -105,7 +102,7 @@ def p_master(p):
     processingMaster = False
 
 
-# Esto es para lidiar con las variables globales
+# Recursividad para las sentencias dentro del master
 def p_master_sentences(p):
     '''master_sentences : master_sentence
                         | master_sentences master_sentence'''
@@ -115,6 +112,7 @@ def p_master_sentences(p):
         p[0] = p[1] + [p[2]]  # Append the new item to the existing list
 
 
+#Formato para todos los posibles procedures dentro de la funcion master
 def p_master_sentence(p):
     '''master_sentence : master_var
                        | values
@@ -142,20 +140,17 @@ def p_master_sentence(p):
                        | empty'''
     p[0] = p[1]  # Assign the value of the matched alternative to p[0]
 
-
+#Recursividad para la creacion de variables globales
 def p_master_vars(p):
     '''master_vars : master_var
                     | master_vars master_var'''
 
 
-# TODO revisar validación de int y bool, porque acepta sentencia     New @motor1,(Num,True); isinstance no funcionando
+#Formato de variables globales y su administracion
 def p_master_var(p):
     '''master_var : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                     | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
                     | NEW ID COMA LPARENT TYPE COMA STRING RPARENT SEMICOLON'''
-
-    global sentencia_en_analisis
-    sentencia_en_analisis = 'Variable Global'
     if 2 < len(p[2]) < 12:
         if p[5] == 'Num' and isinstance(p[7], int):
             variables_globales[p[2]] = [p[5], p[7]]
@@ -179,13 +174,12 @@ def p_master_var(p):
             f'- Variable Global: {p[2]} // Nombre de variable tiene que ser entre 2 y 12 caracteres')
         raise SyntaxError()
 
-
-# Recursividad para agarrar todas las sentencias
+# Recursividad para todas las sentencias
 def p_sentences(p):
     '''sentences : sentence
                  | sentences sentence'''
 
-
+#Todas las posibles sentencias que pueden haber dentro de un procedure
 def p_sentence(p):
     '''sentence : local_variable
                 | values
@@ -213,7 +207,8 @@ def p_sentence(p):
                 | empty'''
     p[0] = p[1]
 
-
+#Sentencias que retornan un valor, para asi poder utilizarlas dentro de otras
+#sentencias de forma recursiva
 def p_return_statement(p):
     '''return_statement : isTrue
                         | comparisson_maqequal
@@ -226,11 +221,12 @@ def p_return_statement(p):
                         | alter
                         | viewsignal'''
 
-
+#Funcion auxiliar del la p_function para variables locales
+#Crea y almacena las variables locales en una lista en tuplas con le formato:
+# [nombre variable]: {Procedure en el que esta, tipo de variable, valor}
 def local_variable_aux(id, type, value):
     print("paso variable local " + id)
-    global variables_locales, sentencia_en_analisis
-    sentencia_en_analisis = 'Variable Local'
+    global variables_locales
     errorFlag = False
     if id in variables_locales and variables_locales[id][0] == proc_en_analisis:
         errorFlag = True
@@ -256,7 +252,8 @@ def local_variable_aux(id, type, value):
         raise SyntaxError()
 
 
-# Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
+# Estructura en el diccionario de variables locales
+# contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
 def p_local_variable(p):
     '''local_variable : NEW ID COMA LPARENT TYPE COMA INTEGER RPARENT SEMICOLON
                 | NEW ID COMA LPARENT TYPE COMA BOOL RPARENT SEMICOLON
@@ -279,11 +276,13 @@ def p_local_variable(p):
         if proc_en_analisis in called_procs or processingMaster:
             local_variable_aux(id, type, value)
 
-
+# Funcion auxiliar de la p_function de values
+# Hace la verificacion necesaria para cambiar el valor de una variable
+# Y en caso de cumplir condiciones cambia el valor de la variable
+# Altera los flags de las condicionales para que funcionen acorde al values
 def values_aux(id, value):
-    global sentencia_en_analisis, condition_flag, values_flag, values_valor, comparisson_en_uso, valor_comparison, while_flag, until_flag
+    global condition_flag, values_flag, values_valor, comparisson_en_uso, valor_comparison, while_flag, until_flag
     if condition_flag:
-        sentencia_en_analisis = 'Values'
         print(f'Valor en Values: {values_valor}')
         print(f'Estado flag values: {values_flag}')
         if isinstance(values_valor, int) or isinstance(values_valor, bool):
@@ -387,7 +386,8 @@ def values_aux(id, value):
                     f'- Error en procedure: {proc_en_analisis} // Sentencia Values // Variable: {id} no existe')
                 raise SyntaxError()
 
-
+# Estructura de de Values, ya sea con valores terminales o con la otras funciones dentro
+# Contiene todos los flags necesarios para lidiar con values en while, until, case y repeat
 def p_values(p):
     '''values : value LPARENT ID COMA INTEGER RPARENT SEMICOLON
                  | value LPARENT ID COMA BOOL RPARENT SEMICOLON
@@ -410,28 +410,29 @@ def p_values(p):
         if proc_en_analisis in called_procs or processingMaster:
             values_aux(id, new_value)
 
-
+#Se usa para permitir que hayan funciones dentro de un values
 def p_values_handler(p):
     '''value : VALUES'''
-
     global values_flag
     values_flag = True
 
-
+#Agrega el procedure llamado a una lista de procedures
+#A la hora de alcanzar el procedure solo se recorre si se encuentra dentro de esta lista
 def p_call(p):
     '''call : CALL LPARENT ID RPARENT SEMICOLON'''
     if proc_en_analisis in called_procs or processingMaster:
         called_procs.append(p[3])
 
-
+#Fucion para encontrar el valor de una variable local
+#Recibe el nombre de la variable y la busca dentro de la lista del variables locales
 def find_local_variable_value(variable_name):
     for var_name, (var_proc, var_type, var_value) in variables_locales.items():
         if var_name == variable_name:
-            # print(f'Variable LOCAL buscada: {var_name} // Valor: {var_value} // Proc donde está: {var_proc}')
             return var_value
     return None  # Variable not found
 
-
+#Fucion para encontrar el valor de una variable global
+#Recibe el nombre de la variable y la busca dentro de la lista del variables globales
 def find_global_variable_value(variable_name):
     for var_name, var_value in variables_globales.items():
         if var_name == variable_name:
@@ -439,13 +440,12 @@ def find_global_variable_value(variable_name):
             return var_value[1]
     return None  # Variable not found
 
-
+#Estructura del printValues
 def p_print_values(p):
     '''print_values : PRINTVALUES LPARENT printable_sentences RPARENT SEMICOLON'''
 
 
-# Recursividad para agarrar todas las sentencias
-
+#Todas las posibles combinaciones de un printValues y su recursividad
 def p_printable_sentences(p):
     '''printable_sentences : printable_sentence_var
                 | printable_sentence_string
@@ -458,10 +458,10 @@ def p_printable_sentences(p):
                 | COMA printable_sentences COMA printable_sentence_var
                 | COMA printable_sentences COMA printable_sentence_string'''
 
-
+#Funcion auxiliar del p_function printValues para variables
+#Busca la variable en globales y locales para imprimir su valor
 def printable_sentence_var_aux(id):
-    global sentencia_en_analisis, condition_flag
-    sentencia_en_analisis = 'PrintValues'
+    global condition_flag
     if condition_flag:
         if id in variables_locales:
             print(find_local_variable_value(id))
@@ -474,7 +474,8 @@ def printable_sentence_var_aux(id):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia PrintValues // variable: {id} no existe')
             raise SyntaxError()
 
-
+# Estructura con token terminal para el printValues de una variable
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
 def p_printable_sentence_var(p):
     '''printable_sentence_var : ID '''
     global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
@@ -494,7 +495,8 @@ def p_printable_sentence_var(p):
         if proc_en_analisis in called_procs or processingMaster:
             printable_sentence_var_aux(p[1])
 
-
+# Funcion auxiliar del p_function printValues para strings
+# Imprime el valor del string
 def printable_sentence_string_aux(id):
     global condition_flag
     if condition_flag:
@@ -502,7 +504,8 @@ def printable_sentence_string_aux(id):
             print(id)
             print_resultados.append(str(id))
 
-
+# Estructura con token terminal para el printValues de un string
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
 def p_printable_sentence_string(p):
     '''printable_sentence_string : STRING '''
     global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list, var_queValida_while, var_queValida_until
@@ -515,15 +518,15 @@ def p_printable_sentence_string(p):
         if until_flag and (lambda: printable_sentence_string_aux not in until_list):
             until_list.append(lambda: printable_sentence_string_aux(string))
             printable_sentence_string_aux(string)
-
     elif condition_flag:
         if proc_en_analisis in called_procs or processingMaster:
             printable_sentence_string_aux(p[1])
 
-
+# Fucion auxiliar para la p_function de alter
+# Hace todas las verificaciones necesarias y cambia el valor de la variable dependiendo
+# de la accion recibida
 def alter_aux(id, action, integer):
-    global sentencia_en_analisis, condition_flag, values_flag, values_valor
-    sentencia_en_analisis = 'Alter'
+    global condition_flag, values_flag, values_valor
     if condition_flag:
         if action == "ADD":
             if id in variables_globales:
@@ -673,7 +676,8 @@ def alter_aux(id, action, integer):
                 raise SyntaxError()
 
 
-# Estructura en el diccionario de variables = ID [nombreProc, tipo, valor]
+# Estructura en el diccionario para el Alter
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
 def p_alter(p):
     '''alter : ALTER LPARENT ID COMA ADD COMA INTEGER RPARENT SEMICOLON
                 | ALTER LPARENT ID COMA SUB COMA INTEGER RPARENT SEMICOLON
@@ -698,10 +702,10 @@ def p_alter(p):
         if proc_en_analisis in called_procs or processingMaster:
             alter_aux(id, action, integer)
 
-
+# Funcion auxiliar para la p_function alterB
+# Hace la validacion necesaria y cambia el valor de un bool por opuesto
 def alterB_aux(id):
-    global while_flag, var_queValida_while, until_flag, var_queValida_until, sentencia_en_analisis, values_flag, values_valor
-    sentencia_en_analisis = 'AlterB'
+    global while_flag, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor
     if condition_flag:
         if id in variables_globales:
             for index, (var_name, (var_type, var_value)) in enumerate(variables_globales.items()):
@@ -768,7 +772,8 @@ def alterB_aux(id):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia AlterB // Variable: {id} no existe')
             raise SyntaxError()
 
-
+# Estructura del alterB
+# Contiene todos los flags necesarios para lidiar con el bool en while, until, case y repeat
 def p_alterB(p):
     '''alterB : ALTERB LPARENT ID RPARENT SEMICOLON'''
     global condition_flag, while_flag, while_list, first_pasada, repeat_flag, repeat_list, until_flag, until_list
@@ -788,10 +793,10 @@ def p_alterB(p):
         if proc_en_analisis in called_procs or processingMaster:
             alterB_aux(var)
 
-
+# Estructura de comparacion del mayor que
+# retorna True si se cumple que el ID es mayor que el numero y False de lo contrario
 def p_comparisson_maq(p):
     '''comparisson_maq : ID MAQ INTEGER'''
-
     global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor, comparisson_en_uso, valor_comparison
     comparisson_en_uso = "MAQ"
     valor_comparison = p[3]
@@ -882,7 +887,8 @@ def p_comparisson_maq(p):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQ // Variable: {p[1]} no existe')
             raise SyntaxError()
 
-
+# Estructura de comparacion del menor que
+# retorna True si se cumple que el ID es menor que el numero y False de lo contrario
 def p_comparisson_meq(p):
     '''comparisson_meq : ID MEQ INTEGER'''
 
@@ -972,7 +978,8 @@ def p_comparisson_meq(p):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQ // Variable: {p[1]} no existe')
             raise SyntaxError()
 
-
+# Estructura de comparacion del igual que
+# retorna True si se cumple que el ID es igual que el numero y False de lo contrario
 def p_comparisson_equal(p):
     '''comparisson_equal : ID EQUAL INTEGER'''
 
@@ -1064,7 +1071,8 @@ def p_comparisson_equal(p):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson EQUAL // Variable: {p[1]} no existe')
             raise SyntaxError()
 
-
+# Estructura de comparacion del diferente que
+# retorna True si se cumple que el ID es diferente que el numero y False de lo contrario
 def p_comparisson_dif(p):
     '''comparisson_dif : ID DIFFERENT INTEGER'''
 
@@ -1155,7 +1163,8 @@ def p_comparisson_dif(p):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson DIF // Variable: {p[1]} no existe')
             raise SyntaxError()
 
-
+# Estructura de comparacion del menor o igual que
+# retorna True si se cumple que el ID es menor o igual que el numero y False de lo contrario
 def p_comparisson_meqequal(p):
     '''comparisson_meqequal : ID MEQEQUAL INTEGER'''
 
@@ -1246,10 +1255,10 @@ def p_comparisson_meqequal(p):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MEQEQUAL //: Variable: {p[1]} no existe')
             raise SyntaxError()
 
-
+# Estructura de comparacion del mayor o igual que
+# retorna True si se cumple que el ID es mayor o igual que el numero y False de lo contrario
 def p_comparisson_maqequal(p):
     '''comparisson_maqequal : ID MAQEQUAL INTEGER'''
-
     global condition_flag, while_flag, first_pasada, var_queValida_while, until_flag, var_queValida_until, values_flag, values_valor, comparisson_en_uso, valor_comparison
     comparisson_en_uso = "MAQEQUAL"
     valor_comparison = p[3]
@@ -1336,7 +1345,10 @@ def p_comparisson_maqequal(p):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia Comparisson MAQEQUAL // Variable: {p[1]} no existe')
             raise SyntaxError()
 
-
+# Estructura del isTrue
+# Hace las verificaciones necesarias
+# Busca la variable en globales y locales
+# Retorna true si la variable es True y False de lo contrario
 def p_isTrue(p):
     '''isTrue : ISTRUE LPARENT ID RPARENT SEMICOLON'''
 
@@ -1393,7 +1405,9 @@ def p_isTrue(p):
                 f'- Error en procedure: {proc_en_analisis} // Sentencia IsTrue // Variable: {p[3]} no existe')
             raise SyntaxError()
 
-
+# Estructura de la p_function SIGNAL
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
+# Llama la funcion de signal_handler en caso de cumplir con las condiciones
 def p_signal(p):
     '''signal : SIGNAL LPARENT INTEGER COMA INTEGER RPARENT SEMICOLON
             | SIGNAL LPARENT ID COMA INTEGER RPARENT SEMICOLON'''
@@ -1444,7 +1458,8 @@ def p_signal(p):
                 syntax_errors.append(
                     f'Error en procedure: {proc_en_analisis} // Sentencia Signal // Variable no existe')
 
-
+# Funcion que maneja las senales de los motores
+# Activa el motor en la posicion dada
 def signal_handler(position, estado):
     global condition_flag, proc_en_analisis
     if condition_flag:
@@ -1476,11 +1491,12 @@ def signal_handler(position, estado):
         if position == 6:
             manipulacion_arduino("amarillo", estado)
 
-
+# Estructura del viewSignal
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
+# Llama la funcion auxiliar en caso de cumplir condiciones
 def p_viewsignal(p):
     '''viewsignal : VIEWSIGNAL LPARENT INTEGER RPARENT SEMICOLON
                     | VIEWSIGNAL LPARENT ID RPARENT SEMICOLON'''
-
     global condition_flag, while_flag, while_list, first_pasada, proc_en_analisis, repeat_list, repeat_flag, until_flag, until_list, proc_en_analisis, called_procs, processingMaster
     position = p[3]
     if proc_en_analisis in called_procs or processingMaster:
@@ -1527,7 +1543,7 @@ def p_viewsignal(p):
                 syntax_errors.append(
                     f'Error en procedure: {proc_en_analisis} // Sentencia Signal // Variable no existe')
 
-
+# Retorna el estado de un motor (1 o 0)
 def viewsignal_handler(motor):
     global condition_flag, values_flag, values_valor
     if condition_flag:
@@ -1536,10 +1552,10 @@ def viewsignal_handler(motor):
             values_valor = estado
         return estado
 
-
+# Estructura del while
+# Crea el loop del while para que se recorra mientras se cumpla la condicion
 def p_while(p):
     '''while : while_handler sentence LPARENT sentences RPARENT SEMICOLON'''
-
     global while_flag, while_list, first_pasada, condition_flag, proc_en_analisis, processingMaster, called_procs
     print("llegó a while")
     first_pasada = False
@@ -1549,25 +1565,22 @@ def p_while(p):
         while while_flag:
             for func in while_list:
                 func()
-                #time.sleep(0.1)
-
     while_list = []
     condition_flag = True
     while_flag = False
 
-
+# p_function con token termianl para administrar los flags del while
 def p_while_handler(p):
     '''while_handler : WHILE'''
-
     global while_flag, condition_flag, first_pasada
     while_flag = True
     condition_flag = False
     first_pasada = True
 
-
+# Estructura del until
+# Crea el loop del until para que se recorra mientras se cumpla la condicion
 def p_until(p):
     '''until : until_handler LPARENT sentences RPARENT sentence SEMICOLON'''
-
     global until_flag, until_list, first_pasada, condition_flag
     print("llegó a UNTIL")
     first_pasada = False
@@ -1583,19 +1596,18 @@ def p_until(p):
     condition_flag = True
     until_flag = False
 
-
+# p_function con token termianl para administrar los flags del until
 def p_until_handler(p):
     '''until_handler : UNTIL'''
-
     global until_flag, condition_flag, first_pasada
     until_flag = True
     condition_flag = False
     first_pasada = True
 
-
+# Estructura del repeat
+# Crea el loop del repeat para que se recorra mientras se cumpla la condicion
 def p_repeat(p):
     '''repeat : repeat_handler LPARENT sentences RPARENT SEMICOLON'''
-
     global repeat_flag, repeat_list, first_pasada, condition_flag, proc_en_analisis, called_procs, processingMaster
     print("llegó a repeat")
     first_pasada = False
@@ -1605,13 +1617,12 @@ def p_repeat(p):
         while repeat_flag:
             for func in repeat_list:
                 func()
-                #time.sleep(0.1)
 
     repeat_list = []
     condition_flag = True
     repeat_flag = False
 
-
+# p_function con token termianl para administrar los flags del repeat
 def p_repeat_handler(p):
     '''repeat_handler : REPEAT'''
     global repeat_flag, condition_flag, first_pasada
@@ -1619,7 +1630,8 @@ def p_repeat_handler(p):
     condition_flag = False
     first_pasada = True
 
-
+# Estructura del break
+# Llama el repeat_func en caso de cumplir condiciones
 def p_break(p):
     '''break : BREAK SEMICOLON'''
     global repeat_flag, first_pasada, repeat_list, condition_flag
@@ -1629,52 +1641,53 @@ def p_break(p):
     elif condition_flag:
         repeat_func()
 
-
+# Torna el flag de repeat False en caso de cumplirse la condicion
 def repeat_func():
     global repeat_flag, condition_flag
     if condition_flag:
         repeat_flag = False
 
-
+# Estructura del case
+# Torna el flag de condicion True
 def p_case(p):
     '''case : CASE expression recursive_conditions SEMICOLON'''
-
     global condition_flag
     condition_flag = True
     pass
 
-
+# Estructura del else
+# Si no se cumple la condition Flag torna el else Flag True
 def p_else_condition(p):
     '''else_condition : LPARENT sentences RPARENT'''
-
     global condition_flag, else_flag
     if not condition_flag:
         else_flag = True
 
     pass
 
-
+# Recursividad para las funciones recursivas
 def p_recursive_conditions(p):
     '''recursive_conditions : recursive_condition
                             | recursive_conditions recursive_condition'''
     pass
 
-
+# Estructura para las condiciones recursivas
 def p_recursive_condition(p):
     '''recursive_condition :  condition LPARENT sentences RPARENT'''
     pass
 
-
+# Token terminal para lidiar con el id de una expresion
 def p_expression(p):
     'expression : ID'
     global id_case, condition_flag, else_flag, first_pasada
     id_case = p[1]
 
-
+# Estructura del When - Then
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
+# Llama el condition handler
 def p_condition(p):
     '''condition : WHEN INTEGER THEN
                 | WHEN STRING THEN '''
-
     global id_case, condition_flag, while_flag, while_list, condition_flag, repeat_flag, repeat_list, until_flag, until_list, proc_en_analisis, called_procs, processingMaster
     condition_flag = True
     variable_name = id_case
@@ -1683,18 +1696,15 @@ def p_condition(p):
         if first_pasada:
             if while_flag and (lambda: condition_handler not in while_list):
                 while_list.append(lambda: condition_handler(variable_name, condition_value))
-
             if repeat_flag and (lambda: condition_handler not in repeat_list):
                 repeat_list.append(lambda: condition_handler(variable_name, condition_value))
-
             if until_flag and (lambda: condition_handler not in until_list):
                 until_list.append(lambda: condition_handler(variable_name, condition_value))
                 condition_handler(variable_name, condition_value)
-
         elif condition_flag:
             condition_handler(variable_name, condition_value)
 
-
+# Verifica si se cumple el case de cada WHEN
 def condition_handler(variable_name, condition_value):
     global condition_flag, proc_en_analisis
     if variable_name in variables_globales:
@@ -1724,11 +1734,13 @@ def condition_handler(variable_name, condition_value):
         syntax_errors.append(
             f'Error en procedure: {proc_en_analisis} // Sentencia Case // Variable {variable_name} no existe')
 
-
+# Estrucutra del cut
+# Realiza las validaciones necesarias
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
+# Llama el cut handler
 def p_cut(p):
     '''cut : CUT LPARENT ID COMA STRING RPARENT SEMICOLON
             | CUT LPARENT ID COMA ID RPARENT SEMICOLON'''
-
     global while_flag, while_list, first_pasada, condition_flag, repeat_flag, repeat_list, until_flag, until_list
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
@@ -1779,7 +1791,7 @@ def p_cut(p):
         else:
             syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
 
-
+# Remueve el primer caracter de la segunda variabley lo almacena en la primera
 def cut_handler(var_donde_guardar, var_donde_cortar):
     if var_donde_cortar in variables_locales:
         string_a_cortar = find_local_variable_value(var_donde_cortar)
@@ -1788,17 +1800,27 @@ def cut_handler(var_donde_guardar, var_donde_cortar):
         string_a_cortar = find_global_variable_value(var_donde_cortar)
 
     if var_donde_guardar in variables_locales:
-        variables_locales[var_donde_guardar][2] = string_a_cortar[0]
-        print(f'Nuevos valores en {var_donde_guardar}: {variables_locales[var_donde_guardar]}')
+        if len(string_a_cortar) > 0:
+            variables_locales[var_donde_guardar][2] = string_a_cortar[0]
+            print(f'Nuevos valores en {var_donde_guardar}: {variables_locales[var_donde_guardar]}')
+        else:
+            syntax_errors.append(
+                f'Error en {proc_en_analisis} string de cut no puede ser nulo')
 
     if var_donde_guardar in variables_globales:
-        variables_globales[var_donde_guardar][1] = string_a_cortar[0]
-        print(f'Nuevos valores en {var_donde_guardar}: {variables_globales[var_donde_guardar]}')
+        if len(string_a_cortar) > 0:
+            variables_globales[var_donde_guardar][1] = string_a_cortar[0]
+            print(f'Nuevos valores en {var_donde_guardar}: {variables_globales[var_donde_guardar]}')
+        else:
+            syntax_errors.append(
+                f'Error en {proc_en_analisis} string de cut no puede ser nulo')
 
-
+# Estrucutra del recut
+# Realiza las validaciones necesarias
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
+# Llama el recut handler
 def p_recut(p):
     '''recut : RECUT LPARENT ID RPARENT SEMICOLON'''
-
     global while_flag, while_list, repeat_flag, repeat_list, until_flag, until_list
     if proc_en_analisis in called_procs or processingMaster:
         if p[3] in variables_locales:
@@ -1819,7 +1841,7 @@ def p_recut(p):
                     recut_handler(var_donde_editar)
             else:
                 syntax_errors.append(
-                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+                    f'Error en procedure: {proc_en_analisis}: valor dado no corresponde al tipado seleccionado {p[3]}')
 
         elif p[3] in variables_globales:
             if isinstance(p[5], str) and variables_globales[p[3]][0] == 'Str':
@@ -1839,24 +1861,30 @@ def p_recut(p):
                     recut_handler(var_donde_editar)
             else:
                 syntax_errors.append(
-                    f'Error en línea {p.lineno}, posición {p.lexpos}: valor dado no corresponde al tipado seleccionado {p[3]}')
+                    f'Error en procedure: {proc_en_analisis} valor dado no corresponde al tipado seleccionado {p[3]}')
         else:
-            syntax_errors.append(f'Error en línea {p.lineno}, posición {p.lexpos}: Variable: {p[3]} no existe')
+            syntax_errors.append(f'Error en procedure: {proc_en_analisis}, Variable: {p[3]} no existe')
 
-
+# Funcion de recut
+# Remueve el primer caracter de la variable
 def recut_handler(var):
-    if var in variables_locales:
-        variables_locales[var][2] = find_local_variable_value(var)[1:]
-        print(f'Nuevos valores en {var}: {variables_locales[var]}')
+    if len(var) > 0:
+        if var in variables_locales:
+            variables_locales[var][2] = find_local_variable_value(var)[1:]
+            print(f'Nuevos valores en {var}: {variables_locales[var]}')
+        if var in variables_globales:
+            variables_globales[var][1] = find_global_variable_value(var)[1:]
+            print(f'Nuevos valores en {var}: {variables_globales[var]}')
+    else:
+        syntax_errors.append(
+            f'Error en {proc_en_analisis} string de recut no puede ser nulo')
 
-    if var in variables_globales:
-        variables_globales[var][1] = find_global_variable_value(var)[1:]
-        print(f'Nuevos valores en {var}: {variables_globales[var]}')
-
-
+# Estrucutra del sleep
+# Realiza las validaciones necesarias
+# Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
+# Llama el sleep handler
 def p_sleep(p):
     '''sleep : SLEEP LPARENT INTEGER RPARENT SEMICOLON'''
-
     global first_pasada, condition_flag, until_flag, while_flag, repeat_flag, proc_en_analisis, processingMaster, called_procs
     tiempo_deseado = p[3]
     if proc_en_analisis in called_procs or processingMaster:
@@ -1874,21 +1902,21 @@ def p_sleep(p):
         elif condition_flag:
             sleep_handler(tiempo_deseado)
 
-
+# Funcion handler de sleep
+# Si se cumple la condicion hace un sleep del tiempo
 def sleep_handler(tiempo_deseado):
     global condition_flag
     if condition_flag:
         time.sleep(tiempo_deseado)
         print(f'Ingreso a SLEEP // Tiempo dormido = {tiempo_deseado}')
 
-
+# p funcion de empty
 def p_empty(p):
     '''empty :'''
-
     p[0] = None
 
 
-# Error handling rule
+# Regla para manejar los errores no dertectado en el resto de codigo
 def p_error(p):
     global proc_en_analisis
     if p:
