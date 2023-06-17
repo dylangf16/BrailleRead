@@ -1,7 +1,8 @@
 @Master(
     New @variable1,(Str, "Hola");
     New @variable2,(Str, "Pepe12345678888888888888888");
-    New @variable3,(Bool, True);
+    New @variable3,(Bool, False);
+    New @variable4, (Bool, False);
     CALL(@Procedure1);
     CALL(@Procedure2);
 
@@ -16,6 +17,9 @@ Proc @Procedure1 (
     New @motor3,(Num,3);
     PrintValues(@motor3);
 
+    Values(@variable4, AlterB(@variable3); );
+    PrintValues("nuevo valor de variable4: ", @variable4);
+
     While IsTrue(@variable3);
         (
             Cut(@variable1 , @variable2);
@@ -29,6 +33,9 @@ Proc @Procedure1 (
                 When "p" Then
                 (AlterB(@variable3); ) ;
         );
+
+    Alter(@motor2, DIV, 45);
+    PrintValues("Nuevo valor de @motor2: ", @motor2);
 
     PrintValues("Fin @Procedure1");
     CALL(@Procedure2);
@@ -57,6 +64,20 @@ Proc @Procedure2 (
         (Break; ) ;
     );
 
+    AlterB(@variable3);
+    PrintValues("Nuevo valor de @variable3: ", @variable3);
+    Cut(@variable1 , @variable2);
+    ReCut(@variable2);
+
+    Case @variable1
+                When "3" Then
+                (PrintValues("valor de motor2: ", @motor2); Values(@motor2, Alter(@motor1, SUB, 5); ); PrintValues("nuevo valor de motor2: ", @motor2); )
+                When "4" Then
+                (AlterB(@variable3); )
+                When "5" Then
+                (Signal(@motor3, 1); Signal(@motor3, 1); ) ;
+
+
     PrintValues("Fin Procedure2");
     CALL(@Procedure4);
 
@@ -83,6 +104,8 @@ Proc @Procedure3 (
                 When "5" Then
                 (Signal(@motor3, 1); Signal(@motor3, 1); ) ;
         );
+
+    Signal(@motor3,0);
 
     PrintValues("Fin @Procedure1");
     CALL(@Procedure2);

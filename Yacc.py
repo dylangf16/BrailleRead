@@ -1890,10 +1890,10 @@ def p_empty(p):
 
 # Error handling rule
 def p_error(p):
-    global sentencia_en_analisis, proc_en_analisis
+    global proc_en_analisis
     if p:
         syntax_errors.append(
-            f"- Token inesperado '{p.value}' en sentencia: {sentencia_en_analisis} // en Proc: {proc_en_analisis}")
+            f"- Token inesperado '{p.value}' // en Proc: {proc_en_analisis}")
 
 # Build the parser
 parser = yacc.yacc()
