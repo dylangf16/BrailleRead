@@ -10,16 +10,22 @@ blanco = 3  # 4
 azul = 5  # 5
 amarillo = 6  # 6
 
+mayusculas = 13
+numeros = 12
+puntuacion = 8
+
 estado_motores = {
     "morado": 0,
     "verde": 0,
     "naranja": 0,
     "blanco": 0,
     "azul": 0,
-    "amarillo": 0
+    "amarillo": 0,
+    "mayusculas": 0,
+    "numeros": 0,
+    "puntuacion": 0
 }
 
-'''
 board = Arduino(port)
 
 board.digital[morado].mode = SERVO
@@ -29,12 +35,9 @@ board.digital[blanco].mode = SERVO
 board.digital[azul].mode = SERVO
 board.digital[amarillo].mode = SERVO
 
-
 def rotateservo(pin, angle):
     board.digital[pin].write(angle)
     sleep(0.015)
-'''
-
 
 def manipulacion_arduino(motor, estado_a_cambiar):
     global estado_motores
@@ -43,13 +46,13 @@ def manipulacion_arduino(motor, estado_a_cambiar):
         if estado_a_cambiar == 1:
             estado_motores["morado"] = 1
             print(f'Nuevo valor morado: {estado_motores["morado"]}')
-            for i in range(0, 18):
+            for i in range(1, 18):
                 print("movimiento ELIMINAR PRINT después xd")
-                #rotateservo(morado, i * 5)
+                rotateservo(morado, i * 5)
         elif estado_a_cambiar == 0:
             estado_motores["morado"] = 0
             print(f'Nuevo valor morado: {estado_motores["morado"]}')
-            #rotateservo(morado, 5)
+            rotateservo(morado, 5)
         return estado_a_cambiar
 
     if motor == "verde":
@@ -57,13 +60,13 @@ def manipulacion_arduino(motor, estado_a_cambiar):
         if estado_a_cambiar == 1:
             estado_motores["verde"] = 1
             print(f'Nuevo valor verde: {estado_motores["verde"]}')
-            for i in range(0, 18):
+            for i in range(1, 18):
                 print("movimiento ELIMINAR PRINT después xd")
-                #rotateservo(verde, i * 5)
+                rotateservo(verde, i * 5)
         elif estado_a_cambiar == 0:
             estado_motores["verde"] = 0
             print(f'Nuevo valor verde: {estado_motores["verde"]}')
-            #rotateservo(verde, 5)
+            rotateservo(verde, 5)
         return estado_a_cambiar
 
     if motor == "naranja":
@@ -71,13 +74,13 @@ def manipulacion_arduino(motor, estado_a_cambiar):
         if estado_a_cambiar == 1:
             estado_motores["naranja"] = 1
             print(f'Nuevo valor naranja: {estado_motores["naranja"]}')
-            for i in range(0, 18):
+            for i in range(1, 18):
                 print("movimiento ELIMINAR PRINT después xd")
-                #rotateservo(naranja, i * 5)
+                rotateservo(naranja, i * 5)
         elif estado_a_cambiar == 0:
             estado_motores["naranja"] = 0
             print(f'Nuevo valor naranja: {estado_motores["naranja"]}')
-            #rotateservo(naranja, 5)
+            rotateservo(naranja, 5)
         return estado_a_cambiar
 
     if motor == "blanco":
@@ -85,13 +88,13 @@ def manipulacion_arduino(motor, estado_a_cambiar):
         if estado_a_cambiar == 1:
             estado_motores["blanco"] = 1
             print(f'Nuevo valor blanco: {estado_motores["blanco"]}')
-            for i in range(0, 18):
+            for i in range(1, 18):
                 print("movimiento ELIMINAR PRINT después xd")
-                #rotateservo(blanco, i * 5)
+                rotateservo(blanco, i * 5)
         elif estado_a_cambiar == 0:
             estado_motores["blanco"] = 0
             print(f'Nuevo valor blanco: {estado_motores["blanco"]}')
-            #rotateservo(blanco, 5)
+            rotateservo(blanco, 5)
         return estado_a_cambiar
 
     if motor == "azul":
@@ -99,13 +102,13 @@ def manipulacion_arduino(motor, estado_a_cambiar):
         if estado_a_cambiar == 1:
             estado_motores["azul"] = 1
             print(f'Nuevo valor azul: {estado_motores["azul"]}')
-            for i in range(0, 18):
+            for i in range(1, 18):
                 print("movimiento ELIMINAR PRINT después xd")
-                #rotateservo(azul, i * 5)
+                rotateservo(azul, i * 5)
         elif estado_a_cambiar == 0:
             estado_motores["azul"] = 0
             print(f'Nuevo valor azul: {estado_motores["azul"]}')
-            #rotateservo(azul, 5)
+            rotateservo(azul, 5)
         return estado_a_cambiar
 
     if motor == "amarillo":
@@ -113,15 +116,51 @@ def manipulacion_arduino(motor, estado_a_cambiar):
         if estado_a_cambiar == 1:
             estado_motores["amarillo"] = 1
             print(f'Nuevo valor amarillo: {estado_motores["amarillo"]}')
-            for i in range(0, 18):
+            for i in range(1, 18):
                 print("movimiento ELIMINAR PRINT después xd")
-                #rotateservo(amarillo, i * 5)
+                rotateservo(amarillo, i * 5)
         elif estado_a_cambiar == 0:
             estado_motores["amarillo"] = 0
             print(f'Nuevo valor amarillo: {estado_motores["amarillo"]}')
-            #rotateservo(amarillo, 5)
+            rotateservo(amarillo, 5)
         return estado_a_cambiar
-
+    
+    if motor == "mayusculas":
+        print(f'Cambio de estado del LED mayuculas a {estado_a_cambiar}')
+        if estado_a_cambiar == 1:
+            estado_motores["mayusculas"] = 1
+            print(f'Nuevo valor mayusculas: {estado_motores["mayusculas"]}')
+            rotateservo(mayusculas, 1)
+        elif estado_a_cambiar == 0:
+            estado_motores["mayusculas"] = 0
+            print(f'Nuevo valor mayusculas: {estado_motores["mayusculas"]}')
+            rotateservo(mayusculas, 0)
+        return estado_a_cambiar
+    
+    if motor == "numeros":
+        print(f'Cambio de estado del LED numeros a {estado_a_cambiar}')
+        if estado_a_cambiar == 1:
+            estado_motores["numeros"] = 1
+            print(f'Nuevo valor numeros: {estado_motores["numeros"]}')
+            rotateservo(numeros, 1)
+        elif estado_a_cambiar == 0:
+            estado_motores["numeros"] = 0
+            print(f'Nuevo valor numeros: {estado_motores["numeros"]}')
+            rotateservo(numeros, 0)
+        return estado_a_cambiar
+    
+    if motor == "puntuacion":
+        print(f'Cambio de estado del LED puntucacion a {estado_a_cambiar}')
+        if estado_a_cambiar == 1:
+            estado_motores["puntuacion"] = 1
+            print(f'Nuevo valor puntuacion: {estado_motores["puntuacion"]}')
+            rotateservo(puntuacion, 1)
+        elif estado_a_cambiar == 0:
+            estado_motores["puntuacion"] = 0
+            print(f'Nuevo valor puntuacion: {estado_motores["puntuacion"]}')
+            rotateservo(puntuacion, 0)
+        return estado_a_cambiar
+    
 def consultar_motor(color):
     global estado_motores
     print(f'Color solicitado: {color}')

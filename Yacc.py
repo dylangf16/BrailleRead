@@ -1490,6 +1490,12 @@ def signal_handler(position, estado):
             manipulacion_arduino("azul", estado)
         if position == 6:
             manipulacion_arduino("amarillo", estado)
+        if position == 7:
+            manipulacion_arduino("mayusculas", estado)
+        if position == 8:
+            manipulacion_arduino("numeros", estado)
+        if position == 9:
+            manipulacion_arduino("puntuacion", estado)
 
 # Estructura del viewSignal
 # Contiene todos los flags necesarios para lidiar con ellas en while, until, case y repeat
@@ -1590,7 +1596,6 @@ def p_until(p):
         while until_flag:
             for func in until_list:
                 func()
-                #time.sleep(0.1)
 
     until_list = []
     condition_flag = True
